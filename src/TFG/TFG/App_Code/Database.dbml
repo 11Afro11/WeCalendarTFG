@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Class="DatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="" Member="Usuario">
+    <Type Name="Usuario">
+      <Column Name="nombreUsuario" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Property1" Member="correo" Storage="_Property1" Type="System.String" CanBeNull="false" />
+      <Column Name="password" Type="System.String" CanBeNull="false" />
+      <Column Name="foto" Type="System.String" CanBeNull="true" />
+      <Column Name="notificacion" Type="System.String" CanBeNull="false" />
+      <Column Name="fechaUnion" Member="CreateDate" Storage="_fechaUnion" Type="System.String" CanBeNull="false" />
+      <Association Name="Usuario_Evento" Member="Evento" ThisKey="nombreUsuario" OtherKey="nombreUsuario" Type="Evento" />
+      <Association Name="Usuario_Nota" Member="Nota" ThisKey="nombreUsuario" OtherKey="nombreUsuario" Type="Nota" />
+      <Association Name="Usuario_UsuarioAmigo" Member="UsuarioAmigo" ThisKey="nombreUsuario" OtherKey="amigo" Type="UsuarioAmigo" />
+      <Association Name="Usuario_Grupo" Member="Grupo" ThisKey="nombreUsuario" OtherKey="UsuarioCreador" Type="Grupo" Cardinality="One" />
+      <Association Name="Usuario_Mensaje" Member="Mensaje" ThisKey="nombreUsuario" OtherKey="usuarioOrigen" Type="Mensaje" />
+      <Association Name="UsuarioAmigo_Usuario" Member="UsuarioAmigo1" ThisKey="nombreUsuario" OtherKey="nombreUsuario" Type="UsuarioAmigo" IsForeignKey="true" />
+      <Association Name="Baneo_Usuario" Member="Baneo" Storage="_Baneos" ThisKey="nombreUsuario" OtherKey="baneado" Type="Baneo" IsForeignKey="true" />
+      <Association Name="Calendario_Usuario" Member="Calendario" Storage="_Calendarios" ThisKey="nombreUsuario" OtherKey="idUsuario" Type="Calendario" IsForeignKey="true" />
+      <Association Name="ListaGrupo_Usuario" Member="ListaGrupo" Storage="_ListaGrupp" ThisKey="nombreUsuario" OtherKey="usuario" Type="ListaGrupo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Evento">
+    <Type Name="Evento">
+      <Column Name="id" AutoSync="Never" Type="System.Int32" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" CanBeNull="false" />
+      <Column Name="descripcion" Type="System.String" CanBeNull="true" />
+      <Column Name="direccion" Type="System.String" CanBeNull="true" />
+      <Column Name="horaInicio" Type="System.TimeSpan" CanBeNull="false" />
+      <Column Name="" Member="horaFin" Type="System.TimeSpan" CanBeNull="false" />
+      <Column Name="fecha" Type="System.DateTime" CanBeNull="false" />
+      <Column Name="prioridad" Type="System.Int32" CanBeNull="false" />
+      <Column Name="visibilidad" Type="System.String" CanBeNull="false" />
+      <Column Name="nombreUsuario" Type="System.String" CanBeNull="false" />
+      <Column Name="fechaCreacion" Member="CreateDate" Storage="_fechaCreacion" Type="System.String" CanBeNull="false" />
+      <Association Name="Calendario_Evento" Member="Calendario" Storage="_Calendarios" ThisKey="id" OtherKey="idEvento" Type="Calendario" IsForeignKey="true" />
+      <Association Name="EventoSuspendido_Evento" Member="EventoSuspendido" ThisKey="id" OtherKey="evento" Type="EventoSuspendido" IsForeignKey="true" />
+      <Association Name="Usuario_Evento" Member="Usuario" ThisKey="nombreUsuario" OtherKey="nombreUsuario" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Administrador">
+    <Type Name="Administrador">
+      <Column Name="nombre" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="dni" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="correo" Type="System.String" CanBeNull="false" />
+      <Column Name="password" Type="System.String" CanBeNull="false" />
+      <Column Name="fechaUnion" Member="CreateDate" Storage="_fechaUnion" Type="System.String" CanBeNull="false" />
+      <Association Name="Baneo_Administrador" Member="Baneo" Storage="_Baneos" ThisKey="nombre" OtherKey="Administrador" Type="Baneo" IsForeignKey="true" />
+      <Association Name="EventoSuspendido_Administrador" Member="EventoSuspendido" ThisKey="nombre" OtherKey="Administrador" Type="EventoSuspendido" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Nota">
+    <Type Name="Nota">
+      <Column Name="id" AutoSync="Never" Type="System.Int32" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="titulo" Type="System.String" CanBeNull="false" />
+      <Column Name="texto" Type="System.String" CanBeNull="false" />
+      <Column Name="nombreUsuario" Type="System.String" CanBeNull="false" />
+      <Column Name="fechaCreacion" Member="CreateDate" Storage="_fechaCreacion" Type="System.String" CanBeNull="false" />
+      <Column Name="fechaTope" Type="System.String" CanBeNull="false" />
+      <Association Name="Usuario_Nota" Member="Usuario" ThisKey="nombreUsuario" OtherKey="nombreUsuario" Type="Usuario" IsForeignKey="true" />
+      <Association Name="Tblero_Nota" Member="Tblero" ThisKey="id" OtherKey="nota" Type="Tblero" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Calendario">
+    <Type Name="Calendario">
+      <Column Name="usuario" Member="idUsuario" Storage="_usuario" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="evento" Member="idEvento" Storage="_evento" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="id" Type="System.String" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.String" CanBeNull="false" />
+      <Association Name="Calendario_Usuario" Member="Usuario1" ThisKey="idUsuario" OtherKey="nombreUsuario" Type="Usuario" />
+      <Association Name="Calendario_Evento" Member="Evento1" ThisKey="idEvento" OtherKey="id" Type="Evento" />
+    </Type>
+  </Table>
+  <Table Name="" Member="UsuarioAmigo">
+    <Type Name="UsuarioAmigo">
+      <Column Name="nombreUsuario" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="amigo" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="fechaEnlace" Member="CreateDate" Storage="_fechaEnlace" Type="System.String" CanBeNull="false" />
+      <Association Name="UsuarioAmigo_Usuario" Member="Usuario1" ThisKey="nombreUsuario" OtherKey="nombreUsuario" Type="Usuario" />
+      <Association Name="Usuario_UsuarioAmigo" Member="Usuario" ThisKey="amigo" OtherKey="nombreUsuario" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Baneo">
+    <Type Name="Baneo">
+      <Column Name="Administrador" Type="System.String" CanBeNull="false" />
+      <Column Name="baneado" Type="System.String" CanBeNull="false" />
+      <Column Name="fecha" Member="CreateDate" Storage="_fecha" Type="System.String" CanBeNull="false" />
+      <Column Name="id" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Baneo_Usuario" Member="Usuario" ThisKey="baneado" OtherKey="nombreUsuario" Type="Usuario" />
+      <Association Name="Baneo_Administrador" Member="Administrador1" ThisKey="Administrador" OtherKey="nombre" Type="Administrador" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Grupo">
+    <Type Name="Grupo">
+      <Column Name="Id" AutoSync="Never" Type="System.Int32" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UsuarioCreador" Type="System.String" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" CanBeNull="false" />
+      <Column Name="descripcion" Type="System.String" CanBeNull="true" />
+      <Column Name="imagen" Type="System.String" CanBeNull="true" />
+      <Column Name="CreateDate" Type="System.String" CanBeNull="false" />
+      <Association Name="Grupo_Chat" Member="Chat" ThisKey="Id" OtherKey="grupo" Type="Chat" Cardinality="One" />
+      <Association Name="Tblero_Grupo" Member="Tblero" ThisKey="Id" OtherKey="grupo" Type="Tblero" IsForeignKey="true" />
+      <Association Name="ListaGrupo_Grupo" Member="ListaGrupo" Storage="_ListaGrupp" ThisKey="Id" OtherKey="grupo" Type="ListaGrupo" IsForeignKey="true" />
+      <Association Name="Usuario_Grupo" Member="Usuario" ThisKey="UsuarioCreador" OtherKey="nombreUsuario" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Chat">
+    <Type Name="Chat">
+      <Column Name="id" AutoSync="Never" Type="System.Int32" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="grupo" Type="System.Int32" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.String" CanBeNull="false" />
+      <Association Name="Chat_Mensaje" Member="Mensaje" ThisKey="id" OtherKey="chat" Type="Mensaje" />
+      <Association Name="Grupo_Chat" Member="Grupo1" ThisKey="grupo" OtherKey="Id" Type="Grupo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="EventoSuspendido">
+    <Type Name="EventoSuspendido">
+      <Column Name="id" AutoSync="Never" Type="System.String" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.String" CanBeNull="false" />
+      <Column Name="Administrador" Type="System.String" CanBeNull="false" />
+      <Column Name="evento" Type="System.Int32" CanBeNull="false" />
+      <Association Name="EventoSuspendido_Evento" Member="Evento1" ThisKey="evento" OtherKey="id" Type="Evento" />
+      <Association Name="EventoSuspendido_Administrador" Member="Administrador1" ThisKey="Administrador" OtherKey="nombre" Type="Administrador" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Mensaje">
+    <Type Name="Mensaje">
+      <Column Name="id" AutoSync="Never" Type="System.Int32" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.String" CanBeNull="false" />
+      <Column Name="usuarioOrigen" Type="System.String" CanBeNull="false" />
+      <Column Name="texto" Type="System.String" CanBeNull="false" />
+      <Column Name="chat" Type="System.Int32" CanBeNull="false" />
+      <Association Name="Usuario_Mensaje" Member="Usuario" ThisKey="usuarioOrigen" OtherKey="nombreUsuario" Type="Usuario" IsForeignKey="true" />
+      <Association Name="Chat_Mensaje" Member="Chat1" ThisKey="chat" OtherKey="id" Type="Chat" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="" Member="Tblero">
+    <Type Name="Tblero">
+      <Column Name="CreateDate" Type="System.String" CanBeNull="false" />
+      <Column Name="nota" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="grupo" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Tblero_Nota" Member="Nota1" ThisKey="nota" OtherKey="id" Type="Nota" />
+      <Association Name="Tblero_Grupo" Member="Grupo1" ThisKey="grupo" OtherKey="Id" Type="Grupo" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="" Member="ListaGrupo">
+    <Type Name="ListaGrupo">
+      <Column Name="usuario" Type="System.String" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="grupo" Type="System.Int32" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CreateDate" Type="System.String" CanBeNull="false" />
+      <Association Name="ListaGrupo_Usuario" Member="Usuario1" ThisKey="usuario" OtherKey="nombreUsuario" Type="Usuario" />
+      <Association Name="ListaGrupo_Grupo" Member="Grupo1" ThisKey="grupo" OtherKey="Id" Type="Grupo" />
+    </Type>
+  </Table>
+</Database>

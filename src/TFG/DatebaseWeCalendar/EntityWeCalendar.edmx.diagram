@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ab455634e6584aaea7f9208753cfa32a" Name="Diagram1" ZoomLevel="72" >
+        <EntityTypeShape EntityType="EntityWeCalendar.Usuario" Width="1.5" PointX="6.125" PointY="4.375" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Evento" Width="1.5" PointX="10.375" PointY="3.5" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Administrador" Width="1.5" PointX="12.375" PointY="0.5" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Mensaje" Width="1.5" PointX="8" PointY="9.125" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Grupo" Width="1.5" PointX="14.5" PointY="11.25" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Nota" Width="1.5" PointX="5.5" PointY="11.5" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Baneo" Width="1.5" PointX="8.625" PointY="0.75" />
+        <EntityTypeShape EntityType="EntityWeCalendar.EventoSuspendido" Width="1.5" PointX="13.5" PointY="4" />
+        <EntityTypeShape EntityType="EntityWeCalendar.UsuarioAmigo" Width="1.5" PointX="3.375" PointY="4.625" />
+        <EntityTypeShape EntityType="EntityWeCalendar.ListaGrupo" PointX="10.375" PointY="7.75" Width="1.5" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Chat" Width="1.5" PointX="12.125" PointY="9.875" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Tablero" Width="1.5" PointX="10" PointY="12" />
+        <AssociationConnector Association="EntityWeCalendar.CreaEvento" />
+        <AssociationConnector Association="EntityWeCalendar.Calendario" ManuallyRouted="true" >
+          <ConnectorPoint PointX="6.9821298646189947" PointY="4.375" />
+          <ConnectorPoint PointX="6.9821298646189947" PointY="3.1249999999999991" />
+          <ConnectorPoint PointX="9.8854166666666661" PointY="3.1249999999999987" />
+          <ConnectorPoint PointX="10.052083333333334" PointY="3.1249999999999991" />
+          <ConnectorPoint PointX="10.959375368748432" PointY="3.1249999999999991" />
+          <ConnectorPoint PointX="10.959375368748432" PointY="3.4999999999995426" />
+        </AssociationConnector>
+        <AssociationConnector Association="EntityWeCalendar.UsuarioUsuarioAmigo" />
+        <AssociationConnector Association="EntityWeCalendar.UsuarioUsuarioAmigo1" />
+        <AssociationConnector Association="EntityWeCalendar.GrupoChat" />
+        <AssociationConnector Association="EntityWeCalendar.GrupoTablero" />
+        <AssociationConnector Association="EntityWeCalendar.TableroNota" />
+        <AssociationConnector Association="EntityWeCalendar.UsuarioNota" />
+        <AssociationConnector Association="EntityWeCalendar.UsuarioListaGrupo" />
+        <AssociationConnector Association="EntityWeCalendar.GrupoListaGrupo" />
+        <AssociationConnector Association="EntityWeCalendar.UsuarioGrupo" />
+        <AssociationConnector Association="EntityWeCalendar.AdministradorBaneo" />
+        <AssociationConnector Association="EntityWeCalendar.AdministradorEventoSuspendido" />
+        <AssociationConnector Association="EntityWeCalendar.UsuarioMensaje" />
+        <AssociationConnector Association="EntityWeCalendar.ChatMensaje" />
+        <EntityTypeShape EntityType="EntityWeCalendar.Pendientes" Width="1.5" PointX="8.25" PointY="4.25" />
+        <AssociationConnector Association="EntityWeCalendar.UsuarioPendientes" />
+        <AssociationConnector Association="EntityWeCalendar.BaneoUsuario" />
+        <AssociationConnector Association="EntityWeCalendar.PendientesEvento" />
+        <AssociationConnector Association="EntityWeCalendar.EventoSuspendidoEvento" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EntityWeCalendarStoreContainer" CdmEntityContainer="EntityWeCalendarContainer">
+    <EntitySetMapping Name="UsuarioSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Usuario)">
+        <MappingFragment StoreEntitySet="UsuarioSet">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nombreUsuario" ColumnName="nombreUsuario" />
+          <ScalarProperty Name="correo" ColumnName="correo" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="notificacion" ColumnName="notificacion" />
+          <ScalarProperty Name="foto" ColumnName="foto" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="token" ColumnName="token" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Evento)">
+        <MappingFragment StoreEntitySet="EventoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="horaInicio" ColumnName="horaInicio" />
+          <ScalarProperty Name="horaFin" ColumnName="horaFin" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="prioridad" ColumnName="prioridad" />
+          <ScalarProperty Name="visibilidad" ColumnName="visibilidad" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+          <ScalarProperty Name="PendientesId" ColumnName="PendientesId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdministradorSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Administrador)">
+        <MappingFragment StoreEntitySet="AdministradorSet">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="correo" ColumnName="correo" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MensajeSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Mensaje)">
+        <MappingFragment StoreEntitySet="MensajeSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="texto" ColumnName="texto" />
+          <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+          <ScalarProperty Name="ChatId" ColumnName="ChatId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GrupoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Grupo)">
+        <MappingFragment StoreEntitySet="GrupoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="imagen" ColumnName="imagen" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NotaSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Nota)">
+        <MappingFragment StoreEntitySet="NotaSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="titulo" ColumnName="titulo" />
+          <ScalarProperty Name="texto" ColumnName="texto" />
+          <ScalarProperty Name="fechaTope" ColumnName="fechaTope" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="TableroId" ColumnName="TableroId" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BaneoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Baneo)">
+        <MappingFragment StoreEntitySet="BaneoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Administrador_id" ColumnName="Administrador_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventoSuspendidoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.EventoSuspendido)">
+        <MappingFragment StoreEntitySet="EventoSuspendidoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Administrador_id" ColumnName="Administrador_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsuarioAmigoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.UsuarioAmigo)">
+        <MappingFragment StoreEntitySet="UsuarioAmigoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+          <ScalarProperty Name="Usuario_id1" ColumnName="Usuario_id1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ListaGrupoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.ListaGrupo)">
+        <MappingFragment StoreEntitySet="ListaGrupoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+          <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ChatSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Chat)">
+        <MappingFragment StoreEntitySet="ChatSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TableroSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Tablero)">
+        <MappingFragment StoreEntitySet="TableroSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PendientesSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Pendientes)">
+        <MappingFragment StoreEntitySet="PendientesSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UsuarioEvento1" TypeName="EntityWeCalendar.Calendario" StoreEntitySet="UsuarioEvento1">
+      <EndProperty Name="Usuario">
+        <ScalarProperty Name="id" ColumnName="Usuario1_id" />
+      </EndProperty>
+      <EndProperty Name="Evento">
+        <ScalarProperty Name="Id" ColumnName="Evento1_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EventoEventoSuspendido" TypeName="EntityWeCalendar.EventoEventoSuspendido" StoreEntitySet="EventoSet">
+      <EndProperty Name="EventoSuspendido">
+        <ScalarProperty Name="Id" ColumnName="EventoSuspendido_Id" />
+      </EndProperty>
+      <EndProperty Name="Evento">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GrupoChat" TypeName="EntityWeCalendar.GrupoChat" StoreEntitySet="GrupoSet">
+      <EndProperty Name="Chat">
+        <ScalarProperty Name="Id" ColumnName="Chat_Id" />
+      </EndProperty>
+      <EndProperty Name="Grupo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GrupoTablero" TypeName="EntityWeCalendar.GrupoTablero" StoreEntitySet="GrupoSet">
+      <EndProperty Name="Tablero">
+        <ScalarProperty Name="Id" ColumnName="Tablero_Id" />
+      </EndProperty>
+      <EndProperty Name="Grupo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BaneoUsuario" TypeName="EntityWeCalendar.BaneoUsuario" StoreEntitySet="BaneoSet">
+      <EndProperty Name="Usuario">
+        <ScalarProperty Name="id" ColumnName="Usuario_id" />
+      </EndProperty>
+      <EndProperty Name="Baneo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,1146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EntityWeCalendar.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="EntityWeCalendarStoreContainer">
+    <EntitySet Name="UsuarioSet" EntityType="EntityWeCalendar.Store.UsuarioSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EventoSet" EntityType="EntityWeCalendar.Store.EventoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AdministradorSet" EntityType="EntityWeCalendar.Store.AdministradorSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MensajeSet" EntityType="EntityWeCalendar.Store.MensajeSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GrupoSet" EntityType="EntityWeCalendar.Store.GrupoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="NotaSet" EntityType="EntityWeCalendar.Store.NotaSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BaneoSet" EntityType="EntityWeCalendar.Store.BaneoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EventoSuspendidoSet" EntityType="EntityWeCalendar.Store.EventoSuspendidoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsuarioAmigoSet" EntityType="EntityWeCalendar.Store.UsuarioAmigoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ListaGrupoSet" EntityType="EntityWeCalendar.Store.ListaGrupoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ChatSet" EntityType="EntityWeCalendar.Store.ChatSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TableroSet" EntityType="EntityWeCalendar.Store.TableroSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PendientesSet" EntityType="EntityWeCalendar.Store.PendientesSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsuarioEvento1" EntityType="EntityWeCalendar.Store.Calendario" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UsuarioEvento" Association="EntityWeCalendar.Store.CreaEvento">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Evento" EntitySet="EventoSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsuarioEvento1_Usuario" Association="EntityWeCalendar.Store.FK_Calendario_Usuario">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Calendario" EntitySet="UsuarioEvento1" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsuarioEvento1_Evento" Association="EntityWeCalendar.Store.FK_Calendario_Evento">
+      <End Role="Evento" EntitySet="EventoSet" />
+      <End Role="Calendario" EntitySet="UsuarioEvento1" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioUsuarioAmigo" Association="EntityWeCalendar.Store.UsuarioUsuarioAmigo">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="UsuarioAmigo" EntitySet="UsuarioAmigoSet" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioUsuarioAmigo1" Association="EntityWeCalendar.Store.UsuarioUsuarioAmigo1">
+      <End Role="UsuarioAmigo" EntitySet="UsuarioAmigoSet" />
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+    </AssociationSet>
+    <AssociationSet Name="GrupoChat" Association="EntityWeCalendar.Store.GrupoChat">
+      <End Role="Grupo" EntitySet="GrupoSet" />
+      <End Role="Chat" EntitySet="ChatSet" />
+    </AssociationSet>
+    <AssociationSet Name="GrupoTablero" Association="EntityWeCalendar.Store.GrupoTablero">
+      <End Role="Grupo" EntitySet="GrupoSet" />
+      <End Role="Tablero" EntitySet="TableroSet" />
+    </AssociationSet>
+    <AssociationSet Name="TableroNota" Association="EntityWeCalendar.Store.TableroNota">
+      <End Role="Tablero" EntitySet="TableroSet" />
+      <End Role="Nota" EntitySet="NotaSet" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioNota" Association="EntityWeCalendar.Store.UsuarioNota">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Nota" EntitySet="NotaSet" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioListaGrupo" Association="EntityWeCalendar.Store.UsuarioListaGrupo">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="ListaGrupo" EntitySet="ListaGrupoSet" />
+    </AssociationSet>
+    <AssociationSet Name="GrupoListaGrupo" Association="EntityWeCalendar.Store.GrupoListaGrupo">
+      <End Role="Grupo" EntitySet="GrupoSet" />
+      <End Role="ListaGrupo" EntitySet="ListaGrupoSet" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioGrupo" Association="EntityWeCalendar.Store.UsuarioGrupo">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Grupo" EntitySet="GrupoSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdministradorBaneo" Association="EntityWeCalendar.Store.AdministradorBaneo">
+      <End Role="Administrador" EntitySet="AdministradorSet" />
+      <End Role="Baneo" EntitySet="BaneoSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdministradorEventoSuspendido" Association="EntityWeCalendar.Store.AdministradorEventoSuspendido">
+      <End Role="Administrador" EntitySet="AdministradorSet" />
+      <End Role="EventoSuspendido" EntitySet="EventoSuspendidoSet" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioMensaje" Association="EntityWeCalendar.Store.UsuarioMensaje">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Mensaje" EntitySet="MensajeSet" />
+    </AssociationSet>
+    <AssociationSet Name="ChatMensaje" Association="EntityWeCalendar.Store.ChatMensaje">
+      <End Role="Chat" EntitySet="ChatSet" />
+      <End Role="Mensaje" EntitySet="MensajeSet" />
+    </AssociationSet>
+    <AssociationSet Name="UsuarioPendientes" Association="EntityWeCalendar.Store.UsuarioPendientes">
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+      <End Role="Pendientes" EntitySet="PendientesSet" />
+    </AssociationSet>
+    <AssociationSet Name="BaneoUsuario" Association="EntityWeCalendar.Store.BaneoUsuario">
+      <End Role="Baneo" EntitySet="BaneoSet" />
+      <End Role="Usuario" EntitySet="UsuarioSet" />
+    </AssociationSet>
+    <AssociationSet Name="PendientesEvento" Association="EntityWeCalendar.Store.PendientesEvento">
+      <End Role="Pendientes" EntitySet="PendientesSet" />
+      <End Role="Evento" EntitySet="EventoSet" />
+    </AssociationSet>
+    <AssociationSet Name="EventoSuspendidoEvento" Association="EntityWeCalendar.Store.EventoSuspendidoEvento">
+      <End Role="EventoSuspendido" EntitySet="EventoSuspendidoSet" />
+      <End Role="Evento" EntitySet="EventoSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UsuarioSet">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombreUsuario" Type="nchar" Nullable="false" MaxLength="30" />
+    <Property Name="correo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="notificacion" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="foto" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="token" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="descripcion" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="direccion" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="horaInicio" Type="datetime" Nullable="false" />
+    <Property Name="horaFin" Type="datetime" Nullable="false" />
+    <Property Name="fecha" Type="datetime" Nullable="false" />
+    <Property Name="prioridad" Type="int" Nullable="false" />
+    <Property Name="visibilidad" Type="bit" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdministradorSet">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nchar" StoreGeneratedPattern="Identity" Nullable="false" MaxLength="90" />
+    <Property Name="dni" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="correo" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MensajeSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="texto" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="GrupoId" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+    <Property Name="ChatId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GrupoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="descripcion" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="imagen" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+    <Property Name="Chat_Id" Type="int" Nullable="false" />
+    <Property Name="Tablero_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NotaSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="titulo" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="texto" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="fechaTope" Type="datetime" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="TableroId" Type="int" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BaneoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Administrador_id" Type="int" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventoSuspendidoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Administrador_id" Type="int" Nullable="false" />
+    <Property Name="Evento_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsuarioAmigoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+    <Property Name="Usuario_id1" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ListaGrupoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+    <Property Name="GrupoId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ChatSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TableroSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PendientesSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+    <Property Name="Evento_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Calendario">
+    <Key>
+      <PropertyRef Name="Usuario1_id" />
+      <PropertyRef Name="Evento1_Id" />
+    </Key>
+    <Property Name="Usuario1_id" Type="int" Nullable="false" />
+    <Property Name="Evento1_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="CreaEvento">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="Evento" Type="EntityWeCalendar.Store.EventoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Evento">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioUsuarioAmigo">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="UsuarioAmigo" Type="EntityWeCalendar.Store.UsuarioAmigoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsuarioAmigo">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioUsuarioAmigo1">
+    <End Role="UsuarioAmigo" Type="EntityWeCalendar.Store.UsuarioAmigoSet" Multiplicity="*" />
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsuarioAmigo">
+        <PropertyRef Name="Usuario_id1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GrupoChat">
+    <End Role="Grupo" Type="EntityWeCalendar.Store.GrupoSet" Multiplicity="*" />
+    <End Role="Chat" Type="EntityWeCalendar.Store.ChatSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Chat">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Grupo">
+        <PropertyRef Name="Chat_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GrupoTablero">
+    <End Role="Grupo" Type="EntityWeCalendar.Store.GrupoSet" Multiplicity="*" />
+    <End Role="Tablero" Type="EntityWeCalendar.Store.TableroSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Tablero">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Grupo">
+        <PropertyRef Name="Tablero_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TableroNota">
+    <End Role="Tablero" Type="EntityWeCalendar.Store.TableroSet" Multiplicity="1" />
+    <End Role="Nota" Type="EntityWeCalendar.Store.NotaSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tablero">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Nota">
+        <PropertyRef Name="TableroId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioNota">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="Nota" Type="EntityWeCalendar.Store.NotaSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Nota">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioListaGrupo">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="ListaGrupo" Type="EntityWeCalendar.Store.ListaGrupoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ListaGrupo">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GrupoListaGrupo">
+    <End Role="Grupo" Type="EntityWeCalendar.Store.GrupoSet" Multiplicity="1" />
+    <End Role="ListaGrupo" Type="EntityWeCalendar.Store.ListaGrupoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Grupo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ListaGrupo">
+        <PropertyRef Name="GrupoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioGrupo">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="Grupo" Type="EntityWeCalendar.Store.GrupoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Grupo">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdministradorBaneo">
+    <End Role="Administrador" Type="EntityWeCalendar.Store.AdministradorSet" Multiplicity="1" />
+    <End Role="Baneo" Type="EntityWeCalendar.Store.BaneoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Administrador">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Baneo">
+        <PropertyRef Name="Administrador_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdministradorEventoSuspendido">
+    <End Role="Administrador" Type="EntityWeCalendar.Store.AdministradorSet" Multiplicity="1" />
+    <End Role="EventoSuspendido" Type="EntityWeCalendar.Store.EventoSuspendidoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Administrador">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EventoSuspendido">
+        <PropertyRef Name="Administrador_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioMensaje">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="Mensaje" Type="EntityWeCalendar.Store.MensajeSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Mensaje">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ChatMensaje">
+    <End Role="Chat" Type="EntityWeCalendar.Store.ChatSet" Multiplicity="1" />
+    <End Role="Mensaje" Type="EntityWeCalendar.Store.MensajeSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Chat">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Mensaje">
+        <PropertyRef Name="ChatId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsuarioPendientes">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="Pendientes" Type="EntityWeCalendar.Store.PendientesSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Pendientes">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BaneoUsuario">
+    <End Role="Baneo" Type="EntityWeCalendar.Store.BaneoSet" Multiplicity="*" />
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Baneo">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PendientesEvento">
+    <End Role="Pendientes" Type="EntityWeCalendar.Store.PendientesSet" Multiplicity="*" />
+    <End Role="Evento" Type="EntityWeCalendar.Store.EventoSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Evento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pendientes">
+        <PropertyRef Name="Evento_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventoSuspendidoEvento">
+    <End Role="EventoSuspendido" Type="EntityWeCalendar.Store.EventoSuspendidoSet" Multiplicity="*" />
+    <End Role="Evento" Type="EntityWeCalendar.Store.EventoSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Evento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventoSuspendido">
+        <PropertyRef Name="Evento_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Calendario_Usuario">
+    <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
+    <End Role="Calendario" Type="EntityWeCalendar.Store.Calendario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Calendario">
+        <PropertyRef Name="Usuario1_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Calendario_Evento">
+    <End Role="Calendario" Type="EntityWeCalendar.Store.Calendario" Multiplicity="*" />
+    <End Role="Evento" Type="EntityWeCalendar.Store.EventoSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Evento">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Calendario">
+        <PropertyRef Name="Evento1_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="EntityWeCalendar" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="EntityWeCalendarContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UsuarioSet" EntityType="EntityWeCalendar.Usuario" />
+          <EntitySet Name="EventoSet" EntityType="EntityWeCalendar.Evento" />
+          <EntitySet Name="AdministradorSet" EntityType="EntityWeCalendar.Administrador" />
+          <EntitySet Name="MensajeSet" EntityType="EntityWeCalendar.Mensaje" />
+          <EntitySet Name="GrupoSet" EntityType="EntityWeCalendar.Grupo" />
+          <EntitySet Name="NotaSet" EntityType="EntityWeCalendar.Nota" />
+          <EntitySet Name="BaneoSet" EntityType="EntityWeCalendar.Baneo" />
+          <EntitySet Name="EventoSuspendidoSet" EntityType="EntityWeCalendar.EventoSuspendido" />
+          <EntitySet Name="UsuarioAmigoSet" EntityType="EntityWeCalendar.UsuarioAmigo" />
+          <EntitySet Name="ListaGrupoSet" EntityType="EntityWeCalendar.ListaGrupo" />
+          <EntitySet Name="ChatSet" EntityType="EntityWeCalendar.Chat" />
+          <EntitySet Name="TableroSet" EntityType="EntityWeCalendar.Tablero" />
+          <AssociationSet Name="UsuarioEvento" Association="EntityWeCalendar.CreaEvento">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="Evento" EntitySet="EventoSet" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioEvento1" Association="EntityWeCalendar.Calendario">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="Evento" EntitySet="EventoSet" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioUsuarioAmigo" Association="EntityWeCalendar.UsuarioUsuarioAmigo">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="UsuarioAmigo" EntitySet="UsuarioAmigoSet" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioUsuarioAmigo1" Association="EntityWeCalendar.UsuarioUsuarioAmigo1">
+            <End Role="UsuarioAmigo" EntitySet="UsuarioAmigoSet" />
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+          </AssociationSet>
+          <AssociationSet Name="GrupoChat" Association="EntityWeCalendar.GrupoChat">
+            <End Role="Grupo" EntitySet="GrupoSet" />
+            <End Role="Chat" EntitySet="ChatSet" />
+          </AssociationSet>
+          <AssociationSet Name="GrupoTablero" Association="EntityWeCalendar.GrupoTablero">
+            <End Role="Grupo" EntitySet="GrupoSet" />
+            <End Role="Tablero" EntitySet="TableroSet" />
+          </AssociationSet>
+          <AssociationSet Name="TableroNota" Association="EntityWeCalendar.TableroNota">
+            <End Role="Tablero" EntitySet="TableroSet" />
+            <End Role="Nota" EntitySet="NotaSet" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioNota" Association="EntityWeCalendar.UsuarioNota">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="Nota" EntitySet="NotaSet" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioListaGrupo" Association="EntityWeCalendar.UsuarioListaGrupo">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="ListaGrupo" EntitySet="ListaGrupoSet" />
+          </AssociationSet>
+          <AssociationSet Name="GrupoListaGrupo" Association="EntityWeCalendar.GrupoListaGrupo">
+            <End Role="Grupo" EntitySet="GrupoSet" />
+            <End Role="ListaGrupo" EntitySet="ListaGrupoSet" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioGrupo" Association="EntityWeCalendar.UsuarioGrupo">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="Grupo" EntitySet="GrupoSet" />
+          </AssociationSet>
+          <AssociationSet Name="AdministradorBaneo" Association="EntityWeCalendar.AdministradorBaneo">
+            <End Role="Administrador" EntitySet="AdministradorSet" />
+            <End Role="Baneo" EntitySet="BaneoSet" />
+          </AssociationSet>
+          <AssociationSet Name="AdministradorEventoSuspendido" Association="EntityWeCalendar.AdministradorEventoSuspendido">
+            <End Role="Administrador" EntitySet="AdministradorSet" />
+            <End Role="EventoSuspendido" EntitySet="EventoSuspendidoSet" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioMensaje" Association="EntityWeCalendar.UsuarioMensaje">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="Mensaje" EntitySet="MensajeSet" />
+          </AssociationSet>
+          <AssociationSet Name="ChatMensaje" Association="EntityWeCalendar.ChatMensaje">
+            <End Role="Chat" EntitySet="ChatSet" />
+            <End Role="Mensaje" EntitySet="MensajeSet" />
+          </AssociationSet>
+          <EntitySet Name="PendientesSet" EntityType="EntityWeCalendar.Pendientes" />
+          <AssociationSet Name="UsuarioPendientes" Association="EntityWeCalendar.UsuarioPendientes">
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+            <End Role="Pendientes" EntitySet="PendientesSet" />
+          </AssociationSet>
+          <AssociationSet Name="BaneoUsuario" Association="EntityWeCalendar.BaneoUsuario">
+            <End Role="Baneo" EntitySet="BaneoSet" />
+            <End Role="Usuario" EntitySet="UsuarioSet" />
+          </AssociationSet>
+          <AssociationSet Name="PendientesEvento" Association="EntityWeCalendar.PendientesEvento">
+            <End Role="Pendientes" EntitySet="PendientesSet" />
+            <End Role="Evento" EntitySet="EventoSet" />
+          </AssociationSet>
+          <AssociationSet Name="EventoSuspendidoEvento" Association="EntityWeCalendar.EventoSuspendidoEvento">
+            <End Role="EventoSuspendido" EntitySet="EventoSuspendidoSet" />
+            <End Role="Evento" EntitySet="EventoSet" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreUsuario" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" ConcurrencyMode="None" FixedLength="true" MaxLength="30" />
+          <Property Name="correo" Type="String" Nullable="false" />
+          <Property Name="password" Type="String" Nullable="false" />
+          <Property Name="notificacion" Type="String" Nullable="false" />
+          <Property Name="foto" Type="String" Nullable="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Evento" Relationship="EntityWeCalendar.CreaEvento" FromRole="Usuario" ToRole="Evento" />
+          <NavigationProperty Name="Evento1" Relationship="EntityWeCalendar.Calendario" FromRole="Usuario" ToRole="Evento" />
+          <NavigationProperty Name="UsuarioAmigo" Relationship="EntityWeCalendar.UsuarioUsuarioAmigo" FromRole="Usuario" ToRole="UsuarioAmigo" />
+          <NavigationProperty Name="UsuarioAmigo1" Relationship="EntityWeCalendar.UsuarioUsuarioAmigo1" FromRole="Usuario" ToRole="UsuarioAmigo" />
+          <NavigationProperty Name="Nota" Relationship="EntityWeCalendar.UsuarioNota" FromRole="Usuario" ToRole="Nota" />
+          <NavigationProperty Name="ListaGrupo" Relationship="EntityWeCalendar.UsuarioListaGrupo" FromRole="Usuario" ToRole="ListaGrupo" />
+          <NavigationProperty Name="Grupo" Relationship="EntityWeCalendar.UsuarioGrupo" FromRole="Usuario" ToRole="Grupo" />
+          <NavigationProperty Name="Mensaje" Relationship="EntityWeCalendar.UsuarioMensaje" FromRole="Usuario" ToRole="Mensaje" />
+          <Property Name="token" Type="String" Nullable="false" />
+          <NavigationProperty Name="Pendientes" Relationship="EntityWeCalendar.UsuarioPendientes" FromRole="Usuario" ToRole="Pendientes" />
+          <NavigationProperty Name="Baneo" Relationship="EntityWeCalendar.BaneoUsuario" FromRole="Usuario" ToRole="Baneo" />
+        </EntityType>
+        <EntityType Name="Evento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" />
+          <Property Name="descripcion" Type="String" Nullable="true" />
+          <Property Name="direccion" Type="String" Nullable="true" />
+          <Property Name="horaInicio" Type="DateTime" Nullable="false" />
+          <Property Name="horaFin" Type="DateTime" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="prioridad" Type="Int32" Nullable="false" />
+          <Property Name="visibilidad" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.CreaEvento" FromRole="Evento" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Usuario1" Relationship="EntityWeCalendar.Calendario" FromRole="Evento" ToRole="Usuario" />
+          <NavigationProperty Name="Pendientes" Relationship="EntityWeCalendar.PendientesEvento" FromRole="Evento" ToRole="Pendientes" />
+          <NavigationProperty Name="EventoSuspendido" Relationship="EntityWeCalendar.EventoSuspendidoEvento" FromRole="Evento" ToRole="EventoSuspendido" />
+        </EntityType>
+        <EntityType Name="Administrador">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" annotation:StoreGeneratedPattern="Identity" FixedLength="true" MaxLength="90" />
+          <Property Name="dni" Type="String" Nullable="false" />
+          <Property Name="correo" Type="String" Nullable="false" />
+          <Property Name="password" Type="String" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Baneo" Relationship="EntityWeCalendar.AdministradorBaneo" FromRole="Administrador" ToRole="Baneo" />
+          <NavigationProperty Name="EventoSuspendido" Relationship="EntityWeCalendar.AdministradorEventoSuspendido" FromRole="Administrador" ToRole="EventoSuspendido" />
+        </EntityType>
+        <EntityType Name="Mensaje">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="texto" Type="String" Nullable="false" />
+          <Property Name="GrupoId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="String" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioMensaje" FromRole="Mensaje" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Chat" Relationship="EntityWeCalendar.ChatMensaje" FromRole="Mensaje" ToRole="Chat" />
+          <Property Name="ChatId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+        </EntityType>
+        <EntityType Name="Grupo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" />
+          <Property Name="descripcion" Type="String" Nullable="true" />
+          <Property Name="imagen" Type="String" Nullable="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Chat" Relationship="EntityWeCalendar.GrupoChat" FromRole="Grupo" ToRole="Chat" />
+          <NavigationProperty Name="Tablero" Relationship="EntityWeCalendar.GrupoTablero" FromRole="Grupo" ToRole="Tablero" />
+          <NavigationProperty Name="ListaGrupo" Relationship="EntityWeCalendar.GrupoListaGrupo" FromRole="Grupo" ToRole="ListaGrupo" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioGrupo" FromRole="Grupo" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nota">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titulo" Type="String" Nullable="true" />
+          <Property Name="texto" Type="String" Nullable="true" />
+          <Property Name="fechaTope" Type="DateTime" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Tablero" Relationship="EntityWeCalendar.TableroNota" FromRole="Nota" ToRole="Tablero" />
+          <Property Name="TableroId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioNota" FromRole="Nota" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Baneo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Administrador" Relationship="EntityWeCalendar.AdministradorBaneo" FromRole="Baneo" ToRole="Administrador" />
+          <Property Name="Administrador_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.BaneoUsuario" FromRole="Baneo" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="EventoSuspendido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Administrador" Relationship="EntityWeCalendar.AdministradorEventoSuspendido" FromRole="EventoSuspendido" ToRole="Administrador" />
+          <Property Name="Administrador_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Evento" Relationship="EntityWeCalendar.EventoSuspendidoEvento" FromRole="EventoSuspendido" ToRole="Evento" />
+        </EntityType>
+        <EntityType Name="UsuarioAmigo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioUsuarioAmigo" FromRole="UsuarioAmigo" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Usuario1" Relationship="EntityWeCalendar.UsuarioUsuarioAmigo1" FromRole="UsuarioAmigo" ToRole="Usuario" />
+          <Property Name="Usuario_id1" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ListaGrupo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="CreateDate" Nullable="false" Type="DateTime" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioListaGrupo" FromRole="ListaGrupo" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grupo" Relationship="EntityWeCalendar.GrupoListaGrupo" FromRole="ListaGrupo" ToRole="Grupo" />
+          <Property Name="GrupoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Chat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Grupo" Relationship="EntityWeCalendar.GrupoChat" FromRole="Chat" ToRole="Grupo" />
+          <NavigationProperty Name="Mensaje" Relationship="EntityWeCalendar.ChatMensaje" FromRole="Chat" ToRole="Mensaje" />
+        </EntityType>
+        <EntityType Name="Tablero">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Grupo" Relationship="EntityWeCalendar.GrupoTablero" FromRole="Tablero" ToRole="Grupo" />
+          <NavigationProperty Name="Nota" Relationship="EntityWeCalendar.TableroNota" FromRole="Tablero" ToRole="Nota" />
+        </EntityType>
+        <Association Name="CreaEvento">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Evento" Role="Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Calendario">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="*" />
+          <End Type="EntityWeCalendar.Evento" Role="Evento" Multiplicity="*" />
+        </Association>
+        <Association Name="UsuarioUsuarioAmigo">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="EntityWeCalendar.UsuarioAmigo" Role="UsuarioAmigo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UsuarioAmigo">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsuarioUsuarioAmigo1">
+          <End Type="EntityWeCalendar.UsuarioAmigo" Role="UsuarioAmigo" Multiplicity="*" />
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UsuarioAmigo">
+              <PropertyRef Name="Usuario_id1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GrupoChat">
+          <End Type="EntityWeCalendar.Grupo" Role="Grupo" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Chat" Role="Chat" Multiplicity="1" />
+        </Association>
+        <Association Name="GrupoTablero">
+          <End Type="EntityWeCalendar.Grupo" Role="Grupo" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Tablero" Role="Tablero" Multiplicity="1" />
+        </Association>
+        <Association Name="TableroNota">
+          <End Type="EntityWeCalendar.Tablero" Role="Tablero" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Nota" Role="Nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tablero">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nota">
+              <PropertyRef Name="TableroId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsuarioNota">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Nota" Role="Nota" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Nota">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsuarioListaGrupo">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="EntityWeCalendar.ListaGrupo" Role="ListaGrupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ListaGrupo">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GrupoListaGrupo">
+          <End Type="EntityWeCalendar.Grupo" Role="Grupo" Multiplicity="1" />
+          <End Type="EntityWeCalendar.ListaGrupo" Role="ListaGrupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ListaGrupo">
+              <PropertyRef Name="GrupoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsuarioGrupo">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Grupo" Role="Grupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Grupo">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AdministradorBaneo">
+          <End Type="EntityWeCalendar.Administrador" Role="Administrador" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Baneo" Role="Baneo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrador">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Baneo">
+              <PropertyRef Name="Administrador_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AdministradorEventoSuspendido">
+          <End Type="EntityWeCalendar.Administrador" Role="Administrador" Multiplicity="1" />
+          <End Type="EntityWeCalendar.EventoSuspendido" Role="EventoSuspendido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Administrador">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventoSuspendido">
+              <PropertyRef Name="Administrador_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsuarioMensaje">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Mensaje" Role="Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ChatMensaje">
+          <End Type="EntityWeCalendar.Chat" Role="Chat" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Mensaje" Role="Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="ChatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Pendientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioPendientes" FromRole="Pendientes" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Evento" Relationship="EntityWeCalendar.PendientesEvento" FromRole="Pendientes" ToRole="Evento" />
+        </EntityType>
+        <Association Name="UsuarioPendientes">
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Pendientes" Role="Pendientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Pendientes">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BaneoUsuario">
+          <End Type="EntityWeCalendar.Baneo" Role="Baneo" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
+        </Association>
+        <Association Name="PendientesEvento">
+          <End Type="EntityWeCalendar.Pendientes" Role="Pendientes" Multiplicity="*" />
+          <End Type="EntityWeCalendar.Evento" Role="Evento" Multiplicity="1" />
+        </Association>
+        <Association Name="EventoSuspendidoEvento">
+          <End Type="EntityWeCalendar.EventoSuspendido" Role="EventoSuspendido" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Evento" Role="Evento" Multiplicity="1" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EntityWeCalendarStoreContainer" CdmEntityContainer="EntityWeCalendarContainer">
+    <EntitySetMapping Name="UsuarioSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Usuario)">
+        <MappingFragment StoreEntitySet="UsuarioSet">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nombreUsuario" ColumnName="nombreUsuario" />
+          <ScalarProperty Name="correo" ColumnName="correo" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="notificacion" ColumnName="notificacion" />
+          <ScalarProperty Name="foto" ColumnName="foto" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="token" ColumnName="token" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Evento)">
+        <MappingFragment StoreEntitySet="EventoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="horaInicio" ColumnName="horaInicio" />
+          <ScalarProperty Name="horaFin" ColumnName="horaFin" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="prioridad" ColumnName="prioridad" />
+          <ScalarProperty Name="visibilidad" ColumnName="visibilidad" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdministradorSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Administrador)">
+        <MappingFragment StoreEntitySet="AdministradorSet">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="correo" ColumnName="correo" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MensajeSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Mensaje)">
+        <MappingFragment StoreEntitySet="MensajeSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="texto" ColumnName="texto" />
+          <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+          <ScalarProperty Name="ChatId" ColumnName="ChatId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GrupoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Grupo)">
+        <MappingFragment StoreEntitySet="GrupoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="imagen" ColumnName="imagen" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NotaSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Nota)">
+        <MappingFragment StoreEntitySet="NotaSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="titulo" ColumnName="titulo" />
+          <ScalarProperty Name="texto" ColumnName="texto" />
+          <ScalarProperty Name="fechaTope" ColumnName="fechaTope" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="TableroId" ColumnName="TableroId" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BaneoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Baneo)">
+        <MappingFragment StoreEntitySet="BaneoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Administrador_id" ColumnName="Administrador_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventoSuspendidoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.EventoSuspendido)">
+        <MappingFragment StoreEntitySet="EventoSuspendidoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Administrador_id" ColumnName="Administrador_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsuarioAmigoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.UsuarioAmigo)">
+        <MappingFragment StoreEntitySet="UsuarioAmigoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+          <ScalarProperty Name="Usuario_id1" ColumnName="Usuario_id1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ListaGrupoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.ListaGrupo)">
+        <MappingFragment StoreEntitySet="ListaGrupoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+          <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ChatSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Chat)">
+        <MappingFragment StoreEntitySet="ChatSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TableroSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Tablero)">
+        <MappingFragment StoreEntitySet="TableroSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PendientesSet">
+      <EntityTypeMapping TypeName="IsTypeOf(EntityWeCalendar.Pendientes)">
+        <MappingFragment StoreEntitySet="PendientesSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UsuarioEvento1" TypeName="EntityWeCalendar.Calendario" StoreEntitySet="UsuarioEvento1">
+      <EndProperty Name="Usuario">
+        <ScalarProperty Name="id" ColumnName="Usuario1_id" />
+      </EndProperty>
+      <EndProperty Name="Evento">
+        <ScalarProperty Name="Id" ColumnName="Evento1_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GrupoChat" TypeName="EntityWeCalendar.GrupoChat" StoreEntitySet="GrupoSet">
+      <EndProperty Name="Chat">
+        <ScalarProperty Name="Id" ColumnName="Chat_Id" />
+      </EndProperty>
+      <EndProperty Name="Grupo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="GrupoTablero" TypeName="EntityWeCalendar.GrupoTablero" StoreEntitySet="GrupoSet">
+      <EndProperty Name="Tablero">
+        <ScalarProperty Name="Id" ColumnName="Tablero_Id" />
+      </EndProperty>
+      <EndProperty Name="Grupo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BaneoUsuario" TypeName="EntityWeCalendar.BaneoUsuario" StoreEntitySet="BaneoSet">
+      <EndProperty Name="Usuario">
+        <ScalarProperty Name="id" ColumnName="Usuario_id" />
+      </EndProperty>
+      <EndProperty Name="Baneo">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="PendientesEvento" TypeName="EntityWeCalendar.PendientesEvento" StoreEntitySet="PendientesSet">
+      <EndProperty Name="Evento">
+        <ScalarProperty Name="Id" ColumnName="Evento_Id" />
+      </EndProperty>
+      <EndProperty Name="Pendientes">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EventoSuspendidoEvento" TypeName="EntityWeCalendar.EventoSuspendidoEvento" StoreEntitySet="EventoSuspendidoSet">
+      <EndProperty Name="Evento">
+        <ScalarProperty Name="Id" ColumnName="Evento_Id" />
+      </EndProperty>
+      <EndProperty Name="EventoSuspendido">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
