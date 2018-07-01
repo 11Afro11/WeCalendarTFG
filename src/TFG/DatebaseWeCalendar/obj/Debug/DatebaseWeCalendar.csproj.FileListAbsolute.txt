@@ -1,2 +1,0 @@
-E:\GoogleDrive\Informática\4-CUARTO\TFG\src\TFG\DatebaseWeCalendar\obj\Debug\DatebaseWeCalendar.csprojResolveAssemblyReference.cache
-E:\GoogleDrive\Informática\4-CUARTO\TFG\src\TFG\DatebaseWeCalendar\obj\Debug\DatebaseWeCalendar.csproj.CoreCompileInputs.cache
