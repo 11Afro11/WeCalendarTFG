@@ -162,6 +162,13 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
 
     }
 
+    delete(id: number) {
+        axios.delete('http://localhost:55555/api/events/' + id)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
+    }
 
     public render() {
         let contents = this.state.loading
@@ -208,6 +215,8 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
                 </label>
                 <button type="submit">Add</button>
             </form>
+
+            <button className="active" onClick={() => { this.delete(9) }}>Borrar</button>
 
         </div>;
     }

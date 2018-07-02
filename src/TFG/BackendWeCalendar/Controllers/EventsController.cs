@@ -41,6 +41,20 @@ namespace BackendWeCalendar.Controllers
             };*/
         }
 
+        // GET: api/Events/invitacion/5
+        [HttpGet("invitacion/{id}", Name = "ConseguirInvitacion")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<EventoSet> GetInvitacion(int id)
+        {
+            var result = _srvEventos.GetEventosAsistencia(id);
+            return result;
+            /*
+            return new[]
+            {
+                result
+            };*/
+        }
+
         // POST: api/Events
         [HttpPost]
         [EnableCors("AllowSpecificOrigin")]
@@ -60,6 +74,7 @@ namespace BackendWeCalendar.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _srvEventos.RemoveEvento(id);
         }
     }
 }

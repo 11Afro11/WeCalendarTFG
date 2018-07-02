@@ -19,6 +19,11 @@ namespace BusinessWeCalendar
             return _dalEvents.GetEventoCreador(id);
         }
 
+        public EventoSet[] GetEventosAsistencia(int id)
+        {
+            return _dalEvents.GetEventosInvitado(id);
+        }
+
         public void AddEvento(JSONEvento evento)
         {
             EventoSet nuevoEvento = new EventoSet();
@@ -33,6 +38,11 @@ namespace BusinessWeCalendar
             nuevoEvento.UsuarioId = evento.idUsuarioDuenio;
             nuevoEvento.CreateDate = evento.fecha;
             _dalEvents.AddEvento(nuevoEvento);
+        }
+
+        public void RemoveEvento(int id)
+        {
+            _dalEvents.RemoveEvento(id);
         }
     }
 }

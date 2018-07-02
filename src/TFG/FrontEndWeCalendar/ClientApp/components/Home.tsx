@@ -1,6 +1,7 @@
 ﻿import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
+import axios from 'axios';
 import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
 
 interface DaySet {
@@ -9,6 +10,8 @@ interface DaySet {
     loadingUser: boolean,
     events: Evento[],
     loadingEvent: boolean,
+    invitaciones: Evento[],
+    loadingInvitaciones: boolean,
     diasEventos: number[],
     nombreEvento: string;
     descripcion: string;
@@ -18,6 +21,7 @@ interface DaySet {
     horaFin: Date;
     prioridad: number;
     visibilidad: boolean;
+    showForm: boolean;
 }
 
 
@@ -27,6 +31,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     mes = "Julio";
     anio = 2018;
     eventos = [1, 4, 12];
+    usuario = 1;
 
     //daySet = 25;
 
@@ -39,6 +44,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             loadingUser: true,
             events: [],
             loadingEvent: true,
+            invitaciones: [],
+            loadingInvitaciones: true,
             diasEventos: [],
             nombreEvento: '',
             descripcion: '',
@@ -48,19 +55,30 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             horaFin: new Date,
             prioridad: 0,
             visibilidad: false,
+            showForm : false,
         };
         sessionStorage.setItem("token", "weeeeee");
 
         this.loadUsers();
 
         this.loadEvents();
+        
+        this.loadInvitaciones();
 
-        this.listaDias();
+        (this.state.loadingEvent && this.state.loadingInvitaciones)
+            ? <p><em>Loading...</em></p>
+            : this.listaDias();
+
+        
 
     }
 
     listaDias() {
         this.state.events.map(evento => {
+            this.state.diasEventos.push(evento.fecha.getDate());
+            console.log(evento.fecha.getDate());
+        });
+        this.state.invitaciones.map(evento => {
             this.state.diasEventos.push(evento.fecha.getDate());
         });
     }
@@ -81,6 +99,14 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ events: data, loadingEvent: false });
+            });
+    }
+    loadInvitaciones() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getEventoInvitado);
+        fetch(dir + '/1')
+            .then(response => response.json() as Promise<Evento[]>)
+            .then(data => {
+                this.setState({ invitaciones: data, loadingInvitaciones: false });
             });
     }
 
@@ -116,15 +142,18 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
 
 
-    renderCalendario(usuarios: Evento[]) {
+    renderCalendario(usuarios: Evento[], invitation : Evento[]) {
         var listaDias = Array<number>();
         usuarios.map(dias => {
+            listaDias.push(new Date(dias.fecha.toString()).getDate());
+        });
+        invitation.map(dias => {
             listaDias.push(new Date(dias.fecha.toString()).getDate());
         });
         let day = [];
         var today = new Date();
         var DayToday = today.getDate();
-        for (let i: number = 1; i <= 30; i++) {
+        for (let i: number = 1; i <= 31; i++) {
             if (i == DayToday) {
                 if (i < 10)
                     day.push((<li><button className="active" onClick={() => { this.setDay(i) }}>0{i}</button></li>) as any);
@@ -148,8 +177,17 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         return day;
     }
 
+    //funcion que elimina un determinado evento
+    public static eliminar(id: number): void {
+        axios.delete('http://localhost:55555/api/events/' + id)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+    }
+
     //Metodo que se encargara de hacer el horario en funcu�n del d�a 
-    private static renderTabla(usuarios: Evento[], dia: number) {
+    private static renderTabla(usuarios: Evento[], invitacion: Evento[], dia: number) {
 
         var eventoPorDia = new Array<Evento>();
         usuarios.map(evento => {
@@ -158,6 +196,23 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 eventoPorDia.push(evento);
             }
         });
+
+        invitacion.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            if (dia == day) {
+                eventoPorDia.push(evento);
+            }
+        });/*
+        let devolucion = [];
+        if (eventoPorDia.length > 0) {
+            devolucion.push((<tbody>) as any);
+                for(let i : number = 0; i < eventoPorDia.length; i++){
+
+                } 
+            devolucion.push((</tbody>) as any);
+
+        }*/
+
         if (eventoPorDia.length > 0) {
             return <tbody>
                 {eventoPorDia.map(users =>
@@ -169,6 +224,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                         <td>{users.nombre}</td>
                         <td>{users.descripcion}</td>
                         <td>{users.direccion}</td>
+                        {(users.usuarioId == 1) ? < td > <button className="active" onClick={() => { Home.eliminar(users.id); }}>Borrar</button></td> : null}
                     </tr>
                 )}
             </tbody>;
@@ -207,44 +263,136 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         this.setState({ visibilidad: event.target.value });
     }
 
+    validarHoras() {
+        var inicioAntesquefin = false;
+        var puedeInsertarse = true;
+        if (this.state.horaInicio > this.state.horaFin) {
+            inicioAntesquefin = true;
+        }
+        else {
+            puedeInsertarse = false;
+        }
+        if (inicioAntesquefin) {
+            var eventoPorDia = new Array<Evento>();
+            this.state.events.map(evento => {
+                var day = new Date(evento.fecha.toString()).getDate();
+                if (this.state.daySet == day) {
+                    eventoPorDia.push(evento);
+                }
+            });
+            this.state.invitaciones.map(evento => {
+                var day = new Date(evento.fecha.toString()).getDate();
+                if (this.state.daySet == day) {
+                    eventoPorDia.push(evento);
+                }
+            });
+            puedeInsertarse = true;
+            eventoPorDia.map(evento => {
+                if (this.state.horaInicio >= evento.horaInicio && this.state.horaInicio <= evento.horaFin) {
+                    puedeInsertarse = false;
+                }
+                if (this.state.horaFin >= evento.horaInicio && this.state.horaFin <= evento.horaFin) {
+                    puedeInsertarse = false;
+                }
+            });
+        }
+        return puedeInsertarse;
+    }
+
     /*Control de la subida e insercion del evento*/
     handleSubmmit = (event: any) => {
+        interface eventJson {
+            nombre: string,
+            desc: string,
+            direccion: string,
+            horaInicio: Date,
+            horafin: Date,
+            fecha: Date,
+            prioridad: number,
+            visibilidad: boolean,
+            idUsuarioDuenio: number,
+        };
 
+        var eventojson: eventJson = {
+            nombre: '',
+            desc: '',
+            direccion: '',
+            horaInicio: new Date,
+            horafin: new Date,
+            fecha: new Date,
+            prioridad: 0,
+            visibilidad: false,
+            idUsuarioDuenio: 1
+        }
+
+        var fecha = new Date();
+        fecha.setDate(this.state.daySet);
+        fecha.setMonth(6);
+        fecha.setFullYear(2018);
+
+        eventojson.nombre = this.state.nombreEvento;
+        eventojson.desc = this.state.descripcion;
+        eventojson.direccion = this.state.direccion;
+        eventojson.fecha = fecha;
+        eventojson.horaInicio = this.state.horaInicio;
+        eventojson.horafin = this.state.horaFin;
+        eventojson.prioridad = this.state.prioridad;
+        eventojson.visibilidad = this.state.visibilidad;
+
+        var subida = JSON.stringify(eventojson);
+
+        if (this.validarHoras) {
+            axios.post('http://localhost:55555/api/events', subida,
+                {
+                    headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+                }).then(res => {
+                    console.log(res);
+                    console.log(res.data);
+                })
+
+            console.log(JSON.stringify(eventojson));
+        }
+        else {
+            console.log("no se han podido insertar las horas");
+        }
     }
 
     /*Creación del formulario*/
     formularioInsertarEvento() {
-        return <form onSubmit={this.handleSubmmit}>
-            <label>
-                Nombre del Evento
-                    <input id="name" type="text" ref="un texto" onChange={this.handleNombreChange} />
-            </label>
-            <label>
-                Descripcion
-                    <input id="desc" type="text" ref="un texto" onChange={this.handleDescriptionChange} />
-            </label>
-            <label>
-                Lugar
-                    <input id="lugar" type="text" ref="un texto" onChange={this.handleDirChange} />
-            </label>
-            <label>
-                Hora de inicio
-                    <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleInicioChange} />
-            </label>
-            <label>
-                Hora de fin
-                    <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleFinChange} />
-            </label>
-            <label>
-                Prioridad
-                    <input type="number" id="prio" min="0" max="1" onChange={this.handlePrioridadChange} />
-            </label>
-            <label>
-                Visibilidad
-                    <input id="visibilidad" type="checkbox" name="vehicle" value="Visible" onChange={this.handleVisibilidadChange} />
-            </label>
-            <button type="submit">Add</button>
-        </form>;
+        return <div className="form-style-6">
+            <h1>Nuevo Evento</h1>
+            <form onSubmit={this.handleSubmmit}>
+                <label>
+                    Nombre del Evento
+                        <input id="name" type="text" ref="un texto" onChange={this.handleNombreChange} />
+                </label>
+                <label>
+                    Descripcion
+                        <input id="desc" type="text" ref="un texto" onChange={this.handleDescriptionChange} />
+                </label>
+                <label>
+                    Lugar
+                        <input id="lugar" type="text" ref="un texto" onChange={this.handleDirChange} />
+                </label>
+                <label>
+                    Hora de inicio
+                        <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleInicioChange} />
+                </label>
+                <label>
+                    Hora de fin
+                        <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleFinChange} />
+                </label>
+                <label>
+                    Prioridad
+                        <input type="number" id="prio" min="0" max="1" onChange={this.handlePrioridadChange} />
+                </label>
+                <label>
+                    Visibilidad
+                        <input id="visibilidad" type="checkbox" name="vehicle" value="Visible" onChange={this.handleVisibilidadChange} />
+                </label>
+                <input type="submit" value="Send" />
+                </form>
+            </div>;
     }
 
 
@@ -253,13 +401,13 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         let contents = this.state.loadingEvent
             ? <p><em>Loading...</em></p>
             : <strong>{new Date(this.state.events[0].horaInicio.toString()).getDate()}</strong>;
-        let eventos = this.state.loadingEvent
+        let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
-            : Home.renderTabla(this.state.events, this.state.daySet);
+            : Home.renderTabla(this.state.events, this.state.invitaciones, this.state.daySet);
 
-        let calendar = this.state.loadingEvent
+        let calendar = (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
-            : this.renderCalendario(this.state.events);
+            : this.renderCalendario(this.state.events, this.state.invitaciones);
 
         return <div>
             <div className="Calendario">
@@ -285,6 +433,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <li></li>
                     <li></li>
                     <li></li>
+                    <li></li>
+                    <li></li>
                     {calendar}
 
 
@@ -306,11 +456,21 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     </thead>
                     {eventos}
                 </table>
-                {this.formularioInsertarEvento()}
+                <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
+                {this.state.showForm ? this.formularioInsertarEvento() : null}
 
             </div>
 
         </div>;
+    }
+
+    muestraUOcultaForm() {
+        if (this.state.showForm) {
+            this.setState({ showForm: false })
+        }
+        else {
+            this.setState({ showForm: true })
+        }
     }
 
     setDay(numero: number) {

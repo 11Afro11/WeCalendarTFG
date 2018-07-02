@@ -9,6 +9,10 @@ namespace BusinessWeCalendar
     {
         EventoSet[] GetEventoCreador(int id);
 
+        EventoSet[] GetEventosAsistencia(int id);
+
         void AddEvento(JSONEvento evento);
+
+        void RemoveEvento(int id);
     }
 }
