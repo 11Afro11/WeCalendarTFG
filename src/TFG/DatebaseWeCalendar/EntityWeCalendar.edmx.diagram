@@ -29,8 +29,6 @@
         <AssociationConnector Association="EntityWeCalendar.UsuarioUsuarioAmigo" />
         <AssociationConnector Association="EntityWeCalendar.UsuarioUsuarioAmigo1" />
         <AssociationConnector Association="EntityWeCalendar.GrupoChat" />
-        <AssociationConnector Association="EntityWeCalendar.GrupoTablero" />
-        <AssociationConnector Association="EntityWeCalendar.TableroNota" />
         <AssociationConnector Association="EntityWeCalendar.UsuarioNota" />
         <AssociationConnector Association="EntityWeCalendar.UsuarioListaGrupo" />
         <AssociationConnector Association="EntityWeCalendar.GrupoListaGrupo" />
@@ -44,6 +42,8 @@
         <AssociationConnector Association="EntityWeCalendar.BaneoUsuario" />
         <AssociationConnector Association="EntityWeCalendar.PendientesEvento" />
         <AssociationConnector Association="EntityWeCalendar.EventoSuspendidoEvento" />
+        <AssociationConnector Association="EntityWeCalendar.NotaTablero" />
+        <AssociationConnector Association="EntityWeCalendar.TableroGrupo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

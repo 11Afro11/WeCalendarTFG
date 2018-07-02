@@ -10,8 +10,8 @@ namespace DalModel
         public string Texto { get; set; }
         public DateTime FechaTope { get; set; }
         public DateTime CreateDate { get; set; }
-        public int TableroId { get; set; }
         public int UsuarioId { get; set; }
+        public int TableroId { get; set; }
 
         public TableroSet Tablero { get; set; }
         public UsuarioSet Usuario { get; set; }

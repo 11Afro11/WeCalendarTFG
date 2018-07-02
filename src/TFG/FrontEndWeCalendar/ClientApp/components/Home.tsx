@@ -10,6 +10,14 @@ interface DaySet {
     events: Evento[],
     loadingEvent: boolean,
     diasEventos: number[],
+    nombreEvento: string;
+    descripcion: string;
+    direccion: string;
+    fecha: Date;
+    horaInicio: Date;
+    horaFin: Date;
+    prioridad: number;
+    visibilidad: boolean;
 }
 
 
@@ -32,6 +40,14 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             events: [],
             loadingEvent: true,
             diasEventos: [],
+            nombreEvento: '',
+            descripcion: '',
+            direccion: '',
+            fecha: new Date,
+            horaInicio: new Date,
+            horaFin: new Date,
+            prioridad: 0,
+            visibilidad: false,
         };
         sessionStorage.setItem("token", "weeeeee");
 
@@ -163,6 +179,74 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         }
     }
 
+    /*Seccion de control de cambios dentro del formulario*/
+
+    handleNombreChange = (event: any) => {
+        this.setState({ nombreEvento: event.target.value });
+    }
+
+    handleDescriptionChange = (event: any) => {
+        this.setState({ descripcion: event.target.value });
+    }
+    handleDirChange = (event: any) => {
+        this.setState({ direccion: event.target.value });
+    }
+    handleDateChange = (event: any) => {
+        this.setState({ fecha: event.target.value });
+    }
+    handleInicioChange = (event: any) => {
+        this.setState({ horaInicio: event.target.value });
+    }
+    handleFinChange = (event: any) => {
+        this.setState({ horaFin: event.target.value });
+    }
+    handlePrioridadChange = (event: any) => {
+        this.setState({ prioridad: event.target.value });
+    }
+    handleVisibilidadChange = (event: any) => {
+        this.setState({ visibilidad: event.target.value });
+    }
+
+    /*Control de la subida e insercion del evento*/
+    handleSubmmit = (event: any) => {
+
+    }
+
+    /*Creación del formulario*/
+    formularioInsertarEvento() {
+        return <form onSubmit={this.handleSubmmit}>
+            <label>
+                Nombre del Evento
+                    <input id="name" type="text" ref="un texto" onChange={this.handleNombreChange} />
+            </label>
+            <label>
+                Descripcion
+                    <input id="desc" type="text" ref="un texto" onChange={this.handleDescriptionChange} />
+            </label>
+            <label>
+                Lugar
+                    <input id="lugar" type="text" ref="un texto" onChange={this.handleDirChange} />
+            </label>
+            <label>
+                Hora de inicio
+                    <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleInicioChange} />
+            </label>
+            <label>
+                Hora de fin
+                    <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleFinChange} />
+            </label>
+            <label>
+                Prioridad
+                    <input type="number" id="prio" min="0" max="1" onChange={this.handlePrioridadChange} />
+            </label>
+            <label>
+                Visibilidad
+                    <input id="visibilidad" type="checkbox" name="vehicle" value="Visible" onChange={this.handleVisibilidadChange} />
+            </label>
+            <button type="submit">Add</button>
+        </form>;
+    }
+
 
     public render() {
 
@@ -222,7 +306,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     </thead>
                     {eventos}
                 </table>
-
+                {this.formularioInsertarEvento()}
 
             </div>
 

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/25/2018 15:26:42
--- Generated from EDMX file: E:\GoogleDrive\Informática\4-CUARTO\TFG\src\TFG\DatebaseWeCalendar\EntityWeCalendar.edmx
+-- Date Created: 07/01/2018 19:50:40
+-- Generated from EDMX file: E:\GoogleDrive\Informática\4-CUARTO\TFG\WeCalendarTFG\src\TFG\DatebaseWeCalendar\EntityWeCalendar.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -34,12 +34,6 @@ IF OBJECT_ID(N'[dbo].[FK_UsuarioUsuarioAmigo1]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_GrupoChat]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GrupoSet] DROP CONSTRAINT [FK_GrupoChat];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GrupoTablero]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GrupoSet] DROP CONSTRAINT [FK_GrupoTablero];
-GO
-IF OBJECT_ID(N'[dbo].[FK_TableroNota]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[NotaSet] DROP CONSTRAINT [FK_TableroNota];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UsuarioNota]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[NotaSet] DROP CONSTRAINT [FK_UsuarioNota];
@@ -76,6 +70,12 @@ IF OBJECT_ID(N'[dbo].[FK_PendientesEvento]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_EventoSuspendidoEvento]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[EventoSuspendidoSet] DROP CONSTRAINT [FK_EventoSuspendidoEvento];
+GO
+IF OBJECT_ID(N'[dbo].[FK_NotaTablero]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[NotaSet] DROP CONSTRAINT [FK_NotaTablero];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TableroGrupo]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TableroSet] DROP CONSTRAINT [FK_TableroGrupo];
 GO
 
 -- --------------------------------------------------
@@ -188,8 +188,7 @@ CREATE TABLE [dbo].[GrupoSet] (
     [imagen] nvarchar(max)  NULL,
     [CreateDate] datetime  NOT NULL,
     [Usuario_id] int  NOT NULL,
-    [Chat_Id] int  NOT NULL,
-    [Tablero_Id] int  NOT NULL
+    [Chat_Id] int  NOT NULL
 );
 GO
 
@@ -200,8 +199,8 @@ CREATE TABLE [dbo].[NotaSet] (
     [texto] nvarchar(max)  NULL,
     [fechaTope] datetime  NOT NULL,
     [CreateDate] datetime  NOT NULL,
-    [TableroId] int  NOT NULL,
-    [Usuario_id] int  NOT NULL
+    [Usuario_id] int  NOT NULL,
+    [Tablero_Id] int  NOT NULL
 );
 GO
 
@@ -251,7 +250,8 @@ GO
 -- Creating table 'TableroSet'
 CREATE TABLE [dbo].[TableroSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [CreateDate] datetime  NOT NULL
+    [CreateDate] datetime  NOT NULL,
+    [Grupo_Id] int  NOT NULL
 );
 GO
 
@@ -446,36 +446,6 @@ ON [dbo].[GrupoSet]
     ([Chat_Id]);
 GO
 
--- Creating foreign key on [Tablero_Id] in table 'GrupoSet'
-ALTER TABLE [dbo].[GrupoSet]
-ADD CONSTRAINT [FK_GrupoTablero]
-    FOREIGN KEY ([Tablero_Id])
-    REFERENCES [dbo].[TableroSet]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_GrupoTablero'
-CREATE INDEX [IX_FK_GrupoTablero]
-ON [dbo].[GrupoSet]
-    ([Tablero_Id]);
-GO
-
--- Creating foreign key on [TableroId] in table 'NotaSet'
-ALTER TABLE [dbo].[NotaSet]
-ADD CONSTRAINT [FK_TableroNota]
-    FOREIGN KEY ([TableroId])
-    REFERENCES [dbo].[TableroSet]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_TableroNota'
-CREATE INDEX [IX_FK_TableroNota]
-ON [dbo].[NotaSet]
-    ([TableroId]);
-GO
-
 -- Creating foreign key on [Usuario_id] in table 'NotaSet'
 ALTER TABLE [dbo].[NotaSet]
 ADD CONSTRAINT [FK_UsuarioNota]
@@ -654,6 +624,36 @@ GO
 CREATE INDEX [IX_FK_EventoSuspendidoEvento]
 ON [dbo].[EventoSuspendidoSet]
     ([Evento_Id]);
+GO
+
+-- Creating foreign key on [Tablero_Id] in table 'NotaSet'
+ALTER TABLE [dbo].[NotaSet]
+ADD CONSTRAINT [FK_NotaTablero]
+    FOREIGN KEY ([Tablero_Id])
+    REFERENCES [dbo].[TableroSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_NotaTablero'
+CREATE INDEX [IX_FK_NotaTablero]
+ON [dbo].[NotaSet]
+    ([Tablero_Id]);
+GO
+
+-- Creating foreign key on [Grupo_Id] in table 'TableroSet'
+ALTER TABLE [dbo].[TableroSet]
+ADD CONSTRAINT [FK_TableroGrupo]
+    FOREIGN KEY ([Grupo_Id])
+    REFERENCES [dbo].[GrupoSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TableroGrupo'
+CREATE INDEX [IX_FK_TableroGrupo]
+ON [dbo].[TableroSet]
+    ([Grupo_Id]);
 GO
 
 -- --------------------------------------------------

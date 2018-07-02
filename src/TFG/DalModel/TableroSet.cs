@@ -7,14 +7,14 @@ namespace DalModel
     {
         public TableroSet()
         {
-            GrupoSet = new HashSet<GrupoSet>();
             NotaSet = new HashSet<NotaSet>();
         }
 
         public int Id { get; set; }
         public DateTime CreateDate { get; set; }
+        public int GrupoId { get; set; }
 
-        public ICollection<GrupoSet> GrupoSet { get; set; }
+        public GrupoSet Grupo { get; set; }
         public ICollection<NotaSet> NotaSet { get; set; }
     }
 }

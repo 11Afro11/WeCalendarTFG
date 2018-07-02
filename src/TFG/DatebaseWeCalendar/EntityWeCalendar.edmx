@@ -44,14 +44,6 @@
       <End Role="Grupo" EntitySet="GrupoSet" />
       <End Role="Chat" EntitySet="ChatSet" />
     </AssociationSet>
-    <AssociationSet Name="GrupoTablero" Association="EntityWeCalendar.Store.GrupoTablero">
-      <End Role="Grupo" EntitySet="GrupoSet" />
-      <End Role="Tablero" EntitySet="TableroSet" />
-    </AssociationSet>
-    <AssociationSet Name="TableroNota" Association="EntityWeCalendar.Store.TableroNota">
-      <End Role="Tablero" EntitySet="TableroSet" />
-      <End Role="Nota" EntitySet="NotaSet" />
-    </AssociationSet>
     <AssociationSet Name="UsuarioNota" Association="EntityWeCalendar.Store.UsuarioNota">
       <End Role="Usuario" EntitySet="UsuarioSet" />
       <End Role="Nota" EntitySet="NotaSet" />
@@ -99,6 +91,14 @@
     <AssociationSet Name="EventoSuspendidoEvento" Association="EntityWeCalendar.Store.EventoSuspendidoEvento">
       <End Role="EventoSuspendido" EntitySet="EventoSuspendidoSet" />
       <End Role="Evento" EntitySet="EventoSet" />
+    </AssociationSet>
+    <AssociationSet Name="NotaTablero" Association="EntityWeCalendar.Store.NotaTablero">
+      <End Role="Nota" EntitySet="NotaSet" />
+      <End Role="Tablero" EntitySet="TableroSet" />
+    </AssociationSet>
+    <AssociationSet Name="TableroGrupo" Association="EntityWeCalendar.Store.TableroGrupo">
+      <End Role="Tablero" EntitySet="TableroSet" />
+      <End Role="Grupo" EntitySet="GrupoSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UsuarioSet">
@@ -163,7 +163,6 @@
     <Property Name="CreateDate" Type="datetime" Nullable="false" />
     <Property Name="Usuario_id" Type="int" Nullable="false" />
     <Property Name="Chat_Id" Type="int" Nullable="false" />
-    <Property Name="Tablero_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="NotaSet">
     <Key>
@@ -176,6 +175,8 @@
     <Property Name="CreateDate" Type="datetime" Nullable="false" />
     <Property Name="TableroId" Type="int" Nullable="false" />
     <Property Name="Usuario_id" Type="int" Nullable="false" />
+    <Property Name="TableroId1" Type="int" Nullable="false" />
+    <Property Name="Tablero_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="BaneoSet">
     <Key>
@@ -226,6 +227,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Grupo_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="PendientesSet">
     <Key>
@@ -288,30 +290,6 @@
       </Principal>
       <Dependent Role="Grupo">
         <PropertyRef Name="Chat_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="GrupoTablero">
-    <End Role="Grupo" Type="EntityWeCalendar.Store.GrupoSet" Multiplicity="*" />
-    <End Role="Tablero" Type="EntityWeCalendar.Store.TableroSet" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Tablero">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Grupo">
-        <PropertyRef Name="Tablero_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="TableroNota">
-    <End Role="Tablero" Type="EntityWeCalendar.Store.TableroSet" Multiplicity="1" />
-    <End Role="Nota" Type="EntityWeCalendar.Store.NotaSet" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Tablero">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Nota">
-        <PropertyRef Name="TableroId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -459,6 +437,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="NotaTablero">
+    <End Role="Nota" Type="EntityWeCalendar.Store.NotaSet" Multiplicity="*" />
+    <End Role="Tablero" Type="EntityWeCalendar.Store.TableroSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Tablero">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Nota">
+        <PropertyRef Name="Tablero_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TableroGrupo">
+    <End Role="Tablero" Type="EntityWeCalendar.Store.TableroSet" Multiplicity="*" />
+    <End Role="Grupo" Type="EntityWeCalendar.Store.GrupoSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Grupo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Tablero">
+        <PropertyRef Name="Grupo_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Calendario_Usuario">
     <End Role="Usuario" Type="EntityWeCalendar.Store.UsuarioSet" Multiplicity="1" />
     <End Role="Calendario" Type="EntityWeCalendar.Store.Calendario" Multiplicity="*" />
@@ -520,14 +522,6 @@
             <End Role="Grupo" EntitySet="GrupoSet" />
             <End Role="Chat" EntitySet="ChatSet" />
           </AssociationSet>
-          <AssociationSet Name="GrupoTablero" Association="EntityWeCalendar.GrupoTablero">
-            <End Role="Grupo" EntitySet="GrupoSet" />
-            <End Role="Tablero" EntitySet="TableroSet" />
-          </AssociationSet>
-          <AssociationSet Name="TableroNota" Association="EntityWeCalendar.TableroNota">
-            <End Role="Tablero" EntitySet="TableroSet" />
-            <End Role="Nota" EntitySet="NotaSet" />
-          </AssociationSet>
           <AssociationSet Name="UsuarioNota" Association="EntityWeCalendar.UsuarioNota">
             <End Role="Usuario" EntitySet="UsuarioSet" />
             <End Role="Nota" EntitySet="NotaSet" />
@@ -576,6 +570,14 @@
           <AssociationSet Name="EventoSuspendidoEvento" Association="EntityWeCalendar.EventoSuspendidoEvento">
             <End Role="EventoSuspendido" EntitySet="EventoSuspendidoSet" />
             <End Role="Evento" EntitySet="EventoSet" />
+          </AssociationSet>
+          <AssociationSet Name="NotaTablero" Association="EntityWeCalendar.NotaTablero">
+            <End Role="Nota" EntitySet="NotaSet" />
+            <End Role="Tablero" EntitySet="TableroSet" />
+          </AssociationSet>
+          <AssociationSet Name="TableroGrupo" Association="EntityWeCalendar.TableroGrupo">
+            <End Role="Tablero" EntitySet="TableroSet" />
+            <End Role="Grupo" EntitySet="GrupoSet" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Usuario">
@@ -657,10 +659,10 @@
           <Property Name="imagen" Type="String" Nullable="true" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="Chat" Relationship="EntityWeCalendar.GrupoChat" FromRole="Grupo" ToRole="Chat" />
-          <NavigationProperty Name="Tablero" Relationship="EntityWeCalendar.GrupoTablero" FromRole="Grupo" ToRole="Tablero" />
           <NavigationProperty Name="ListaGrupo" Relationship="EntityWeCalendar.GrupoListaGrupo" FromRole="Grupo" ToRole="ListaGrupo" />
           <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioGrupo" FromRole="Grupo" ToRole="Usuario" />
           <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tablero" Relationship="EntityWeCalendar.TableroGrupo" FromRole="Grupo" ToRole="Tablero" />
         </EntityType>
         <EntityType Name="Nota">
           <Key>
@@ -671,10 +673,9 @@
           <Property Name="texto" Type="String" Nullable="true" />
           <Property Name="fechaTope" Type="DateTime" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="Tablero" Relationship="EntityWeCalendar.TableroNota" FromRole="Nota" ToRole="Tablero" />
-          <Property Name="TableroId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Usuario" Relationship="EntityWeCalendar.UsuarioNota" FromRole="Nota" ToRole="Usuario" />
           <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tablero" Relationship="EntityWeCalendar.NotaTablero" FromRole="Nota" ToRole="Tablero" />
         </EntityType>
         <EntityType Name="Baneo">
           <Key>
@@ -733,8 +734,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="Grupo" Relationship="EntityWeCalendar.GrupoTablero" FromRole="Tablero" ToRole="Grupo" />
-          <NavigationProperty Name="Nota" Relationship="EntityWeCalendar.TableroNota" FromRole="Tablero" ToRole="Nota" />
+          <NavigationProperty Name="Nota" Relationship="EntityWeCalendar.NotaTablero" FromRole="Tablero" ToRole="Nota" />
+          <NavigationProperty Name="Grupo" Relationship="EntityWeCalendar.TableroGrupo" FromRole="Tablero" ToRole="Grupo" />
         </EntityType>
         <Association Name="CreaEvento">
           <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
@@ -779,22 +780,6 @@
         <Association Name="GrupoChat">
           <End Type="EntityWeCalendar.Grupo" Role="Grupo" Multiplicity="1" />
           <End Type="EntityWeCalendar.Chat" Role="Chat" Multiplicity="1" />
-        </Association>
-        <Association Name="GrupoTablero">
-          <End Type="EntityWeCalendar.Grupo" Role="Grupo" Multiplicity="1" />
-          <End Type="EntityWeCalendar.Tablero" Role="Tablero" Multiplicity="1" />
-        </Association>
-        <Association Name="TableroNota">
-          <End Type="EntityWeCalendar.Tablero" Role="Tablero" Multiplicity="1" />
-          <End Type="EntityWeCalendar.Nota" Role="Nota" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tablero">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Nota">
-              <PropertyRef Name="TableroId" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         <Association Name="UsuarioNota">
           <End Type="EntityWeCalendar.Usuario" Role="Usuario" Multiplicity="1" />
@@ -925,6 +910,14 @@
           <End Type="EntityWeCalendar.EventoSuspendido" Role="EventoSuspendido" Multiplicity="1" />
           <End Type="EntityWeCalendar.Evento" Role="Evento" Multiplicity="1" />
         </Association>
+        <Association Name="NotaTablero">
+          <End Type="EntityWeCalendar.Nota" Role="Nota" Multiplicity="*" />
+          <End Type="EntityWeCalendar.Tablero" Role="Tablero" Multiplicity="1" />
+        </Association>
+        <Association Name="TableroGrupo">
+          <End Type="EntityWeCalendar.Tablero" Role="Tablero" Multiplicity="1" />
+          <End Type="EntityWeCalendar.Grupo" Role="Grupo" Multiplicity="1" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1006,7 +999,6 @@
           <ScalarProperty Name="texto" ColumnName="texto" />
           <ScalarProperty Name="fechaTope" ColumnName="fechaTope" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="TableroId" ColumnName="TableroId" />
           <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1089,14 +1081,6 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="GrupoTablero" TypeName="EntityWeCalendar.GrupoTablero" StoreEntitySet="GrupoSet">
-      <EndProperty Name="Tablero">
-        <ScalarProperty Name="Id" ColumnName="Tablero_Id" />
-      </EndProperty>
-      <EndProperty Name="Grupo">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="BaneoUsuario" TypeName="EntityWeCalendar.BaneoUsuario" StoreEntitySet="BaneoSet">
       <EndProperty Name="Usuario">
         <ScalarProperty Name="id" ColumnName="Usuario_id" />
@@ -1118,6 +1102,22 @@
         <ScalarProperty Name="Id" ColumnName="Evento_Id" />
       </EndProperty>
       <EndProperty Name="EventoSuspendido">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="NotaTablero" TypeName="EntityWeCalendar.NotaTablero" StoreEntitySet="NotaSet">
+      <EndProperty Name="Tablero">
+        <ScalarProperty Name="Id" ColumnName="Tablero_Id" />
+      </EndProperty>
+      <EndProperty Name="Nota">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TableroGrupo" TypeName="EntityWeCalendar.TableroGrupo" StoreEntitySet="TableroSet">
+      <EndProperty Name="Grupo">
+        <ScalarProperty Name="Id" ColumnName="Grupo_Id" />
+      </EndProperty>
+      <EndProperty Name="Tablero">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

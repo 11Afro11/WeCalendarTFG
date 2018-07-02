@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
-//import axios from 'axios';
+import axios from 'axios';
 import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
 
 //import { Form, Text } from 'react-form';
@@ -52,6 +52,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
 
     }
 
+
     handleNombreChange = (event: any) => {
         this.setState({ nombreEvento: event.target.value });
     }
@@ -92,14 +93,72 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
             prioridad: this.state.prioridad,
             visibilidad: this.state.visibilidad,
         };
-        console.log(user.nombreEvento);
-        console.log(user.descripcion);
-        console.log(user.direccion);
-        console.log(user.fecha);
-        console.log(user.horaInicio);
-        console.log(user.horaFin);
-        console.log(user.prioridad);
-        console.log(user.visibilidad);
+
+        const parametro = {
+            nombre: user.nombreEvento,
+            desc: user.descripcion,
+            direccion: user.direccion,
+            horaInicio: user.horaInicio,
+            horafin: user.horaFin,
+            fecha: user.fecha,
+            prioridad: user.prioridad,
+            visibilidad: user.visibilidad,
+            idUsuarioDuenio: 1,
+        };
+
+        interface eventJson {
+            nombre: string,
+            desc: string,
+            direccion: string,
+            horaInicio: Date,
+            horafin: Date,
+            fecha: Date,
+            prioridad: number,
+            visibilidad: boolean,
+            idUsuarioDuenio: number,
+        };
+
+        var eventojson: eventJson = {
+            nombre: '',
+            desc: '',
+            direccion: '',
+            horaInicio: new Date,
+            horafin: new Date,
+            fecha: new Date,
+            prioridad: 0,
+            visibilidad: false,
+            idUsuarioDuenio: 1
+        }
+
+        eventojson.nombre = parametro.nombre;
+        eventojson.desc = parametro.desc;
+        eventojson.direccion = parametro.direccion;
+        eventojson.horaInicio = parametro.horaInicio;
+        eventojson.horafin = parametro.horafin;
+        eventojson.fecha = parametro.fecha;
+        eventojson.prioridad = parametro.prioridad;
+        eventojson.visibilidad = parametro.visibilidad;
+        eventojson.idUsuarioDuenio = parametro.idUsuarioDuenio;
+
+
+        var direccion = ApiUrlRepository.getApiUrl(ApiUrlRepository.setSpecificEvent);
+        var subida = JSON.stringify(eventojson);
+
+        axios.post('http://localhost:55555/api/events', subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
+
+        /*fetch('http://localhost:55555/api/events', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(eventojson)
+        }).catch(error => console.log(error));*/
+
+        console.log(JSON.stringify(eventojson));
 
     }
 
@@ -168,3 +227,15 @@ interface User {
     token: string;
 
 }
+
+interface eventJson {
+    nombre: string;
+    desc: string;
+    direccion: string;
+    horaInicio: Date;
+    horafin: Date;
+    fecha: Date;
+    prioridad: number;
+    visibilidad: boolean;
+    idUsuarioDuenio: number;
+};

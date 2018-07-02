@@ -160,9 +160,6 @@ namespace DalModel
                 entity.HasIndex(e => e.ChatId)
                     .HasName("IX_FK_GrupoChat");
 
-                entity.HasIndex(e => e.TableroId)
-                    .HasName("IX_FK_GrupoTablero");
-
                 entity.HasIndex(e => e.UsuarioId)
                     .HasName("IX_FK_UsuarioGrupo");
 
@@ -178,8 +175,6 @@ namespace DalModel
                     .IsRequired()
                     .HasColumnName("nombre");
 
-                entity.Property(e => e.TableroId).HasColumnName("Tablero_Id");
-
                 entity.Property(e => e.UsuarioId).HasColumnName("Usuario_id");
 
                 entity.HasOne(d => d.Chat)
@@ -187,12 +182,6 @@ namespace DalModel
                     .HasForeignKey(d => d.ChatId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_GrupoChat");
-
-                entity.HasOne(d => d.Tablero)
-                    .WithMany(p => p.GrupoSet)
-                    .HasForeignKey(d => d.TableroId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_GrupoTablero");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.GrupoSet)
@@ -258,7 +247,7 @@ namespace DalModel
             modelBuilder.Entity<NotaSet>(entity =>
             {
                 entity.HasIndex(e => e.TableroId)
-                    .HasName("IX_FK_TableroNota");
+                    .HasName("IX_FK_NotaTablero");
 
                 entity.HasIndex(e => e.UsuarioId)
                     .HasName("IX_FK_UsuarioNota");
@@ -268,6 +257,8 @@ namespace DalModel
                 entity.Property(e => e.FechaTope)
                     .HasColumnName("fechaTope")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.TableroId).HasColumnName("Tablero_Id");
 
                 entity.Property(e => e.Texto).HasColumnName("texto");
 
@@ -279,7 +270,7 @@ namespace DalModel
                     .WithMany(p => p.NotaSet)
                     .HasForeignKey(d => d.TableroId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TableroNota");
+                    .HasConstraintName("FK_NotaTablero");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.NotaSet)
@@ -315,7 +306,18 @@ namespace DalModel
 
             modelBuilder.Entity<TableroSet>(entity =>
             {
+                entity.HasIndex(e => e.GrupoId)
+                    .HasName("IX_FK_TableroGrupo");
+
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.GrupoId).HasColumnName("Grupo_Id");
+
+                entity.HasOne(d => d.Grupo)
+                    .WithMany(p => p.TableroSet)
+                    .HasForeignKey(d => d.GrupoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_TableroGrupo");
             });
 
             modelBuilder.Entity<UsuarioAmigoSet>(entity =>
