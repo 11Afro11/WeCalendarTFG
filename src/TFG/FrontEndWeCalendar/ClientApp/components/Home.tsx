@@ -72,6 +72,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         
 
     }
+    
 
     listaDias() {
         this.state.events.map(evento => {
@@ -184,6 +185,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 console.log(res);
                 console.log(res.data);
             });
+        window.location.reload()
     }
 
     //Metodo que se encargara de hacer el horario en funcu�n del d�a 
@@ -212,6 +214,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             devolucion.push((</tbody>) as any);
 
         }*/
+        eventoPorDia.sort(function (a, b) {
+            if (a.horaInicio < b.horaInicio) return 0;
+            else return 1;
+        });
 
         if (eventoPorDia.length > 0) {
             return <tbody>
@@ -327,7 +333,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         var fecha = new Date();
         fecha.setDate(this.state.daySet);
-        fecha.setMonth(6);
+        fecha.setMonth(7);
         fecha.setFullYear(2018);
 
         eventojson.nombre = this.state.nombreEvento;
@@ -398,9 +404,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
     public render() {
 
-        let contents = this.state.loadingEvent
-            ? <p><em>Loading...</em></p>
-            : <strong>{new Date(this.state.events[0].horaInicio.toString()).getDate()}</strong>;
+        
         let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
             : Home.renderTabla(this.state.events, this.state.invitaciones, this.state.daySet);
