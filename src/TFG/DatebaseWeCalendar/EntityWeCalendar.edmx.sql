@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/01/2018 19:50:40
+-- Date Created: 07/03/2018 12:00:44
 -- Generated from EDMX file: E:\GoogleDrive\Informática\4-CUARTO\TFG\WeCalendarTFG\src\TFG\DatebaseWeCalendar\EntityWeCalendar.edmx
 -- --------------------------------------------------
 
@@ -71,11 +71,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_EventoSuspendidoEvento]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[EventoSuspendidoSet] DROP CONSTRAINT [FK_EventoSuspendidoEvento];
 GO
-IF OBJECT_ID(N'[dbo].[FK_NotaTablero]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[NotaSet] DROP CONSTRAINT [FK_NotaTablero];
-GO
 IF OBJECT_ID(N'[dbo].[FK_TableroGrupo]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[TableroSet] DROP CONSTRAINT [FK_TableroGrupo];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TableroNota]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[NotaSet] DROP CONSTRAINT [FK_TableroNota];
 GO
 
 -- --------------------------------------------------
@@ -200,7 +200,7 @@ CREATE TABLE [dbo].[NotaSet] (
     [fechaTope] datetime  NOT NULL,
     [CreateDate] datetime  NOT NULL,
     [Usuario_id] int  NOT NULL,
-    [Tablero_Id] int  NOT NULL
+    [Tablero_Id] int  NULL
 );
 GO
 
@@ -626,21 +626,6 @@ ON [dbo].[EventoSuspendidoSet]
     ([Evento_Id]);
 GO
 
--- Creating foreign key on [Tablero_Id] in table 'NotaSet'
-ALTER TABLE [dbo].[NotaSet]
-ADD CONSTRAINT [FK_NotaTablero]
-    FOREIGN KEY ([Tablero_Id])
-    REFERENCES [dbo].[TableroSet]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_NotaTablero'
-CREATE INDEX [IX_FK_NotaTablero]
-ON [dbo].[NotaSet]
-    ([Tablero_Id]);
-GO
-
 -- Creating foreign key on [Grupo_Id] in table 'TableroSet'
 ALTER TABLE [dbo].[TableroSet]
 ADD CONSTRAINT [FK_TableroGrupo]
@@ -654,6 +639,21 @@ GO
 CREATE INDEX [IX_FK_TableroGrupo]
 ON [dbo].[TableroSet]
     ([Grupo_Id]);
+GO
+
+-- Creating foreign key on [Tablero_Id] in table 'NotaSet'
+ALTER TABLE [dbo].[NotaSet]
+ADD CONSTRAINT [FK_TableroNota]
+    FOREIGN KEY ([Tablero_Id])
+    REFERENCES [dbo].[TableroSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TableroNota'
+CREATE INDEX [IX_FK_TableroNota]
+ON [dbo].[NotaSet]
+    ([Tablero_Id]);
 GO
 
 -- --------------------------------------------------

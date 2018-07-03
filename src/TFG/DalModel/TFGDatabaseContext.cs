@@ -247,7 +247,7 @@ namespace DalModel
             modelBuilder.Entity<NotaSet>(entity =>
             {
                 entity.HasIndex(e => e.TableroId)
-                    .HasName("IX_FK_NotaTablero");
+                    .HasName("IX_FK_TableroNota");
 
                 entity.HasIndex(e => e.UsuarioId)
                     .HasName("IX_FK_UsuarioNota");
@@ -269,8 +269,7 @@ namespace DalModel
                 entity.HasOne(d => d.Tablero)
                     .WithMany(p => p.NotaSet)
                     .HasForeignKey(d => d.TableroId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_NotaTablero");
+                    .HasConstraintName("FK_TableroNota");
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.NotaSet)
