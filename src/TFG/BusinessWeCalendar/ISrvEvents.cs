@@ -14,5 +14,7 @@ namespace BusinessWeCalendar
         void AddEvento(JSONEvento evento);
 
         void RemoveEvento(int id);
+
+        void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFin);
     }
 }

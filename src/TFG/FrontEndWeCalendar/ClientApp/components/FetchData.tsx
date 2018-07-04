@@ -218,7 +218,53 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
 
             <button className="active" onClick={() => { this.delete(9) }}>Borrar</button>
 
+            <h1>Editar el evento con id = 11</h1>
+            <form onSubmit={this.handleEdit}>
+                <label>
+                    Fecha
+                    <input id="date" type="date" onChange={this.handleDateChange} />
+                </label>
+                <label>
+                    Hora de inicio
+                    <input id="horaInicio" type="time" name="hora" max="23:59" min="00:00" step="1" onChange={this.handleInicioChange} />
+                </label>
+                <label>
+                    Hora de fin
+                    <input id="horaInicio" type="time" name="hora" max="23:59" min="00:00" step="1" onChange={this.handleFinChange} />
+                </label>
+                <button type="submit">Add</button>
+            </form>
+
+
         </div>;
+    }
+
+    handleEdit = (event: any) => {
+        interface eventJson {
+            fecha: Date,
+            horaInicio: Date,
+            horafin: Date,
+        };
+
+        var eventojson: eventJson = {
+            fecha: new Date,
+            horaInicio: new Date,
+            horafin: new Date,
+        }
+
+        eventojson.horaInicio = this.state.horaInicio;
+        eventojson.horafin = this.state.horaFin;
+        eventojson.fecha = this.state.fecha;
+
+        var subida = JSON.stringify(eventojson);
+
+        axios.put('http://localhost:55555/api/events/11', subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
     }
 
 

@@ -19,4 +19,11 @@ namespace BackendWeCalendar.Controllers.JsonRecivers
         public bool visibilidad { get; set; }
         public int idUsuarioDuenio { get; set; }
     }
+
+    public class JSONEditEvent
+    {
+        public DateTime horaInicio { get; set; }
+        public DateTime horafin { get; set; }
+        public DateTime fecha { get; set; }
+    }
 }

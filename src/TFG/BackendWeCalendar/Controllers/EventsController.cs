@@ -62,12 +62,13 @@ namespace BackendWeCalendar.Controllers
         {
             _srvEventos.AddEvento(evento);
             return true;
-        }
+        }       
 
         // PUT: api/Events/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] JSONEditEvent value)
         {
+            _srvEventos.EditEvento(id, value.fecha, value.horaInicio, value.horafin);
         }
 
         // DELETE: api/ApiWithActions/5

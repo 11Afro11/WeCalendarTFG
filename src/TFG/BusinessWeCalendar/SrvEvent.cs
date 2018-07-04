@@ -44,5 +44,11 @@ namespace BusinessWeCalendar
         {
             _dalEvents.RemoveEvento(id);
         }
+
+        public void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFin)
+        {
+            _dalEvents.EditEvento(id, fecha, horaInicio, horaFin);
+            //throw new NotImplementedException();
+        }
     }
 }

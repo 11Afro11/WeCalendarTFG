@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DalModel;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -57,6 +58,19 @@ namespace DalWeCalendar
                 return listaEventos;
             }
                 
+        }
+
+        public void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFinal)
+        {
+            using(var db = new TFGDatabaseContext())
+            {
+                var evento = (from eventS in db.EventoSet where eventS.Id == id select eventS).FirstOrDefault();
+                evento.Fecha = fecha;
+                evento.HoraInicio = horaInicio;
+                evento.HoraFin = horaFinal;
+                db.SaveChanges();
+            }
+            //throw new System.NotImplementedException();
         }
     }
 }

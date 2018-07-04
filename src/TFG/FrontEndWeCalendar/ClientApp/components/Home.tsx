@@ -22,6 +22,8 @@ interface DaySet {
     prioridad: number;
     visibilidad: boolean;
     showForm: boolean;
+    eventoEditandose: number;
+    showEdicion: boolean;
 }
 
 
@@ -55,7 +57,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             horaFin: new Date,
             prioridad: 0,
             visibilidad: false,
-            showForm : false,
+            showForm: false,
+            eventoEditandose: 0,
+            showEdicion: false,
         };
         sessionStorage.setItem("token", "weeeeee");
 
@@ -72,6 +76,11 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         
 
     }
+    /*
+    componentDidUpdate() {
+        this.loadEvents();
+        this.loadInvitaciones();
+    }*/
     
 
     listaDias() {
@@ -188,8 +197,112 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         window.location.reload()
     }
 
+    mostrarEdicion(id: number, _fecha : Date, _horaInicio : Date, _horaFin : Date) {
+        if (this.state.showEdicion) {
+            this.setState({ showEdicion: false });
+        }
+        else {
+            this.setState({ fecha: _fecha });
+            this.setState({ horaInicio: _horaInicio });
+            this.setState({ horaFin: _horaFin });
+            this.setState({ eventoEditandose: id });
+            this.setState({ showEdicion: true });
+        }
+    }
+
+    handleEdit = (event: any) => {
+        interface eventJson {
+            fecha: Date,
+            horaInicio: Date,
+            horafin: Date,
+        };
+
+        var eventojson: eventJson = {
+            fecha: new Date,
+            horaInicio: new Date,
+            horafin: new Date,
+        }
+
+        eventojson.horaInicio = this.state.horaInicio;
+        eventojson.horafin = this.state.horaFin;
+        eventojson.fecha = this.state.fecha;
+
+        
+
+        var subida = JSON.stringify(eventojson);
+
+        axios.put('http://localhost:55555/api/events/' + this.state.eventoEditandose, subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+    }
+
+    formularioEdicion() {
+        var texto = "2018-07-02";
+        var fecha = new Date(this.state.fecha.toString());
+        var year = fecha.getFullYear();
+        //console.log(year);
+        var mes = fecha.getUTCMonth();
+        //console.log(mes);
+        var day = fecha.getUTCDate();
+        var datedevolucion = "";
+        datedevolucion = datedevolucion + year + "-";
+        if (mes < 10)
+            datedevolucion = datedevolucion + 0;
+        datedevolucion += mes + "-";
+        if (day < 10)
+            datedevolucion += 0;
+        datedevolucion += day;
+
+        var horaInicio = new Date(this.state.horaInicio.toString());
+        var horainiciodevolucion = "";
+        var hora = horaInicio.getHours();
+        var minutos = horaInicio.getMinutes();
+        if (hora < 10)
+            horainiciodevolucion += 0;
+        horainiciodevolucion += hora + ":";
+        if (minutos < 10)
+            horainiciodevolucion += 0;
+        horainiciodevolucion += minutos;
+
+        var horaFin = new Date(this.state.horaFin.toString());
+        var horafindevolucion = "";
+        var hora = horaFin.getHours();
+        var minutos = horaFin.getMinutes();
+        if (hora < 10)
+            horafindevolucion += 0;
+        horafindevolucion += hora + ":";
+        if (minutos < 10)
+            horafindevolucion += 0;
+        horafindevolucion += minutos;
+
+        console.log(datedevolucion);
+        console.log(this.state.horaInicio.toString());
+        //console.log(day);
+        //console.log(fecha);
+        //console.log(fecha.toLocaleDateString())
+        return <form onSubmit={this.handleEdit}>
+            <label>
+                Fecha
+                    <input id="date" type="date" /*value={datedevolucion}*/ onChange={this.handleDateChange} />
+            </label>
+            <label>
+                Hora de inicio
+                    <input id="horaInicio" /*value={horainiciodevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" step="1" onChange={this.handleInicioChange} />
+            </label>
+            <label>
+                Hora de fin
+                    <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" step="1" onChange={this.handleFinChange} />
+            </label>
+            <button type="submit">Editar</button>
+        </form>;
+    }
+
     //Metodo que se encargara de hacer el horario en funcu�n del d�a 
-    private static renderTabla(usuarios: Evento[], invitacion: Evento[], dia: number) {
+    renderTabla(usuarios: Evento[], invitacion: Evento[], dia: number) {
 
         var eventoPorDia = new Array<Evento>();
         usuarios.map(evento => {
@@ -218,8 +331,28 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             if (a.horaInicio < b.horaInicio) return 0;
             else return 1;
         });
+        let devolucion = [];
 
         if (eventoPorDia.length > 0) {
+            for (let i: number = 0; i < eventoPorDia.length; i++) {
+                devolucion.push((<tr>
+                    <th scope="row">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
+                        {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
+                        {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
+                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th>
+                    <td>{eventoPorDia[i].nombre}</td>
+                    <td>{eventoPorDia[i].descripcion}</td>
+                    <td>{eventoPorDia[i].direccion}</td>
+                    {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Home.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
+                </tr>) as any)
+                //devolucion.push((this.formularioEdicion()) as any)
+            }
+            //devolucion.push((<tr></tr>)as any)
+            return devolucion;
+        }
+
+        /*if (eventoPorDia.length > 0) {
             return <tbody>
                 {eventoPorDia.map(users =>
                     <tr>
@@ -230,16 +363,20 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                         <td>{users.nombre}</td>
                         <td>{users.descripcion}</td>
                         <td>{users.direccion}</td>
-                        {(users.usuarioId == 1) ? < td > <button className="active" onClick={() => { Home.eliminar(users.id); }}>Borrar</button></td> : null}
+                        {(users.usuarioId == 1) ? < td > <button className="active" onClick={() => { Home.eliminar(users.id) }}>Borrar</button></td> : null}
                     </tr>
+                    
                 )}
+                {this.formularioEdicion()}
             </tbody>;
-        } else {
+        }*/ else {
             return <tbody>
                 <tr>No hay eventos hoy</tr>
             </tbody>;
         }
     }
+
+
 
     /*Seccion de control de cambios dentro del formulario*/
 
@@ -347,7 +484,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         var subida = JSON.stringify(eventojson);
 
-        if (this.validarHoras) {
+        //if (this.validarHoras) {
             axios.post('http://localhost:55555/api/events', subida,
                 {
                     headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
@@ -357,10 +494,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 })
 
             console.log(JSON.stringify(eventojson));
-        }
-        else {
-            console.log("no se han podido insertar las horas");
-        }
+        //}
+        //else {
+            //console.log("no se han podido insertar las horas");
+        //}
     }
 
     /*Creación del formulario*/
@@ -407,7 +544,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         
         let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
-            : Home.renderTabla(this.state.events, this.state.invitaciones, this.state.daySet);
+            : this.renderTabla(this.state.events, this.state.invitaciones, this.state.daySet);
 
         let calendar = (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
@@ -460,7 +597,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     </thead>
                     {eventos}
                 </table>
+                {this.state.showEdicion ? this.formularioEdicion() : null}
+
                 <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
+                
                 {this.state.showForm ? this.formularioInsertarEvento() : null}
 
             </div>
