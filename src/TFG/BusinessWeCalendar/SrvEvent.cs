@@ -24,6 +24,11 @@ namespace BusinessWeCalendar
             return _dalEvents.GetEventosInvitado(id);
         }
 
+        public EventoSet[] GetListaPendientes(int id)
+        {
+            return _dalEvents.GetEventosPendientes(id);
+        }
+
         public void AddEvento(JSONEvento evento)
         {
             EventoSet nuevoEvento = new EventoSet();
@@ -50,5 +55,13 @@ namespace BusinessWeCalendar
             _dalEvents.EditEvento(id, fecha, horaInicio, horaFin);
             //throw new NotImplementedException();
         }
+
+        public void CompartirEvento(int idEvento, int idUsuario)
+        {
+            _dalEvents.CompartirEvento(idEvento, idUsuario);
+            //throw new NotImplementedException();
+        }
+
+        
     }
 }

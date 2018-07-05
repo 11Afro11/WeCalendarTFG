@@ -3,6 +3,7 @@
 export module ApiUrlRepository {
     export var getSpecificUser = "getSpecificUser";
     export var getSpecificEvent = "getSpecificEvent";
+    export var getEventosPendientes = "getEventosPendientes";
     export var setSpecificEvent = "setSpecificEvent";
     export var getEventoInvitado = "getEventoInvitado";
     export var deleteSpecificEvent = "deleteSpecificEvent";
@@ -16,6 +17,7 @@ export module ApiUrlRepository {
 
     urls[getSpecificUser] = baseUrl + "/users";
     urls[getSpecificEvent] = baseUrl + "/events";
+    urls[getEventosPendientes] = baseUrl + "pendientes";
     urls[setSpecificEvent] = baseUrl + "/events";
     urls[getEventoInvitado] = baseUrl + "/events/invitacion";
     urls[deleteSpecificEvent] = baseUrl + "/events";

@@ -9,11 +9,15 @@ namespace DalWeCalendar
 
         EventoSet[] GetEventosInvitado(int id);
 
+        EventoSet[] GetEventosPendientes(int id);
+
         void AddEvento(EventoSet evento);
 
         void RemoveEvento(int id);
 
         void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFinal);
+
+        void CompartirEvento(int idEvento, int idUsuario);
         
     }   
 

@@ -158,6 +158,18 @@ body {
             color: white !important
         }
 
+        .days li .pendiente{
+            padding: 5px;
+            background: yellow;
+            color: white !important
+        }
+
+        .days li .error{
+            padding: 5px;
+            background: red;
+            color: white !important
+        }
+
 button {
     background: transparent;
     border: none !important;

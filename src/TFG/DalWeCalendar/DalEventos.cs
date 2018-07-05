@@ -60,6 +60,22 @@ namespace DalWeCalendar
                 
         }
 
+        public EventoSet[] GetEventosPendientes(int id)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var identificadores = from ides in db.PendientesSet where ides.UsuarioId == id select ides.EventoId;
+                var pendientes = from pendiente in db.EventoSet where identificadores.Contains(pendiente.Id) select pendiente;
+                List<EventoSet> listaPendientes = new List<EventoSet>();
+                foreach(EventoSet ev in pendientes)
+                {
+                    listaPendientes.Add(ev);
+                }
+                EventoSet[] listaEventos = listaPendientes.ToArray();
+                return listaEventos;
+            }
+        }
+
         public void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFinal)
         {
             using(var db = new TFGDatabaseContext())
@@ -71,6 +87,18 @@ namespace DalWeCalendar
                 db.SaveChanges();
             }
             //throw new System.NotImplementedException();
+        }
+
+        public void CompartirEvento(int idEvento, int idUsuario)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var nuevoPendiente = new PendientesSet();
+                nuevoPendiente.EventoId = idEvento;
+                nuevoPendiente.UsuarioId = idUsuario;
+                db.PendientesSet.Add(nuevoPendiente);
+                db.SaveChanges();
+            }
         }
     }
 }

@@ -55,6 +55,14 @@ namespace BackendWeCalendar.Controllers
             };*/
         }
 
+        [HttpGet("pendientes/{id}", Name = "GetPendientes")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<EventoSet> GetPendientes(int id)
+        {
+            var retult = _srvEventos.GetListaPendientes(id);
+            return retult;
+        }
+
         // POST: api/Events
         [HttpPost]
         [EnableCors("AllowSpecificOrigin")]
@@ -62,7 +70,15 @@ namespace BackendWeCalendar.Controllers
         {
             _srvEventos.AddEvento(evento);
             return true;
-        }       
+        }
+        
+        [HttpPost("share", Name ="Compartir")]
+        [EnableCors("AllowSpecificOrigin")]
+        public bool Post([FromBody] JSONPendiente pendiente)
+        {
+            _srvEventos.CompartirEvento(pendiente.idEvento, pendiente.idUsuario);
+            return true;
+        }
 
         // PUT: api/Events/5
         [HttpPut("{id}")]

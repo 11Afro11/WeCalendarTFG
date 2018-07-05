@@ -26,4 +26,10 @@ namespace BackendWeCalendar.Controllers.JsonRecivers
         public DateTime horafin { get; set; }
         public DateTime fecha { get; set; }
     }
+
+    public class JSONPendiente
+    {
+        public int idEvento { get; set; }
+        public int idUsuario { get; set; }
+    }
 }

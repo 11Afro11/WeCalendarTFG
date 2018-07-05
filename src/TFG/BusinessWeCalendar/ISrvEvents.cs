@@ -11,10 +11,14 @@ namespace BusinessWeCalendar
 
         EventoSet[] GetEventosAsistencia(int id);
 
+        EventoSet[] GetListaPendientes(int id);
+
         void AddEvento(JSONEvento evento);
 
         void RemoveEvento(int id);
 
         void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFin);
+
+        void CompartirEvento(int idEvento, int idUsuario);
     }
 }
