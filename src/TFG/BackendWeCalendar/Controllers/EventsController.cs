@@ -82,6 +82,7 @@ namespace BackendWeCalendar.Controllers
 
         // PUT: api/Events/5
         [HttpPut("{id}")]
+        [EnableCors("AllowSpecificOrigin")]
         public void Put(int id, [FromBody] JSONEditEvent value)
         {
             _srvEventos.EditEvento(id, value.fecha, value.horaInicio, value.horafin);
@@ -89,9 +90,18 @@ namespace BackendWeCalendar.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
+        [EnableCors("AllowSpecificOrigin")]
         public void Delete(int id)
         {
             _srvEventos.RemoveEvento(id);
         }
+        [HttpDelete("anularInvitacion", Name = "AnularInvitacion")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void Delete(int idUsuario, int idEvento)
+        {
+            _srvEventos.AnularInvitacion(idUsuario, idEvento);
+        }
+
+
     }
 }

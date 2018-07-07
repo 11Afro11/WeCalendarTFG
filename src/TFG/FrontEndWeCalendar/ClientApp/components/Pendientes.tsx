@@ -316,10 +316,33 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         </form>;
     }
 
+    comprobarEvento(evento: Evento, eventosPropios: Array<Evento>) {
+        var devolucion = true;
+        console.log(eventosPropios.length);
+        eventosPropios.map(eventoPorDia => {
+            if (evento.horaInicio >= eventoPorDia.horaInicio && evento.horaInicio <= eventoPorDia.horaFin) {
+                console.log("no se puede");
+                devolucion = false;
+            }
+
+            else if (evento.horaFin >= eventoPorDia.horaInicio || evento.horaFin <= eventoPorDia.horaFin) {
+                devolucion = false;
+            }
+                
+            console.log(eventoPorDia.horaInicio);
+            console.log(evento.horaInicio);
+
+        });
+        return devolucion;
+    }
+
     //Metodo que se encargara de hacer el horario en funcu�n del d�a 
-    renderTabla(usuarios: Evento[], invitacion: Evento[], dia: number) {
+    renderTabla(usuarios: Evento[], invitacion: Evento[], pendientes: Evento[], dia: number) {
 
         var eventoPorDia = new Array<Evento>();
+        var eventosValidos = new Array<number>();
+        var eventosNoValidos = new Array<number>();
+        //añadimos los eventos que tiene nuestro usuario
         usuarios.map(evento => {
             var day = new Date(evento.fecha.toString()).getDate();
             if (dia == day) {
@@ -327,12 +350,31 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
             }
         });
 
+        //Añadimos los eventos a los cuales nos han invitado y vamos a asistir
         invitacion.map(evento => {
             var day = new Date(evento.fecha.toString()).getDate();
             if (dia == day) {
                 eventoPorDia.push(evento);
             }
-        });/*
+        });
+
+        pendientes.map(evento => {
+            if (this.comprobarEvento(evento, eventoPorDia))
+                eventosValidos.push(evento.id);
+            else
+                eventosNoValidos.push(evento.id);
+        });
+
+        //Añadimos los eventos a los que hemos sido invitados
+        pendientes.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            if (dia == day) {
+                eventoPorDia.push(evento);
+            }
+        });
+
+
+        /*
         let devolucion = [];
         if (eventoPorDia.length > 0) {
             devolucion.push((<tbody>) as any);
@@ -351,15 +393,31 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         if (eventoPorDia.length > 0) {
             for (let i: number = 0; i < eventoPorDia.length; i++) {
                 devolucion.push((<tr>
-                    <th scope="row">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ?
+                        <th scope="row" className="pendiente">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
                         {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
                         {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th>
+                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th> : null}
+
+                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ?
+                        <th scope="row" className="Error">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
+                        {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
+                        {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
+                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th> : null}      
+                    
+                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) == -1 && eventosValidos.indexOf(eventoPorDia[i].id) == -1) ?
+                        <th scope="row">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
+                        {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
+                        {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
+                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th> : null}
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Pendientes.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td>Este Evento SI se puede insertar</td> : null}
+                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td>Este Evento No se puede insertar</td> : null}
+
                 </tr>) as any)
                 //devolucion.push((this.formularioEdicion()) as any)
             }
@@ -559,7 +617,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
         let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingPendientes)
             ? <p><em>Loading...</em></p>
-            : this.renderTabla(this.state.events, this.state.invitaciones, this.state.daySet);
+            : this.renderTabla(this.state.events, this.state.invitaciones, this.state.pendientes, this.state.daySet);
 
         let calendar = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingPendientes)
             ? <p><em>Loading...</em></p>
@@ -614,9 +672,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 </table>
                 {this.state.showEdicion ? this.formularioEdicion() : null}
 
-                <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
                 
-                {this.state.showForm ? this.formularioInsertarEvento() : null}
 
             </div>
 

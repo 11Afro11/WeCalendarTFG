@@ -43,6 +43,16 @@ namespace DalWeCalendar
             }
         }
 
+        public void AnularInvitacion(int idUsuario, int idEvento)
+        {
+            using(var db = new TFGDatabaseContext())
+            {
+                var delete = (from evento in db.UsuarioEvento1 where evento.Evento1Id == idEvento && evento.Usuario1Id == idUsuario select evento).FirstOrDefault();
+                db.UsuarioEvento1.Remove(delete);
+                db.SaveChanges();
+            }
+        }
+
         public EventoSet[] GetEventosInvitado(int id)
         {
             using (var db = new TFGDatabaseContext()) {

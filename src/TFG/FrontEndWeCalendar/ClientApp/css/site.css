@@ -196,6 +196,16 @@ th {
     color: white;
 }
 
+.pendiente{
+    background-color: yellow;
+    color: white;
+}
+
+.Error{
+    background-color: red;
+    color: white;
+}
+
 /*Chat style*/
 .container {
     border: 2px solid #dedede;

@@ -17,6 +17,8 @@ namespace BusinessWeCalendar
 
         void RemoveEvento(int id);
 
+        void AnularInvitacion(int idUsuario, int idEvento);
+
         void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFin);
 
         void CompartirEvento(int idEvento, int idUsuario);

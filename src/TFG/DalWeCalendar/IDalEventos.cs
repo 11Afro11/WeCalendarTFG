@@ -15,6 +15,8 @@ namespace DalWeCalendar
 
         void RemoveEvento(int id);
 
+        void AnularInvitacion(int idUsuario, int idEvento);
+
         void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFinal);
 
         void CompartirEvento(int idEvento, int idUsuario);

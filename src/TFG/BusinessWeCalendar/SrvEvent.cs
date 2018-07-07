@@ -62,6 +62,9 @@ namespace BusinessWeCalendar
             //throw new NotImplementedException();
         }
 
-        
+        public void AnularInvitacion(int idUsuario, int idEvento)
+        {
+            _dalEvents.AnularInvitacion(idUsuario, idEvento);
+        }
     }
 }
