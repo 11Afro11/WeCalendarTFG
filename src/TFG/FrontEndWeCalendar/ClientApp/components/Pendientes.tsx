@@ -320,17 +320,23 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         var devolucion = true;
         console.log(eventosPropios.length);
         eventosPropios.map(eventoPorDia => {
-            if (evento.horaInicio >= eventoPorDia.horaInicio && evento.horaInicio <= eventoPorDia.horaFin) {
-                console.log("no se puede");
-                devolucion = false;
-            }
+            var horaInicioComprobar = new Date(evento.horaInicio.toString()).getHours();
+            var horaFinComprobar = new Date(evento.horaFin.toString()).getHours();
+            var horaInicio = new Date(eventoPorDia.horaInicio.toString()).getHours();
+            var horaFin = new Date(eventoPorDia.horaFin.toString()).getHours();
+            console.log(horaInicioComprobar);
+            console.log(horaFinComprobar);
+            console.log(horaInicio);
+            console.log(horaFin);
 
-            else if (evento.horaFin >= eventoPorDia.horaInicio || evento.horaFin <= eventoPorDia.horaFin) {
+            if (horaInicioComprobar >= horaInicio && horaInicioComprobar <= horaFin) {
                 devolucion = false;
+                console.log("no se puede insertar");
             }
-                
-            console.log(eventoPorDia.horaInicio);
-            console.log(evento.horaInicio);
+            if (horaFinComprobar >= horaInicio && horaFinComprobar <= horaFin) {
+                devolucion = false;
+                console.log("Entra en el segundo if no se puede");
+            }
 
         });
         return devolucion;
@@ -415,8 +421,9 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                     <td>{eventoPorDia[i].direccion}</td>
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Pendientes.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td>Este Evento SI se puede insertar</td> : null}
-                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td>Este Evento No se puede insertar</td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { }}>Ignorar</button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { }}>Aceptar</button></td> : null}
+                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { }}>Ignorar</button></td> : null}
 
                 </tr>) as any)
                 //devolucion.push((this.formularioEdicion()) as any)

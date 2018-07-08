@@ -170,7 +170,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 else
                     day.push((<li><button className="active" onClick={() => { this.setDay(i) }}>{i}</button></li>) as any);
             }
-            else if (listaDias.indexOf(i) != -1) {
+            else if (listaDias.indexOf(i) != -1 && i > DayToday) {
                 if (i < 10)
                     day.push((<li><button className="event" onClick={() => { this.setDay(i) }}>0{i}</button></li>) as any);
                 else

@@ -160,7 +160,7 @@ body {
 
         .days li .pendiente{
             padding: 5px;
-            background: yellow;
+            background: orangered;
             color: white !important
         }
 
@@ -197,7 +197,7 @@ th {
 }
 
 .pendiente{
-    background-color: yellow;
+    background-color: orangered;
     color: white;
 }
 
