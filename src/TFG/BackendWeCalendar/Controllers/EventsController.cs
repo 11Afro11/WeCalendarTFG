@@ -95,11 +95,18 @@ namespace BackendWeCalendar.Controllers
         {
             _srvEventos.RemoveEvento(id);
         }
-        [HttpDelete("anularInvitacion", Name = "AnularInvitacion")]
+        [HttpDelete("anularInvitacion/{idUsuario}/{idEvento}", Name = "AnularInvitacion")]
         [EnableCors("AllowSpecificOrigin")]
         public void Delete(int idUsuario, int idEvento)
         {
             _srvEventos.AnularInvitacion(idUsuario, idEvento);
+        }
+
+        [HttpPut("aceptarInvitacion/{idUsuario)/{idEvento}", Name = "AceptarInvitacion")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void Put(int idUsuario, int idEvento)
+        {
+            _srvEventos.AceptarInvitacion(idUsuario, idEvento);
         }
 
 

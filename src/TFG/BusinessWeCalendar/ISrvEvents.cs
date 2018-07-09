@@ -22,5 +22,7 @@ namespace BusinessWeCalendar
         void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFin);
 
         void CompartirEvento(int idEvento, int idUsuario);
+
+        void AceptarInvitacion(int idUsuario, int idEvento);
     }
 }

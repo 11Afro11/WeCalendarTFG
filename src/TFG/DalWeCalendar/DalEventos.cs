@@ -47,8 +47,8 @@ namespace DalWeCalendar
         {
             using(var db = new TFGDatabaseContext())
             {
-                var delete = (from evento in db.UsuarioEvento1 where evento.Evento1Id == idEvento && evento.Usuario1Id == idUsuario select evento).FirstOrDefault();
-                db.UsuarioEvento1.Remove(delete);
+                var delete = (from evento in db.PendientesSet where evento.EventoId == idEvento && evento.UsuarioId == idUsuario select evento).FirstOrDefault();
+                db.PendientesSet.Remove(delete);
                 db.SaveChanges();
             }
         }
@@ -107,6 +107,18 @@ namespace DalWeCalendar
                 nuevoPendiente.EventoId = idEvento;
                 nuevoPendiente.UsuarioId = idUsuario;
                 db.PendientesSet.Add(nuevoPendiente);
+                db.SaveChanges();
+            }
+        }
+
+        public void AceptarEvento(int idEvento, int idUsuario)
+        {
+            using(var db = new TFGDatabaseContext())
+            {
+                var nuevoEvento = new UsuarioEvento1();
+                nuevoEvento.Evento1Id = idEvento;
+                nuevoEvento.Usuario1Id = idUsuario;
+                db.UsuarioEvento1.Add(nuevoEvento);
                 db.SaveChanges();
             }
         }

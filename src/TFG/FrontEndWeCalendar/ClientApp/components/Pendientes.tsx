@@ -421,9 +421,9 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                     <td>{eventoPorDia[i].direccion}</td>
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Pendientes.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { }}>Ignorar</button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
                     {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { }}>Aceptar</button></td> : null}
-                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { }}>Ignorar</button></td> : null}
+                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
 
                 </tr>) as any)
                 //devolucion.push((this.formularioEdicion()) as any)
@@ -454,6 +454,15 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 <tr>No hay eventos hoy</tr>
             </tbody>;
         }
+    }
+
+    eliminarInvitacion(idUsuario: number, idEvento: number) {
+        axios.delete('http://localhost:55555/api/events/anularInvitacion/' + idUsuario +'/'+idEvento)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+        window.location.reload()
     }
 
 

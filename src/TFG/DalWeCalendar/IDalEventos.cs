@@ -20,6 +20,8 @@ namespace DalWeCalendar
         void EditEvento(int id, DateTime fecha, DateTime horaInicio, DateTime horaFinal);
 
         void CompartirEvento(int idEvento, int idUsuario);
+
+        void AceptarEvento(int idEvento, int idUsuario);
         
     }   
 
