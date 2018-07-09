@@ -24,5 +24,7 @@ namespace BusinessWeCalendar
         void CompartirEvento(int idEvento, int idUsuario);
 
         void AceptarInvitacion(int idUsuario, int idEvento);
+
+        void CancelarEvento(int idUsuario, int idEvento);
     }
 }

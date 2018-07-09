@@ -72,5 +72,10 @@ namespace BusinessWeCalendar
             _dalEvents.AceptarEvento(idEvento, idUsuario);
             _dalEvents.AnularInvitacion(idUsuario, idEvento);
         }
+
+        public void CancelarEvento(int idUsuario, int idEvento)
+        {
+            _dalEvents.CancelarEvento(idEvento, idUsuario);
+        }
     }
 }

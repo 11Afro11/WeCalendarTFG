@@ -41,9 +41,7 @@ export class NavMenu extends React.Component<{}, Show> {
             pendiente.push((
                 <li>
                     <NavLink to={'/pendientes'} activeClassName='active'>
-                        <span className='glyphicon glyphicon-education'></span> Pendientes {this.state.pendientes.length
-
-                        }
+                        <span className='glyphicon glyphicon-bell'></span> Pendientes {this.state.pendientes.length}
                             </NavLink>
                 </li>) as any);
             return pendiente;
@@ -69,7 +67,7 @@ export class NavMenu extends React.Component<{}, Show> {
                         <span className='icon-bar'></span>
                         <span className='icon-bar'></span>
                     </button>
-                    <Link className='navbar-brand' to={ '/' }>FrontEndWeCalendar</Link>
+                    <Link className='navbar-brand' to={ '/' }>We Calendar</Link>
                 </div>
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>

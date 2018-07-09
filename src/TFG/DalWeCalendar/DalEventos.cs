@@ -122,5 +122,15 @@ namespace DalWeCalendar
                 db.SaveChanges();
             }
         }
+
+        public void CancelarEvento(int idEvento, int idUsuario)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var deleted = (from asistencia in db.UsuarioEvento1 where asistencia.Evento1Id == idEvento && asistencia.Usuario1Id == idUsuario select asistencia).FirstOrDefault();
+                db.UsuarioEvento1.Remove(deleted);
+                db.SaveChanges();
+            }
+        }
     }
 }

@@ -18,9 +18,12 @@ interface DaySet {
     direccion: string;
     fecha: Date;
     horaInicio: Date;
+    validHoraInicio: boolean;
     horaFin: Date;
+    validHoraFin: boolean;
     prioridad: number;
     visibilidad: boolean;
+    validFrom: boolean;
     showForm: boolean;
     eventoEditandose: number;
     showEdicion: boolean;
@@ -54,9 +57,12 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             direccion: '',
             fecha: new Date,
             horaInicio: new Date,
+            validHoraInicio : true,
             horaFin: new Date,
+            validHoraFin : true,
             prioridad: 0,
             visibilidad: false,
+            validFrom : true,
             showForm: false,
             eventoEditandose: 0,
             showEdicion: false,
@@ -245,9 +251,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         var fecha = new Date(this.state.fecha.toString());
         var year = fecha.getFullYear();
         //console.log(year);
-        var mes = fecha.getUTCMonth();
+        var mes = fecha.getMonth();
         //console.log(mes);
-        var day = fecha.getUTCDate();
+        var day = fecha.getDate();
         var datedevolucion = "";
         datedevolucion = datedevolucion + year + "-";
         if (mes < 10)
@@ -278,7 +284,17 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         if (minutos < 10)
             horafindevolucion += 0;
         horafindevolucion += minutos;
-
+        /*
+        var nuevafecha = new Date(datedevolucion);
+        var nuevahorainicio = new Date(horafindevolucion);
+        var nuevahorafin = new Date(horafindevolucion);
+        this.setState({ fecha: nuevafecha });
+        this.setState({ horaInicio: nuevahorainicio });
+        this.setState({ horaFin: nuevahorafin });
+        console.log(this.state.fecha);
+        console.log(this.state.horaInicio);
+        console.log(this.state.horaFin);
+        */
         console.log(datedevolucion);
         console.log(this.state.horaInicio.toString());
         //console.log(day);
@@ -291,11 +307,11 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             </label>
             <label>
                 Hora de inicio
-                    <input id="horaInicio" /*value={horainiciodevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" step="1" onChange={this.handleInicioChange} />
+                    <input id="horaInicio" /*value={horainiciodevolucion}*/ type="time" name="hora" max="23:59" min="00:00" onChange={this.handleInicioChange} />
             </label>
             <label>
                 Hora de fin
-                    <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" step="1" onChange={this.handleFinChange} />
+                    <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59" min="00:00" onChange={this.handleFinChange} />
             </label>
             <button type="submit">Editar</button>
         </form>;
@@ -335,16 +351,31 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         if (eventoPorDia.length > 0) {
             for (let i: number = 0; i < eventoPorDia.length; i++) {
+                var horaInicio = new Date(eventoPorDia[i].horaInicio.toString()).getHours();
+                var minutosInicio = new Date(eventoPorDia[i].horaInicio.toString()).getMinutes();
+                var horafin = new Date(eventoPorDia[i].horaFin.toString()).getHours();
+                var minutosfin = new Date(eventoPorDia[i].horaFin.toString()).getMinutes();
+                var hora = "";
+                if (horaInicio < 10)
+                    hora += 0;
+                hora += horaInicio+":";
+                if (minutosInicio < 10)
+                    hora += 0;
+                hora += minutosInicio + "-";
+                if (horafin < 10)
+                    hora += 0;
+                hora += horafin + ":";
+                if (minutosfin < 10)
+                    hora += 0;
+                hora += minutosfin;
                 devolucion.push((<tr>
-                    <th scope="row">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
-                        {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th>
+                    <th scope="row">{hora}</th>
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Home.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId != 1) ? < td > <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
                 </tr>) as any)
                 //devolucion.push((this.formularioEdicion()) as any)
             }
@@ -376,6 +407,15 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         }
     }
 
+    /*Cancelar la asistencia a un evento*/
+    cancelarAsistencia(idUsuario: number, idEvento: number) {
+        axios.delete('http://localhost:55555/api/events/cancelarEvento/' + idUsuario + '/' + idEvento)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+        window.location.reload();
+    }
 
 
     /*Seccion de control de cambios dentro del formulario*/
@@ -395,6 +435,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
     handleInicioChange = (event: any) => {
         this.setState({ horaInicio: event.target.value });
+        console.log(this.state.horaInicio.getHours());
+        if (this.state.horaInicio.getHours() == 20)
+            this.setState({ validHoraInicio: false });
+        console.log(this.state.validHoraInicio);
     }
     handleFinChange = (event: any) => {
         this.setState({ horaFin: event.target.value });
@@ -405,6 +449,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     handleVisibilidadChange = (event: any) => {
         this.setState({ visibilidad: event.target.value });
     }
+
+
 
     validarHoras() {
         var inicioAntesquefin = false;
@@ -493,7 +539,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     console.log(res.data);
                 })
 
-            console.log(JSON.stringify(eventojson));
+        console.log(JSON.stringify(eventojson));
+
+        //this.loadEvents();
+
         //}
         //else {
             //console.log("no se han podido insertar las horas");
@@ -519,10 +568,12 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 </label>
                 <label>
                     Hora de inicio
+                        {(!this.state.validHoraInicio) ? <p>Hora de inicio no valida</p> : null}
                         <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleInicioChange} />
                 </label>
                 <label>
                     Hora de fin
+                        {(!this.state.validHoraFin) ? <p>Hora de fin no valida</p> : null}
                         <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleFinChange} />
                 </label>
                 <label>
@@ -533,7 +584,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     Visibilidad
                         <input id="visibilidad" type="checkbox" name="vehicle" value="Visible" onChange={this.handleVisibilidadChange} />
                 </label>
-                <input type="submit" value="Send" />
+                <input type="submit" disabled={!this.state.validFrom} value="Send" />
                 </form>
             </div>;
     }

@@ -103,7 +103,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
             fecha: user.fecha,
             prioridad: user.prioridad,
             visibilidad: user.visibilidad,
-            idUsuarioDuenio: 1,
+            idUsuarioDuenio: 2,
         };
 
         interface eventJson {
@@ -127,7 +127,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
             fecha: new Date,
             prioridad: 0,
             visibilidad: false,
-            idUsuarioDuenio: 1
+            idUsuarioDuenio: 2
         }
 
         eventojson.nombre = parametro.nombre;

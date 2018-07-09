@@ -422,7 +422,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Pendientes.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
                     {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
                     {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { }}>Aceptar</button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { this.aceptarInvitacion(1, eventoPorDia[i].id) }}>Aceptar</button></td> : null}
                     {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
 
                 </tr>) as any)
@@ -462,9 +462,17 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 console.log(res);
                 console.log(res.data);
             });
-        window.location.reload()
+        window.location.reload();
     }
 
+    aceptarInvitacion(idUsuario: number, idEvento: number) {
+        axios.put('http://localhost:55555/api/events/aceptarInvitacion/' + idUsuario + '/' + idEvento)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+        //window.location.reload();
+    }
 
 
     /*Seccion de control de cambios dentro del formulario*/

@@ -22,6 +22,8 @@ namespace DalWeCalendar
         void CompartirEvento(int idEvento, int idUsuario);
 
         void AceptarEvento(int idEvento, int idUsuario);
+
+        void CancelarEvento(int idEvento, int idUsuario);
         
     }   
 
