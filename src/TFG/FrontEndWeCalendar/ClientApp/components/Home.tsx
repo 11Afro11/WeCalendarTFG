@@ -344,7 +344,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         }*/
         eventoPorDia.sort(function (a, b) {
-            if (a.horaInicio < b.horaInicio) return 0;
+            if (a.horaInicio > b.horaInicio) return 0;
             else return 1;
         });
         let devolucion = [];
@@ -373,10 +373,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
-                    {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Home.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                    {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
-                    {(eventoPorDia[i].usuarioId != 1) ? < td > <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                </tr>) as any)
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { Home.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId != 1) ? <td> <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                </tr>) as any);
                 //devolucion.push((this.formularioEdicion()) as any)
             }
             //devolucion.push((<tr></tr>)as any)
