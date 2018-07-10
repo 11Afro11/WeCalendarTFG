@@ -435,10 +435,12 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
     handleInicioChange = (event: any) => {
         this.setState({ horaInicio: event.target.value });
-        console.log(this.state.horaInicio.getHours());
-        if (this.state.horaInicio.getHours() == 20)
+        /*
+        if (this.validarHoraInicio())
             this.setState({ validHoraInicio: false });
-        console.log(this.state.validHoraInicio);
+        else {
+            this.setState({ validHoraInicio: true });
+        }*/
     }
     handleFinChange = (event: any) => {
         this.setState({ horaFin: event.target.value });
@@ -452,39 +454,33 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
 
 
-    validarHoras() {
-        var inicioAntesquefin = false;
+    validarHoraInicio() {
         var puedeInsertarse = true;
-        if (this.state.horaInicio > this.state.horaFin) {
-            inicioAntesquefin = true;
-        }
-        else {
-            puedeInsertarse = false;
-        }
-        if (inicioAntesquefin) {
-            var eventoPorDia = new Array<Evento>();
-            this.state.events.map(evento => {
-                var day = new Date(evento.fecha.toString()).getDate();
-                if (this.state.daySet == day) {
-                    eventoPorDia.push(evento);
-                }
-            });
-            this.state.invitaciones.map(evento => {
-                var day = new Date(evento.fecha.toString()).getDate();
-                if (this.state.daySet == day) {
-                    eventoPorDia.push(evento);
-                }
-            });
-            puedeInsertarse = true;
-            eventoPorDia.map(evento => {
-                if (this.state.horaInicio >= evento.horaInicio && this.state.horaInicio <= evento.horaFin) {
-                    puedeInsertarse = false;
-                }
-                if (this.state.horaFin >= evento.horaInicio && this.state.horaFin <= evento.horaFin) {
-                    puedeInsertarse = false;
-                }
-            });
-        }
+        var eventoPorDia = new Array<Evento>();
+        this.state.events.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            if (this.state.daySet == day) {
+                eventoPorDia.push(evento);
+            }
+        });
+        this.state.invitaciones.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            if (this.state.daySet == day) {
+                eventoPorDia.push(evento);
+            }
+        });
+        puedeInsertarse = true;
+        var hora = new Date(this.state.horaInicio.toString()).getHours();
+        eventoPorDia.map(evento => {
+            var horaInicio = new Date(evento.horaInicio.toString()).getHours();
+            var horaFin = new Date(evento.horaFin.toString()).getHours();
+            console.log(hora);
+            console.log(horaInicio);
+            console.log(horaFin);
+            if (hora >= horaInicio && hora <= horaFin) {
+                puedeInsertarse = false;
+            }
+        });
         return puedeInsertarse;
     }
 
