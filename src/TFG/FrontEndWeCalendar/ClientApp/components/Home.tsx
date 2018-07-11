@@ -8,6 +8,8 @@ interface DaySet {
     daySet: number,
     users: User[],
     loadingUser: boolean,
+    friends: User[],
+    loadingFriend : boolean,
     events: Evento[],
     loadingEvent: boolean,
     invitaciones: Evento[],
@@ -47,6 +49,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             daySet: new Date().getDate(),
             users: [],
             loadingUser: true,
+            friends: [],
+            loadingFriend : true,
             events: [],
             loadingEvent: true,
             invitaciones: [],
@@ -74,6 +78,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         this.loadEvents();
         
         this.loadInvitaciones();
+
+        this.loadFriends();
 
         (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
@@ -107,6 +113,15 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             .then(data => {
                 this.setState({ users: data, loadingUser: false });
             }).catch(error => console.log(error));
+    }
+
+    loadFriends() {
+        fetch('http://localhost:55555/api/Users/amigos/1')
+            .then(response => response.json() as Promise<User[]>)
+            .then(data => {
+                this.setState({ friends: data, loadingFriend: false });
+            }).catch(error => console.log(error));
+
     }
 
     loadEvents() {
@@ -313,6 +328,14 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 Hora de fin
                     <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59" min="00:00" onChange={this.handleFinChange} />
             </label>
+            <label>
+                Amigos
+                <select>
+                    {this.invitacion()}
+                </select>
+
+            </label>
+
             <button type="submit">Editar</button>
         </form>;
     }
@@ -405,6 +428,16 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 <tr>No hay eventos hoy</tr>
             </tbody>;
         }
+    }
+
+    invitacion() {
+        let devolucion = [];
+        console.log(this.state.friends.length);
+        for (let i: number = 0; i < this.state.friends.length; i++) {
+            devolucion.push((<option value={this.state.friends[i].id}>{this.state.friends[i].nombreUsuario}</option>) as any);
+        }
+        return devolucion;
+
     }
 
     /*Cancelar la asistencia a un evento*/
@@ -589,7 +622,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     public render() {
 
         
-        let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones)
+        let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingFriend)
             ? <p><em>Loading...</em></p>
             : this.renderTabla(this.state.events, this.state.invitaciones, this.state.daySet);
 
