@@ -17,5 +17,10 @@ namespace BusinessWeCalendar
         {
             return _dalUsers.GetUsuario(usuario);
         }
+
+        public UsuarioSet[] GetAmigos(int idUsuario)
+        {
+            return _dalUsers.GetAmigos(idUsuario);
+        }
     }
 }

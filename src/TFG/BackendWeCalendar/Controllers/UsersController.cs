@@ -38,6 +38,14 @@ namespace BackendWeCalendar.Controllers
             };
         }
 
+        [HttpGet("amigos/{id}", Name = "GetAmigos")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<UsuarioSet> Get(int id)
+        {
+            var resultado = _srvUsuarios.GetAmigos(id);
+            return resultado;
+        }
+
         // POST: api/Users
         [HttpPost]
         public void Post([FromBody] string value)

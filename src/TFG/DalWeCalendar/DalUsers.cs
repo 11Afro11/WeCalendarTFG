@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DalModel;
 
 namespace DalWeCalendar
@@ -13,18 +15,22 @@ namespace DalWeCalendar
             }
         }
 
-        public UsuarioSet GetAmigos(string username)
+        public UsuarioSet[] GetAmigos(int idUsuario)
         {
             using (var db = new TFGDatabaseContext())
             {
-                var user = db.UsuarioSet.First(x => x.NombreUsuario == username);
-                var id = user.Id;
-                return null;
-                //UsuarioAmigoSet friendsID = db.UsuarioAmigoSet.Find(y => y.Usuario_id == id);
-                /*return db.UsuarioSet.Find(x =>
+                var listaAmigosID = from amigo in db.UsuarioAmigoSet
+                    where amigo.UsuarioId == idUsuario
+                    select amigo.UsuarioId1;
+                var listaAmigos = from amigo in db.UsuarioSet where listaAmigosID.Contains(amigo.Id) select amigo;
+                List<UsuarioSet> amigos = new List<UsuarioSet>();
+                foreach (UsuarioSet ev in listaAmigos)
                 {
-                    x.NombreUsuario == username
-                })*/
+                    amigos.Add(ev);
+                }
+
+                UsuarioSet[] listFriends = amigos.ToArray();
+                return listFriends;
             }
         }
 

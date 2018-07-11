@@ -3,7 +3,10 @@ import { Link, NavLink } from 'react-router-dom';
 
 interface Show {
     pendientes: Evento[],
-    loadingPendientes : boolean,
+    loadingPendientes: boolean,
+    usuario: User[],
+    loadingUser : boolean,
+
 }
 
 interface Evento {
@@ -20,18 +23,37 @@ interface Evento {
     usuarioId: number;
 }
 
+interface User {
+    id: number;
+    nombreUsuario: string;
+    correo: string;
+    password: string;
+    notificacion: string;
+    foto: string;
+    createDate: Date;
+    token: string;
+
+}
+
 export class NavMenu extends React.Component<{}, Show> {
 
     constructor() {
         super();
         this.state = {
             pendientes: [],
-            loadingPendientes : true,
+            loadingPendientes: true,
+            usuario: [],
+            loadingUser : true,
         };
         fetch('http://localhost:55555/api/events/pendientes/1')
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ pendientes: data, loadingPendientes: false });
+            });
+        fetch('http://localhost:55555/api/Users/Afro')
+            .then(response => response.json() as Promise<User[]>)
+            .then(data => {
+                this.setState({ usuario: data, loadingUser: false });
             });
     }
 
@@ -49,14 +71,26 @@ export class NavMenu extends React.Component<{}, Show> {
         else {
             return null;
         }
-        
-        
+    }
+
+    userLink() {
+        let user = [];
+        user.push((
+            <li>
+                <NavLink to={'#'} activeClassName='active'>
+                    <span className='glyphicon glyphicon-user'></span> {this.state.usuario[0].nombreUsuario}
+                </NavLink>
+            </li>) as any);
+        return user;
     }
 
     public render() {
         let pendientes = this.state.loadingPendientes
             ? <p><em>Loading...</em></p>
             : this.enlaceAPendientes();
+        let usuario = this.state.loadingUser
+            ? <p><em>Loading...</em></p>
+            : this.userLink();
 
         return <div className='main-nav'>
                 <div className='navbar navbar-inverse'>
@@ -72,6 +106,7 @@ export class NavMenu extends React.Component<{}, Show> {
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>
                     <ul className='nav navbar-nav'>
+                        {usuario}
                         <li>
                             <NavLink to={ '/' } exact activeClassName='active'>
                                 <span className='glyphicon glyphicon-home'></span> Home

@@ -8,7 +8,7 @@ namespace DalWeCalendar
     {
         UsuarioSet GetUsuario(string username);
 
-        UsuarioSet GetAmigos(string username);
+        UsuarioSet[] GetAmigos(int idUsuario);
 
         void AddUser(UsuarioSet user);
 
