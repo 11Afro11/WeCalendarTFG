@@ -29,6 +29,7 @@ interface DaySet {
     showForm: boolean;
     eventoEditandose: number;
     showEdicion: boolean;
+    amigo : number;
 }
 
 
@@ -70,6 +71,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             showForm: false,
             eventoEditandose: 0,
             showEdicion: false,
+            amigo : 2,
         };
         sessionStorage.setItem("token", "weeeeee");
 
@@ -338,6 +340,49 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
             <button type="submit">Editar</button>
         </form>;
+
+    }
+
+    
+
+    invitarAmigo = (event: any) => {
+
+        interface IPair {
+            idEvento: number,
+            idUsuario : number,
+        };
+
+        var inv: IPair = {
+            idEvento: 0,
+            idUsuario: 0,
+        };
+
+        inv.idEvento = this.state.eventoEditandose;
+        inv.idUsuario = this.state.amigo;
+
+        var subida = JSON.stringify(inv);
+
+        console.log(inv.idEvento);
+        console.log(inv.idUsuario);
+
+        axios.post('http://localhost:55555/api/events/share',
+            subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+            console.log(res);
+            console.log(res.data);
+        });
+    }
+
+
+    formularioInvitacion() {
+        return <form onSubmit={this.invitarAmigo}>
+            <select onChange={this.handleFriendChange}>
+                {this.invitacion()}
+            </select>
+                   <button type="submit">invitar</button>
+               </form>;
     }
 
     //Metodo que se encargara de hacer el horario en funcu�n del d�a 
@@ -484,6 +529,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     handleVisibilidadChange = (event: any) => {
         this.setState({ visibilidad: event.target.value });
     }
+    handleFriendChange = (event: any) => {
+        this.setState({ amigo: event.target.value });
+    }
 
 
 
@@ -617,6 +665,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 </form>
             </div>;
     }
+    
 
 
     public render() {
@@ -678,6 +727,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     {eventos}
                 </table>
                 {this.state.showEdicion ? this.formularioEdicion() : null}
+                {this.state.showEdicion ? this.formularioInvitacion() : null}
 
                 <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
                 
