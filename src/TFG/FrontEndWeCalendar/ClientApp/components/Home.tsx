@@ -665,6 +665,23 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 </form>
             </div>;
     }
+
+
+    viewPorEvento(idEvento: number) {
+
+        var event: Evento = this.state.events[0];
+        this.state.events.map(evento => {
+            if (this.state.eventoEditandose == evento.id) {
+                event = evento;
+            }
+        });
+        return <div>
+            <h1>Aqui va la información del evento</h1>
+            <h2>{event.nombre}</h2>
+            <h2>{event.descripcion}</h2>
+            <h2>{event.direccion}</h2>
+               </div>;
+    }
     
 
 
@@ -726,7 +743,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     </thead>
                     {eventos}
                 </table>
-                {this.state.showEdicion ? this.formularioEdicion() : null}
+                {this.state.showEdicion ? this.viewPorEvento(1) : null}
                 {this.state.showEdicion ? this.formularioInvitacion() : null}
 
                 <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
@@ -740,10 +757,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
     muestraUOcultaForm() {
         if (this.state.showForm) {
-            this.setState({ showForm: false })
+            this.setState({ showForm: false });
         }
         else {
-            this.setState({ showForm: true })
+            this.setState({ showForm: true });
         }
     }
 
