@@ -29,6 +29,8 @@ interface DaySet {
     showForm: boolean;
     eventoEditandose: number;
     showEdicion: boolean;
+    showEvent: boolean;
+    showInvitacion: boolean;
     amigo : number;
 }
 
@@ -71,6 +73,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             showForm: false,
             eventoEditandose: 0,
             showEdicion: false,
+            showEvent: false,
+            showInvitacion: false,
             amigo : 2,
         };
         sessionStorage.setItem("token", "weeeeee");
@@ -211,27 +215,28 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
 
     //funcion que elimina un determinado evento
-    public static eliminar(id: number): void {
+    eliminar(id: number){
         axios.delete('http://localhost:55555/api/events/' + id)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
             });
-        window.location.reload()
+        var Lista: Evento[] = [];
+        this.state.events.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: Evento = this.state.events[0];
+        Lista.map(evento => {
+            if (evento.id == id)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        Lista.splice(indice);
+        this.setState({ events: Lista });
     }
 
-    mostrarEdicion(id: number, _fecha : Date, _horaInicio : Date, _horaFin : Date) {
-        if (this.state.showEdicion) {
-            this.setState({ showEdicion: false });
-        }
-        else {
-            this.setState({ fecha: _fecha });
-            this.setState({ horaInicio: _horaInicio });
-            this.setState({ horaFin: _horaFin });
-            this.setState({ eventoEditandose: id });
-            this.setState({ showEdicion: true });
-        }
-    }
+    
 
     handleEdit = (event: any) => {
         interface eventJson {
@@ -412,7 +417,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         }*/
         eventoPorDia.sort(function (a, b) {
-            if (a.horaInicio > b.horaInicio) return 0;
+            if (a.horaInicio < b.horaInicio) return 0;
             else return 1;
         });
         let devolucion = [];
@@ -441,8 +446,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
-                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { Home.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.verEvento(eventoPorDia[i].id) }}>Ver</button></td> : null}
                     {(eventoPorDia[i].usuarioId != 1) ? <td> <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
                 </tr>) as any);
                 //devolucion.push((this.formularioEdicion()) as any)
@@ -567,6 +572,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
     /*Control de la subida e insercion del evento*/
     handleSubmmit = (event: any) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
         interface eventJson {
             nombre: string,
             desc: string,
@@ -591,10 +600,40 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             idUsuarioDuenio: 1
         }
 
+        
+
         var fecha = new Date();
         fecha.setDate(this.state.daySet);
         fecha.setMonth(7);
         fecha.setFullYear(2018);
+        var hora = parseInt(this.state.horaInicio.toString().substring(0, 2));
+        var minutos = parseInt(this.state.horaInicio.toString().substring(3, 5));
+
+        var horaFinn = parseInt(this.state.horaFin.toString().substring(0, 2));
+        var minutosFin = parseInt(this.state.horaFin.toString().substring(3, 5));
+        //console.log(nuevaHora);
+        var horaInicio = new Date();
+        horaInicio.setHours(hora);
+        horaInicio.setMinutes(minutos);
+        var horaFin = new Date();
+        horaFin.setHours(horaFinn);
+        horaFin.setMinutes(minutosFin);
+
+
+
+        var eventoMuestra: Evento = {
+            id: 0,
+            nombre: this.state.nombreEvento,
+            descripcion: this.state.descripcion,
+            direccion: this.state.direccion,
+            horaInicio: horaInicio,
+            horaFin: horaFin,
+            fecha: fecha,
+            prioridad: this.state.prioridad,
+            visibilidad: this.state.visibilidad,
+            createDate: new Date(),
+            usuarioId: 1
+        }
 
         eventojson.nombre = this.state.nombreEvento;
         eventojson.desc = this.state.descripcion;
@@ -608,22 +647,29 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         var subida = JSON.stringify(eventojson);
 
         //if (this.validarHoras) {
-            axios.post('http://localhost:55555/api/events', subida,
-                {
-                    headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
-                }).then(res => {
-                    console.log(res);
-                    console.log(res.data);
-                })
+        axios.post('http://localhost:55555/api/events',
+            subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+            console.log(res);
+            console.log(res.data);
+            });
 
-        console.log(JSON.stringify(eventojson));
+        var Lista: Evento[] = [];
+        this.state.events.map(evento => {
+            Lista.push(evento);
+        });
+        Lista.push(eventoMuestra);
+        this.setState({ events: Lista });
+        this.cancelForm();
+        //this.state.events.push(eventoMuestra);
 
-        //this.loadEvents();
+        //console.log(JSON.stringify(eventojson));
+    }
 
-        //}
-        //else {
-            //console.log("no se han podido insertar las horas");
-        //}
+    cancelForm() {
+        this.setState({showForm : false});
     }
 
     /*Creación del formulario*/
@@ -676,13 +722,66 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             }
         });
         return <div>
-            <h1>Aqui va la información del evento</h1>
-            <h2>{event.nombre}</h2>
-            <h2>{event.descripcion}</h2>
-            <h2>{event.direccion}</h2>
-               </div>;
+            <table className="table">
+                <th>
+                    <td><button className="active" onClick={() => { this.mostrarInvitacion(); }}>Invitar</button></td>
+                    <td><button className="active" onClick={() => { this.mostrarEdicion(event.id, event.fecha, event.horaInicio, event.horaFin) }}>Editar</button></td>
+                    <td><button className="active" onClick={() => { this.verEvento(0) }}>Ocultar</button></td>
+                </th>
+            </table>
+
+            {(!this.state.showEdicion && !this.state.showInvitacion) ? <table className="table">
+                
+                <tr>
+                    <td>{event.nombre}</td>
+                </tr>
+                <tr>
+                    <td>{event.descripcion}</td>
+                </tr>
+                <tr>
+                    <td>{event.direccion}</td>
+                </tr>
+            </table> : null}
+            {(this.state.showEdicion && !this.state.showInvitacion) ? this.formularioEdicion() : null}
+            {(this.state.showInvitacion && !this.state.showEdicion) ? this.formularioInvitacion() : null}
+            </div>;
     }
-    
+
+    verEvento(id : number) {
+        if (this.state.showEvent) {
+            this.setState({ showEvent: false });
+            this.setState({ showEdicion: false });
+            this.setState({ showInvitacion: false });
+        }
+        else {
+            this.setState({ showEvent: true });
+            this.setState({ eventoEditandose: id });
+        }
+    }
+
+    mostrarInvitacion() {
+        if (this.state.showInvitacion) {
+            this.setState({ showInvitacion: false });
+        }
+        else {
+            this.setState({ showInvitacion: true });
+            this.setState({showEdicion : false});
+        }
+    }
+
+    mostrarEdicion(id: number, _fecha: Date, _horaInicio: Date, _horaFin: Date) {
+        if (this.state.showEdicion) {
+            this.setState({ showEdicion: false });
+        }
+        else {
+            this.setState({ fecha: _fecha });
+            this.setState({ horaInicio: _horaInicio });
+            this.setState({ horaFin: _horaFin });
+            this.setState({ eventoEditandose: id });
+            this.setState({ showEdicion: true });
+            this.setState({ showInvitacion: false });
+        }
+    }
 
 
     public render() {
@@ -730,7 +829,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             </div>
 
             <div className="Dia" id="Dia">
-                <strong>Dia {this.state.daySet} de {this.mes} de {this.anio}</strong>
+                <strong>{this.state.daySet} de {this.mes} de {this.anio}</strong>
+                {this.state.showEvent ? this.viewPorEvento(this.state.eventoEditandose) : null}
 
                 <table className="table">
                     <thead className="thead-light">
@@ -739,12 +839,14 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                             <th scope="col">Titulo</th>
                             <th scope="col">Descripcion</th>
                             <th scope="col">Lugar</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     {eventos}
                 </table>
-                {this.state.showEdicion ? this.viewPorEvento(1) : null}
-                {this.state.showEdicion ? this.formularioInvitacion() : null}
+                
+                
 
                 <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
                 
