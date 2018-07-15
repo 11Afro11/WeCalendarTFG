@@ -497,7 +497,20 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 console.log(res);
                 console.log(res.data);
             });
-        window.location.reload();
+        var Lista: Evento[] = [];
+        this.state.invitaciones.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: Evento = this.state.events[0];
+        Lista.map(evento => {
+            if (evento.id == idEvento)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        Lista.splice(indice);
+        this.setState({ invitaciones: Lista });
+        //window.location.reload();
     }
 
 
