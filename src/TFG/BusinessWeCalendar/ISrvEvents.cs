@@ -26,5 +26,7 @@ namespace BusinessWeCalendar
         void AceptarInvitacion(int idUsuario, int idEvento);
 
         void CancelarEvento(int idUsuario, int idEvento);
+
+        String[] ListaAsistentes(int idEvento);
     }
 }

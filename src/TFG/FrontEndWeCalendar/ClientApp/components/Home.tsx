@@ -31,7 +31,8 @@ interface DaySet {
     showEdicion: boolean;
     showEvent: boolean;
     showInvitacion: boolean;
-    amigo : number;
+    amigo: number;
+    listaInvitados : String[];
 }
 
 
@@ -75,7 +76,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             showEdicion: false,
             showEvent: false,
             showInvitacion: false,
-            amigo : 2,
+            amigo: 2,
+            listaInvitados: [],
         };
         sessionStorage.setItem("token", "weeeeee");
 
@@ -335,13 +337,6 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 Hora de fin
                     <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59" min="00:00" onChange={this.handleFinChange} />
             </label>
-            <label>
-                Amigos
-                <select>
-                    {this.invitacion()}
-                </select>
-
-            </label>
 
             <button type="submit">Editar</button>
         </form>;
@@ -351,7 +346,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     
 
     invitarAmigo = (event: any) => {
-
+        event.preventDefault();
+        event.stopPropagation();
         interface IPair {
             idEvento: number,
             idUsuario : number,
@@ -377,7 +373,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             }).then(res => {
             console.log(res);
             console.log(res.data);
-        });
+            });
+        this.setState({ showInvitacion : false});
     }
 
 

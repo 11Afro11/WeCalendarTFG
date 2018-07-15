@@ -24,7 +24,9 @@ namespace DalWeCalendar
         void AceptarEvento(int idEvento, int idUsuario);
 
         void CancelarEvento(int idEvento, int idUsuario);
-        
+
+        String[] ListaInvitados(int idEvento);
+
     }   
 
 }

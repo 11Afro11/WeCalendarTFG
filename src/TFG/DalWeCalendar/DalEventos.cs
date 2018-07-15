@@ -132,5 +132,25 @@ namespace DalWeCalendar
                 db.SaveChanges();
             }
         }
+
+        public string[] ListaInvitados(int idEvento)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var indices = from eventos in db.UsuarioEvento1
+                    where eventos.Evento1Id == idEvento
+                    select eventos.Usuario1Id;
+                var usuarios = from usuario in db.UsuarioSet
+                    where indices.Contains(usuario.Id)
+                    select usuario.NombreUsuario;
+                List<String> listaPendientes = new List<String>();
+                foreach (String ev in usuarios)
+                {
+                    listaPendientes.Add(ev);
+                }
+                String[] listaEventos = listaPendientes.ToArray();
+                return listaEventos;
+            }
+        }
     }
 }

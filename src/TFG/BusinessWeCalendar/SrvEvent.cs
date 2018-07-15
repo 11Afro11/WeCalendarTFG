@@ -77,5 +77,10 @@ namespace BusinessWeCalendar
         {
             _dalEvents.CancelarEvento(idEvento, idUsuario);
         }
+
+        public string[] ListaAsistentes(int idEvento)
+        {
+            return _dalEvents.ListaInvitados(idEvento);
+        }
     }
 }
