@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessWeCalendar;
 using DalWeCalendar;
+using FluentScheduler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,7 @@ namespace BackendWeCalendar
             services.AddTransient<IDalUsers, DalUsers>();
             services.AddTransient<ISrvEvents, SrvEvent>();
             services.AddTransient<IDalEventos, DalEventos>();
+            services.AddTransient<Notificaciones>();
             services.AddMvc();
             services.AddCors();
             services.AddCors(options =>
@@ -59,6 +61,8 @@ namespace BackendWeCalendar
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            JobManager.Initialize(new Notificaciones());
 
             app.UseMvc();
 

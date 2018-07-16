@@ -4,6 +4,8 @@ using BusinessWeCalendar;
 using DalModel;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace BackendWeCalendar.Controllers
 {
@@ -44,6 +46,22 @@ namespace BackendWeCalendar.Controllers
         {
             var resultado = _srvUsuarios.GetAmigos(id);
             return resultado;
+        }
+
+        [HttpGet("correo", Name = "sendMail")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void Correo()
+        {
+            var apiKey = "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";
+            var client = new SendGridClient(apiKey);
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress("javier.fuentes78@gmail.com", "javier Fuentes"),
+                Subject = "Prueba numero 1",
+                PlainTextContent = "Hola mundo"
+            };
+            msg.AddTo(new EmailAddress("javierfuentesbarragan@gmail.com", "Javier Fuentes"));
+            client.SendEmailAsync(msg);
         }
 
         // POST: api/Users
