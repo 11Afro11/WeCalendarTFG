@@ -38,6 +38,11 @@ namespace DalWeCalendar
             using (var db = new TFGDatabaseContext())
             {
                 var eventos = (from evento in db.EventoSet where evento.Id == id select evento).FirstOrDefault();
+                var pendiente = from pendientes in db.PendientesSet where pendientes.EventoId == id select pendientes;
+                foreach (PendientesSet pend in pendiente)
+                {
+                    db.PendientesSet.Remove(pend);
+                }
                 db.EventoSet.Remove(eventos);
                 db.SaveChanges();
             }

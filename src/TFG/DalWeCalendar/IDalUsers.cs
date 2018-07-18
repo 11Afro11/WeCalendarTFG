@@ -12,5 +12,6 @@ namespace DalWeCalendar
 
         void AddUser(UsuarioSet user);
 
+        string[] correos();
     }
 }

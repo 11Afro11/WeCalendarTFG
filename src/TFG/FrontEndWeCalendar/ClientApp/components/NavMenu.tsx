@@ -55,15 +55,17 @@ export class NavMenu extends React.Component<{}, Show> {
             .then(data => {
                 this.setState({ usuario: data, loadingUser: false });
             });
+        //sessionStorage.setItem("contadorPendiente" , this.state.pendientes.length.toString());
     }
 
     enlaceAPendientes() {
-        let pendiente = []
+        let pendiente = [];
+        sessionStorage.setItem("contadorPendiente", this.state.pendientes.length.toString());
         if (this.state.pendientes.length > 0) {
             pendiente.push((
                 <li>
                     <NavLink to={'/pendientes'} activeClassName='active'>
-                        <span className='glyphicon glyphicon-bell'></span> Pendientes {this.state.pendientes.length}
+                        <span className='glyphicon glyphicon-bell'></span>{sessionStorage.getItem("contadorPendiente")}
                             </NavLink>
                 </li>) as any);
             return pendiente;
@@ -111,8 +113,11 @@ export class NavMenu extends React.Component<{}, Show> {
                             <NavLink to={ '/' } exact activeClassName='active'>
                                 <span className='glyphicon glyphicon-home'></span> Home
                             </NavLink>
+                            <ul>
+                                {pendientes}
+                            </ul>
                         </li>
-                        {pendientes}
+                        
                         <li>
                             <NavLink to={ '/counter' } activeClassName='active'>
                                 <span className='glyphicon glyphicon-education'></span> Counter

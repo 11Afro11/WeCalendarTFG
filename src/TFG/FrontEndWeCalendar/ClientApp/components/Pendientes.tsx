@@ -445,24 +445,32 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
         if (eventoPorDia.length > 0) {
             for (let i: number = 0; i < eventoPorDia.length; i++) {
+                var horaInicio = new Date(eventoPorDia[i].horaInicio.toString()).getHours();
+                var minutosInicio = new Date(eventoPorDia[i].horaInicio.toString()).getMinutes();
+                var horafin = new Date(eventoPorDia[i].horaFin.toString()).getHours();
+                var minutosfin = new Date(eventoPorDia[i].horaFin.toString()).getMinutes();
+                var hora = "";
+                if (horaInicio < 10)
+                    hora += 0;
+                hora += horaInicio + ":";
+                if (minutosInicio < 10)
+                    hora += 0;
+                hora += minutosInicio + "-";
+                if (horafin < 10)
+                    hora += 0;
+                hora += horafin + ":";
+                if (minutosfin < 10)
+                    hora += 0;
+                hora += minutosfin;
                 devolucion.push((<tr>
                     {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ?
-                        <th scope="row" className="pendiente">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
-                        {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th> : null}
+                        <th scope="row" className="pendiente">{hora}</th> : null}
 
                     {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ?
-                        <th scope="row" className="Error">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
-                        {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th> : null}      
+                        <th scope="row" className="Error">{hora}</th> : null}      
                     
                     {(eventosNoValidos.indexOf(eventoPorDia[i].id) == -1 && eventosValidos.indexOf(eventoPorDia[i].id) == -1) ?
-                        <th scope="row">{new Date(eventoPorDia[i].horaInicio.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaInicio.toString()).getMinutes()}-
-                        {new Date(eventoPorDia[i].horaFin.toString()).getHours()}:
-                        {new Date(eventoPorDia[i].horaFin.toString()).getMinutes()}</th> : null}
+                        <th scope="row">{hora}</th> : null}
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
@@ -527,6 +535,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         if (this.state.pendientes.length <= 0) {
             
         }
+        sessionStorage.setItem("contadorPendiente", this.state.pendientes.length.toString());
     }
 
     cancelarAsistencia(idUsuario: number, idEvento: number) {
@@ -587,6 +596,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         if (this.state.pendientes.length <= 0) {
             window.location.reload();
         }
+        sessionStorage.setItem("contadorPendiente", this.state.pendientes.length.toString());
         //this.cancelForm();
         //window.location.reload();
     }
@@ -775,13 +785,13 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 </div>
 
                 <ul className="weekdays">
-                    <li>Mo</li>
-                    <li>Tu</li>
-                    <li>We</li>
-                    <li>Th</li>
-                    <li>Fr</li>
-                    <li>Sa</li>
-                    <li>Su</li>
+                    <li>Lunes</li>
+                    <li>Martes</li>
+                    <li>Miércoles</li>
+                    <li>Jueves</li>
+                    <li>Viernes</li>
+                    <li>Sábado</li>
+                    <li>Domingo</li>
                 </ul>
                 <ul className="days">
                     <li></li>
@@ -798,7 +808,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
             </div>
 
             <div className="Dia" id="Dia">
-                <strong>Dia {this.state.daySet} de {this.mes} de {this.anio}</strong>
+                <strong>{this.state.daySet} de {this.mes} de {this.anio}</strong>
 
                 <table className="table">
                     <thead className="thead-light">

@@ -38,5 +38,19 @@ namespace DalWeCalendar
         {
             Add(user);
         }
+
+        public string[] correos()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var correos = from usuario in db.UsuarioSet select usuario.Correo;
+                List<string> listaCorreos = new List<string>();
+                foreach (string corr in correos)
+                {
+                    listaCorreos.Add(corr);
+                }
+                return correos.ToArray();
+            }
+        }
     }
 }

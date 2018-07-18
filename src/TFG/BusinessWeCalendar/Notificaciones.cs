@@ -20,18 +20,27 @@ namespace BusinessWeCalendar
         private readonly IDalUsers _dalUsers;
         public Notificaciones()
         {
+            _dalUsers = new DalUsers();
             Action someMethod = new Action(() =>
             {
                 var apiKey = "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";
                 var client = new SendGridClient(apiKey);
-                var msg = new SendGridMessage()
+                
+                
+                var listaCorreos = _dalUsers.correos();
+                foreach (string correo in listaCorreos)
                 {
-                    From = new EmailAddress("javier.fuentes78@gmail.com", "javier Fuentes"),
-                    Subject = "Prueba numero 1",
-                    PlainTextContent = "Hola mundo se esta enviando desde la api sin yo tocar nada de nada"
-                };
-                msg.AddTo(new EmailAddress("javierfuentesbarragan@gmail.com", "Javier Fuentes"));
-                client.SendEmailAsync(msg);
+                    var msg = new SendGridMessage()
+                    {
+                        From = new EmailAddress("javier.fuentes78@gmail.com", "We Calendar"),
+                        Subject = "Hoy Tienes Eventos",
+                        PlainTextContent = "prueba de envío de correos automatico",
+                        HtmlContent = "<h1 href='http://wecalendar.azurewebsites.net'>http://wecalendar.azurewebsites.net</h1> "
+                    };
+                    msg.AddTo(new EmailAddress(correo, "Javier Fuentes"));
+                    client.SendEmailAsync(msg);
+                }
+                
             });
             this.Schedule(someMethod).ToRunNow();
         }

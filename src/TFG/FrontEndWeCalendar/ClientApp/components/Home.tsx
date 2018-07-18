@@ -124,7 +124,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
 
     loadFriends() {
-        fetch('http://localhost:55555/api/Users/amigos/1')
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getFriends);
+        fetch(dir+'/1')
             .then(response => response.json() as Promise<User[]>)
             .then(data => {
                 this.setState({ friends: data, loadingFriend: false });
@@ -199,12 +200,21 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 else
                     day.push((<li><button className="active" onClick={() => { this.setDay(i) }}>{i}</button></li>) as any);
             }
-            else if (listaDias.indexOf(i) != -1 && i > DayToday) {
-                if (i < 10)
-                    day.push((<li><button className="event" onClick={() => { this.setDay(i) }}>0{i}</button></li>) as any);
-                else
-                    day.push((<li><button className="event" onClick={() => { this.setDay(i) }}>{i}</button></li>) as any);
+            else if (listaDias.indexOf(i) != -1) {
+                if (i < DayToday) {
+                    if (i < 10)
+                        day.push((<li><button className="passed" onClick={() => { this.setDay(i) }}>0{i}</button></li>) as any);
+                    else
+                        day.push((<li><button className="passed" onClick={() => { this.setDay(i) }}>{i}</button></li>) as any);
+                }
+                else {
+                    if (i < 10)
+                        day.push((<li><button className="event" onClick={() => { this.setDay(i) }}>0{i}</button></li>) as any);
+                    else
+                        day.push((<li><button className="event" onClick={() => { this.setDay(i) }}>{i}</button></li>) as any);
+                    }
             }
+
             else {
                 if (i < 10)
                     day.push((<li><button onClick={() => { this.setDay(i) }}>0{i}</button></li>) as any);
@@ -217,8 +227,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
 
     //funcion que elimina un determinado evento
-    eliminar(id: number){
-        axios.delete('http://localhost:55555/api/events/' + id)
+    eliminar(id: number) {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.eliminarEvento);
+        axios.delete(dir + id)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -265,7 +276,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         var subida = JSON.stringify(eventojson);
 
-        axios.put('http://localhost:55555/api/events/' + this.state.eventoEditandose, subida,
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.editEvent);
+
+        axios.put(dir + this.state.eventoEditandose, subida,
             {
                 headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
             }).then(res => {
@@ -401,7 +414,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         console.log(inv.idEvento);
         console.log(inv.idUsuario);
 
-        axios.post('http://localhost:55555/api/events/share',
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.shareEvent);
+
+        axios.post(dir,
             subida,
             {
                 headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
@@ -524,7 +539,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
     /*Cancelar la asistencia a un evento*/
     cancelarAsistencia(idUsuario: number, idEvento: number) {
-        axios.delete('http://localhost:55555/api/events/cancelarEvento/' + idUsuario + '/' + idEvento)
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.cancelarEvento);
+        axios.delete(dir + idUsuario + '/' + idEvento)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -692,7 +708,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         var subida = JSON.stringify(eventojson);
 
         //if (this.validarHoras) {
-        axios.post('http://localhost:55555/api/events',
+
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.postSpecificEvent);
+        axios.post(dir,
             subida,
             {
                 headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
@@ -737,12 +755,12 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 <label>
                     Hora de inicio
                         {(!this.state.validHoraInicio) ? <p>Hora de inicio no valida</p> : null}
-                        <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleInicioChange} />
+                        <input id="horaInicio" type="time" name="hora" max="23:59" min="00:00" onChange={this.handleInicioChange} />
                 </label>
                 <label>
                     Hora de fin
                         {(!this.state.validHoraFin) ? <p>Hora de fin no valida</p> : null}
-                        <input id="horaInicio" type="time" name="hora" max="22:30:00" min="10:00:00" step="1" onChange={this.handleFinChange} />
+                    <input id="horaInicio" type="time" name="hora" max="23:59" min="00:00" onChange={this.handleFinChange} />
                 </label>
                 <label>
                     Prioridad
@@ -851,13 +869,13 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 </div>
 
                 <ul className="weekdays">
-                    <li>Mo</li>
-                    <li>Tu</li>
-                    <li>We</li>
-                    <li>Th</li>
-                    <li>Fr</li>
-                    <li>Sa</li>
-                    <li>Su</li>
+                    <li>Lunes</li>
+                    <li>Martes</li>
+                    <li>Miércoles</li>
+                    <li>Jueves</li>
+                    <li>Viernes</li>
+                    <li>Sábado</li>
+                    <li>Domingo</li>
                 </ul>
                 <ul className="days">
                     <li></li>
@@ -881,8 +899,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <thead className="thead-light">
                         <tr>
                             <th scope="col">Hora</th>
-                            <th scope="col">Titulo</th>
-                            <th scope="col">Descripcion</th>
+                            <th scope="col">Título</th>
+                            <th scope="col">Descripción</th>
                             <th scope="col">Lugar</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
