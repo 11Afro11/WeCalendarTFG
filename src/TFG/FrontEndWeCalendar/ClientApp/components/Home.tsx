@@ -241,6 +241,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     
 
     handleEdit = (event: any) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
         interface eventJson {
             fecha: Date,
             horaInicio: Date,
@@ -268,6 +272,37 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 console.log(res);
                 console.log(res.data);
             });
+
+        var fecha = new Date();
+        fecha.setDate(this.state.daySet);
+        fecha.setMonth(7);
+        fecha.setFullYear(2018);
+        var hora = parseInt(this.state.horaInicio.toString().substring(0, 2));
+        var minutos = parseInt(this.state.horaInicio.toString().substring(3, 5));
+
+        var horaFinn = parseInt(this.state.horaFin.toString().substring(0, 2));
+        var minutosFin = parseInt(this.state.horaFin.toString().substring(3, 5));
+        //console.log(nuevaHora);
+        var horaInicio = new Date();
+        horaInicio.setHours(hora);
+        horaInicio.setMinutes(minutos);
+        var horaFin = new Date();
+        horaFin.setHours(horaFinn);
+        horaFin.setMinutes(minutosFin);
+
+
+        var edicion = this.state.events[0];
+        var Lista: Evento[] = [];
+        this.state.events.map(evento => {
+            Lista.push(evento);
+            if (evento.id == this.state.eventoEditandose)
+                edicion = evento;
+        });
+        var indice = Lista.indexOf(edicion);
+        Lista[indice].horaInicio = horaInicio;
+        Lista[indice].horaFin = horaFin;
+        Lista[indice].fecha = fecha;
+        this.setState({events : Lista});
     }
 
     formularioEdicion() {

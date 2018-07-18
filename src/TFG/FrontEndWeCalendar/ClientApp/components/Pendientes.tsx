@@ -170,10 +170,10 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         });
         //listaDias.push(3);
         let day = [];
-        if (pendientes.length <= 0) {
+        /*if (pendientes.length <= 0) {
             return <h1>No se carga el evento pendiente</h1>;
-        }
-        else {
+        }*/
+        //else {
             var today = new Date();
             var DayToday = today.getDate();
             for (let i: number = 1; i <= 31; i++) {
@@ -198,18 +198,30 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
             }
             return day;
-        }
+        //}
         
     }
 
     //funcion que elimina un determinado evento
-    public static eliminar(id: number): void {
+    eliminar(id: number) {
         axios.delete('http://localhost:55555/api/events/' + id)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
             });
-        window.location.reload()
+        var Lista: Evento[] = [];
+        this.state.events.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: Evento = this.state.events[0];
+        Lista.map(evento => {
+            if (evento.id == id)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        Lista.splice(indice);
+        this.setState({ events: Lista });
     }
 
     mostrarEdicion(id: number, _fecha : Date, _horaInicio : Date, _horaFin : Date) {
@@ -226,6 +238,10 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     }
 
     handleEdit = (event: any) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
         interface eventJson {
             fecha: Date,
             horaInicio: Date,
@@ -242,7 +258,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         eventojson.horafin = this.state.horaFin;
         eventojson.fecha = this.state.fecha;
 
-        
+
 
         var subida = JSON.stringify(eventojson);
 
@@ -253,6 +269,37 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 console.log(res);
                 console.log(res.data);
             });
+
+        var fecha = new Date();
+        fecha.setDate(this.state.daySet);
+        fecha.setMonth(7);
+        fecha.setFullYear(2018);
+        var hora = parseInt(this.state.horaInicio.toString().substring(0, 2));
+        var minutos = parseInt(this.state.horaInicio.toString().substring(3, 5));
+
+        var horaFinn = parseInt(this.state.horaFin.toString().substring(0, 2));
+        var minutosFin = parseInt(this.state.horaFin.toString().substring(3, 5));
+        //console.log(nuevaHora);
+        var horaInicio = new Date();
+        horaInicio.setHours(hora);
+        horaInicio.setMinutes(minutos);
+        var horaFin = new Date();
+        horaFin.setHours(horaFinn);
+        horaFin.setMinutes(minutosFin);
+
+
+        var edicion = this.state.events[0];
+        var Lista: Evento[] = [];
+        this.state.events.map(evento => {
+            Lista.push(evento);
+            if (evento.id == this.state.eventoEditandose)
+                edicion = evento;
+        });
+        var indice = Lista.indexOf(edicion);
+        Lista[indice].horaInicio = horaInicio;
+        Lista[indice].horaFin = horaFin;
+        Lista[indice].fecha = fecha;
+        this.setState({ events: Lista });
     }
 
     formularioEdicion() {
@@ -306,11 +353,11 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
             </label>
             <label>
                 Hora de inicio
-                    <input id="horaInicio" /*value={horainiciodevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" step="1" onChange={this.handleInicioChange} />
+                    <input id="horaInicio" /*value={horainiciodevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" onChange={this.handleInicioChange} />
             </label>
             <label>
                 Hora de fin
-                    <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" step="1" onChange={this.handleFinChange} />
+                    <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" onChange={this.handleFinChange} />
             </label>
             <button type="submit">Editar</button>
         </form>;
@@ -391,7 +438,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
         }*/
         eventoPorDia.sort(function (a, b) {
-            if (a.horaInicio < b.horaInicio) return 0;
+            if (a.horaInicio > b.horaInicio) return 0;
             else return 1;
         });
         let devolucion = [];
@@ -419,10 +466,11 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
-                    {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { Pendientes.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                    {(eventoPorDia[i].usuarioId == 1) ? < td > <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? < td > <button className="active" onClick={() => { this.aceptarInvitacion(1, eventoPorDia[i].id) }}>Aceptar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
+                    {(this.state.invitaciones.indexOf(eventoPorDia[i]) != -1) ? <td> <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.aceptarInvitacion(1, eventoPorDia[i].id) }}>Aceptar</button></td> : null}
                     {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
 
                 </tr>) as any)
@@ -462,7 +510,45 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 console.log(res);
                 console.log(res.data);
             });
-        window.location.reload();
+        //window.location.reload();
+        var Lista: Evento[] = [];
+        this.state.pendientes.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: Evento = this.state.events[0];
+        Lista.map(evento => {
+            if (evento.id == idEvento)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        Lista.splice(indice);
+        this.setState({ pendientes: Lista });
+        if (this.state.pendientes.length <= 0) {
+            
+        }
+    }
+
+    cancelarAsistencia(idUsuario: number, idEvento: number) {
+        axios.delete('http://localhost:55555/api/events/cancelarEvento/' + idUsuario + '/' + idEvento)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+        var Lista: Evento[] = [];
+        this.state.invitaciones.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: Evento = this.state.events[0];
+        Lista.map(evento => {
+            if (evento.id == idEvento)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        Lista.splice(indice);
+        this.setState({ invitaciones: Lista });
+        //window.location.reload();
     }
 
     aceptarInvitacion(idUsuario: number, idEvento: number) {
@@ -471,6 +557,37 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 console.log(res);
                 console.log(res.data);
             });
+
+        var eventoMuestra = this.state.events[0];
+        this.state.pendientes.map(evento => {
+            if (evento.id == idEvento)
+                eventoMuestra = evento;
+        });
+
+        var Lista: Evento[] = [];
+        this.state.pendientes.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: Evento = this.state.events[0];
+        Lista.map(evento => {
+            if (evento.id == idEvento)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        Lista.splice(indice);
+        this.setState({ pendientes: Lista });
+
+        var Lista: Evento[] = [];
+        this.state.invitaciones.map(evento => {
+            Lista.push(evento);
+        });
+        Lista.push(eventoMuestra);
+        this.setState({ invitaciones: Lista });
+        if (this.state.pendientes.length <= 0) {
+            window.location.reload();
+        }
+        //this.cancelForm();
         //window.location.reload();
     }
 
@@ -639,11 +756,11 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     public render() {
 
 
-        let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingPendientes)
+        let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
             : this.renderTabla(this.state.events, this.state.invitaciones, this.state.pendientes, this.state.daySet);
 
-        let calendar = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingPendientes)
+        let calendar = (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
             : this.renderCalendario(this.state.pendientes);
 

@@ -10,12 +10,14 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.IO;
 using System.Text;
+using DalWeCalendar;
 using FluentScheduler;
 
 namespace BusinessWeCalendar
 {
     public class Notificaciones : Registry
     {
+        private readonly IDalUsers _dalUsers;
         public Notificaciones()
         {
             Action someMethod = new Action(() =>
