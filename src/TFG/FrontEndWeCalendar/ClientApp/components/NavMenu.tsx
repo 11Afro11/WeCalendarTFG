@@ -45,12 +45,12 @@ export class NavMenu extends React.Component<{}, Show> {
             usuario: [],
             loadingUser : true,
         };
-        fetch('http://localhost:55555/api/events/pendientes/1')
+        fetch('http://localhost:11111/api/events/pendientes/1')
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ pendientes: data, loadingPendientes: false });
             });
-        fetch('http://localhost:55555/api/Users/Afro')
+        fetch('http://localhost:11111/api/Users/Afro')
             .then(response => response.json() as Promise<User[]>)
             .then(data => {
                 this.setState({ usuario: data, loadingUser: false });

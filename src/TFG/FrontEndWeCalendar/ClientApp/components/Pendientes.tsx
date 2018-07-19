@@ -124,7 +124,8 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     }
 
     loadPendientes() {
-        fetch('http://localhost:55555/api/events/pendientes/1')
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getEventosPendientes);
+        fetch(dir + '/1')
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ pendientes: data, loadingPendientes: false });
@@ -204,7 +205,8 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
     //funcion que elimina un determinado evento
     eliminar(id: number) {
-        axios.delete('http://localhost:55555/api/events/' + id)
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.eliminarEvento);
+        axios.delete(dir + id)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -261,8 +263,8 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
 
         var subida = JSON.stringify(eventojson);
-
-        axios.put('http://localhost:55555/api/events/' + this.state.eventoEditandose, subida,
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.editEvent);
+        axios.put(dir + this.state.eventoEditandose, subida,
             {
                 headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
             }).then(res => {
@@ -513,7 +515,8 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     }
 
     eliminarInvitacion(idUsuario: number, idEvento: number) {
-        axios.delete('http://localhost:55555/api/events/anularInvitacion/' + idUsuario +'/'+idEvento)
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.eliminarInvitacion);
+        axios.delete(dir + idUsuario +'/'+idEvento)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -539,7 +542,8 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     }
 
     cancelarAsistencia(idUsuario: number, idEvento: number) {
-        axios.delete('http://localhost:55555/api/events/cancelarEvento/' + idUsuario + '/' + idEvento)
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.cancelarEvento);
+        axios.delete(dir + idUsuario + '/' + idEvento)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -561,7 +565,8 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     }
 
     aceptarInvitacion(idUsuario: number, idEvento: number) {
-        axios.put('http://localhost:55555/api/events/aceptarInvitacion/' + idUsuario + '/' + idEvento)
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.aceptarInvitacion);
+        axios.put(dir + idUsuario + '/' + idEvento)
             .then(res => {
                 console.log(res);
                 console.log(res.data);

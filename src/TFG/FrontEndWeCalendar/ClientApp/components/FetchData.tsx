@@ -144,7 +144,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
         var direccion = ApiUrlRepository.getApiUrl(ApiUrlRepository.setSpecificEvent);
         var subida = JSON.stringify(eventojson);
 
-        axios.post('http://localhost:55555/api/events', subida,
+        axios.post('http://localhost:11111/api/events', subida,
             {
                 headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
             }).then(res => {
@@ -163,7 +163,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
     }
 
     delete(id: number) {
-        axios.delete('http://localhost:55555/api/events/' + id)
+        axios.delete('http://localhost:11111/api/events/' + id)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -258,7 +258,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, DatosFet
 
         var subida = JSON.stringify(eventojson);
 
-        axios.put('http://localhost:55555/api/events/11', subida,
+        axios.put('http://localhost:11111/api/events/11', subida,
             {
                 headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
             }).then(res => {
