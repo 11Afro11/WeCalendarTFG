@@ -32,4 +32,14 @@ namespace BackendWeCalendar.Controllers.JsonRecivers
         public int idEvento { get; set; }
         public int idUsuario { get; set; }
     }
+
+    public class JSONNota
+    {
+        public string titulo { get; set; }
+        public string texto { get; set; }
+        public DateTime fechaTope { get; set; }
+        public DateTime createDate { get; set; }
+        public int usuarioId { get; set; }
+
+    }
 }

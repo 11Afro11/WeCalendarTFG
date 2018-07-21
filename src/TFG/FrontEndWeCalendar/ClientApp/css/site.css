@@ -335,3 +335,61 @@ th {
     .form-style-6 input[type="button"]:hover {
         background: #2EBC99;
     }
+
+/*Notas adhesivas*/
+
+
+
+ul .quote-container {
+    width: 100%;
+    display: inline;
+    table-layout: fixed;
+}
+/*
+ul li {
+    margin: 1em;
+    float: left;
+    display: inline;
+}*/
+
+.note {
+    display: inline;
+    float: left;
+    margin: 1em;
+    color: #333;
+    width: 240px;
+    height: 200px;
+    padding: 50px;
+    font-family: Satisfy;
+    font-size: 14px;
+    box-shadow: 0 10px 10px 2px rgba(0,0,0,0.3);
+}
+
+.note:hover {
+    box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+    -moz-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+    -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
+    -webkit-transform: scale(1.25);
+    -moz-transform: scale(1.25);
+    -o-transform: scale(1.25);
+    position: relative;
+    z-index: 5;
+}
+
+.note .author {
+    display: block;
+    margin: 0px 0 0 0;
+    text-align: right;
+
+}
+
+
+.yellow {
+    background: #eae672;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+

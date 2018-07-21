@@ -16,6 +16,10 @@ export module ApiUrlRepository {
     export var eliminarInvitacion = "eliminarInvitacion";
     export var aceptarInvitacion = "aceptarInvitacion";
 
+    /*Direciones de las notas*/
+    export var getSpecificNotes = "getSpecificNotes";
+    export var deleteNota = "deleteNota";
+
     var baseUrl = "http://localhost:11111/api";
     //var baseUrl = "http://wcbackend.azurewebsites.net/api";
     /*if (DEBUG) {
@@ -39,6 +43,8 @@ export module ApiUrlRepository {
     urls[getFriends] = baseUrl + "/Users/amigos";
     urls[eliminarInvitacion] = baseUrl + "/events/anularInvitacion/";
     urls[aceptarInvitacion] = baseUrl + "/events/aceptarInvitacion/";
+    urls[getSpecificNotes] = baseUrl + "/Notas";
+    urls[deleteNota] = baseUrl + "/Notas/";
 
     export function getApiUrl(arg : string) {
         return urls[arg];
