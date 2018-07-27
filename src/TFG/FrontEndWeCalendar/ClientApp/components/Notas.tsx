@@ -8,7 +8,9 @@ import axios from 'axios';
 interface NotasState {
     currentCount: number;
     notas: Nota[];
-    loadingNota : boolean;
+    loadingNota: boolean;
+    titulo: string;
+    texto : string;
 }
 
 export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> {
@@ -18,6 +20,8 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             currentCount: 0,
             notas: [],
             loadingNota: true,
+            titulo: "",
+            texto : "",
         };
         this.loadNota();
     }
@@ -68,12 +72,100 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
         this.setState({ notas: Lista });
     }
 
+
+
+    handletitle = (event: any) => {
+        this.setState({ titulo: event.target.value });
+    }
+
+    handletexto = (event: any) => {
+        this.setState({ texto: event.target.value });
+    }
+
+    /*Control de la subida e insercion del evento*/
+    handleSubmmit = (event: any) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        interface notaJson {
+            titulo: string;
+            texto: string;
+            fechaTope: Date;
+            createDate: Date;
+            usuarioId: number;
+        };
+
+        var notajson: notaJson = {
+            titulo: "",
+            texto: "",
+            fechaTope: new Date,
+            createDate: new Date,
+            usuarioId: 1,
+        }
+        
+
+
+
+        var notaMuestra: Nota = {
+            id: 0,
+            titulo: this.state.titulo,
+            texto: this.state.texto,
+            fechaTope: new Date,
+            createDate: new Date,
+            usuarioId: 1,
+        }
+
+        notajson.titulo = this.state.titulo;
+        notajson.texto = this.state.texto;
+
+        var subida = JSON.stringify(notajson);
+
+        //if (this.validarHoras) {
+
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.nuevaNota);
+        axios.post(dir,
+            subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+
+        var Lista: Nota[] = [];
+        this.state.notas.map(evento => {
+            Lista.push(evento);
+        });
+        Lista.push(notaMuestra);
+        this.setState({ notas: Lista });
+        this.setState({titulo : "", texto : ""});
+        //this.state.events.push(eventoMuestra);
+
+        //console.log(JSON.stringify(eventojson));
+    }
+
+    FormNotas() {
+        let devolucion = [];
+            devolucion.push((
+                <form onSubmit={this.handleSubmmit}>
+                <li className="note yellow">
+                        <cite className="author"> <input id="name" type="text" ref="un texto" onChange={this.handletitle} /> </cite>
+                        <input id="name" type="text" ref="un texto" onChange={this.handletexto} />
+                    <input type="submit" value="Send" />
+
+
+                </li> </form>) as any);
+        return devolucion;
+    }
+
     public render() {
         let notas = (this.state.loadingNota)
             ? <p><em>Loading...</em></p>
             : this.showNotas()
         return <ul className="quote-container">
             {notas}
+            {this.FormNotas()}
                </ul>;
 
     }

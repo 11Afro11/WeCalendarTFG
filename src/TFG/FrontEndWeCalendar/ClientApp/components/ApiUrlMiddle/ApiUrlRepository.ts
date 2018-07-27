@@ -19,6 +19,7 @@ export module ApiUrlRepository {
     /*Direciones de las notas*/
     export var getSpecificNotes = "getSpecificNotes";
     export var deleteNota = "deleteNota";
+    export var nuevaNota = "nuevaNota";
 
     var baseUrl = "http://localhost:11111/api";
     //var baseUrl = "http://wcbackend.azurewebsites.net/api";
@@ -45,6 +46,7 @@ export module ApiUrlRepository {
     urls[aceptarInvitacion] = baseUrl + "/events/aceptarInvitacion/";
     urls[getSpecificNotes] = baseUrl + "/Notas";
     urls[deleteNota] = baseUrl + "/Notas/";
+    urls[nuevaNota] = baseUrl + "/Notas";
 
     export function getApiUrl(arg : string) {
         return urls[arg];
