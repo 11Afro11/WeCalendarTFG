@@ -52,5 +52,42 @@ namespace DalWeCalendar
                 return correos.ToArray();
             }
         }
+
+        public Boolean Login(string username, string password)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var passwd = (from usuarios in db.UsuarioSet
+                        where usuarios.NombreUsuario == username
+                        select usuarios.Password).FirstOrDefault();
+                if (passwd == null) return false;
+                else
+                {
+                    return (passwd == password);
+                }
+            }
+        }
+
+        public string SetToken(string username)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var usuario = (from usuarios in db.UsuarioSet where usuarios.NombreUsuario == username select usuarios)
+                    .FirstOrDefault();
+                usuario.Token = "NewToken"+1;
+                db.SaveChanges();
+                return usuario.Token;
+            }
+        }
+
+        public int IDByToken(string token)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var usuario = (from usuarios in db.UsuarioSet where usuarios.Token == token select usuarios.Id)
+                    .FirstOrDefault();
+                return usuario;
+            }
+        }
     }
 }

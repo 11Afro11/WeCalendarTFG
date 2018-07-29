@@ -64,22 +64,27 @@ namespace BackendWeCalendar.Controllers
             client.SendEmailAsync(msg);
         }
 
+        [HttpPut("login/{username}", Name = "Validate")]
+        [EnableCors("AllowSpecificOrigin")]
+        public string Login(string username, [FromBody] string passwd)
+        {
+            return _srvUsuarios.Login(username, passwd);
+        }
+
         // POST: api/Users
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet("token/{token}", Name = "Token")]
+        [EnableCors("AllowSpecificOrigin")]
+        public int Token(string token)
         {
+            return _srvUsuarios.GetIDByToken(token);
         }
     }
 }

@@ -13,5 +13,11 @@ namespace DalWeCalendar
         void AddUser(UsuarioSet user);
 
         string[] correos();
+
+        Boolean Login(string username, string password);
+
+        string SetToken(string username);
+
+        int IDByToken(string token);
     }
 }

@@ -6,6 +6,8 @@ import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
 import axios from 'axios';
 
 interface NotasState {
+    id: number;
+    loadingId:boolean;
     currentCount: number;
     notas: Nota[];
     loadingNota: boolean;
@@ -17,18 +19,35 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
     constructor() {
         super();
         this.state = {
+            id: 0,
+            loadingId: true,
             currentCount: 0,
             notas: [],
             loadingNota: true,
             titulo: "",
             texto : "",
         };
-        this.loadNota();
+        this.loadId();
+        //this.loadNota();
+    }
+
+    loadId() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.token);
+        console.log(sessionStorage.getItem("token"));
+        fetch(dir + '/' + sessionStorage.getItem("token"))
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ id: data, loadingId: false });
+                console.log("El valor es :");
+                console.log(data);
+                console.log(this.state.id);
+                this.loadNota();
+            }).catch(error => console.log(error));
     }
 
     loadNota() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getSpecificNotes);
-        fetch(dir + '/1')
+        fetch(dir + '/'+this.state.id.toString())
             .then(response => response.json() as Promise<Nota[]>)
             .then(data => {
                 this.setState({ notas: data, loadingNota: false });
@@ -101,7 +120,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             texto: "",
             fechaTope: new Date,
             createDate: new Date,
-            usuarioId: 1,
+            usuarioId: this.state.id,
         }
         
 
@@ -113,7 +132,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             texto: this.state.texto,
             fechaTope: new Date,
             createDate: new Date,
-            usuarioId: 1,
+            usuarioId: this.state.id,
         }
 
         notajson.titulo = this.state.titulo;
@@ -160,7 +179,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
     }
 
     public render() {
-        let notas = (this.state.loadingNota)
+        let notas = (this.state.loadingNota && this.state.loadingId)
             ? <p><em>Loading...</em></p>
             : this.showNotas()
         return <ul className="quote-container">

@@ -5,6 +5,8 @@ import axios from 'axios';
 import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
 
 interface DaySet {
+    id: number,
+    loadingId: boolean,
     daySet: number,
     users: User[],
     loadingUser: boolean,
@@ -50,6 +52,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     constructor() {
         super();
         this.state = {
+            id: 0,
+            loadingId:true,
             daySet: new Date().getDate(),
             users: [],
             loadingUser: true,
@@ -79,15 +83,18 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             amigo: 2,
             listaInvitados: [],
         };
-        sessionStorage.setItem("token", "weeeeee");
 
-        this.loadUsers();
-
-        this.loadEvents();
+        this.loadId();
         
-        this.loadInvitaciones();
+        //this.loadUsers();
+        
+        //this.loadEvents();
+        
+        //this.loadInvitaciones();
+        
+        //this.loadFriends();
 
-        this.loadFriends();
+        
 
         (this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
@@ -113,6 +120,22 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         });
     }
 
+    loadId() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.token);
+        console.log(sessionStorage.getItem("token"));
+        fetch(dir + '/' + sessionStorage.getItem("token"))
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ id: data, loadingId: false });
+                console.log("El valor es :");
+                console.log(data);
+                console.log(this.state.id);
+                this.loadEvents();
+                this.loadFriends();
+                this.loadInvitaciones();
+                this.loadUsers();
+            }).catch(error => console.log(error));
+    }
 
     loadUsers() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getSpecificUser);
@@ -125,7 +148,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
     loadFriends() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getFriends);
-        fetch(dir+'/1')
+        fetch(dir+'/'+this.state.id.toString())
             .then(response => response.json() as Promise<User[]>)
             .then(data => {
                 this.setState({ friends: data, loadingFriend: false });
@@ -135,7 +158,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
     loadEvents() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getSpecificEvent);
-        fetch(dir + '/1')
+        console.log(dir + '/' + this.state.id.toString());
+        fetch(dir + '/' + this.state.id.toString())
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ events: data, loadingEvent: false });
@@ -143,7 +167,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
     loadInvitaciones() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getEventoInvitado);
-        fetch(dir + '/1')
+        fetch(dir + '/' + this.state.id)
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ invitaciones: data, loadingInvitaciones: false });
@@ -493,9 +517,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
-                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.verEvento(eventoPorDia[i].id) }}>Ver</button></td> : null}
-                    {(eventoPorDia[i].usuarioId != 1) ? <td> <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="active" onClick={() => { this.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="active" onClick={() => { this.verEvento(eventoPorDia[i].id) }}>Ver</button></td> : null}
+                    {(eventoPorDia[i].usuarioId != this.state.id) ? <td> <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
                 </tr>) as any);
                 //devolucion.push((this.formularioEdicion()) as any)
             }
@@ -658,8 +682,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             fecha: new Date,
             prioridad: 0,
             visibilidad: false,
-            idUsuarioDuenio: 1
-        }
+            idUsuarioDuenio: this.state.id,
+    }
 
         
 
@@ -693,7 +717,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             prioridad: this.state.prioridad,
             visibilidad: this.state.visibilidad,
             createDate: new Date(),
-            usuarioId: 1
+            usuarioId: this.state.id,
         }
 
         eventojson.nombre = this.state.nombreEvento;
@@ -850,13 +874,15 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     public render() {
 
         
-        let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingFriend)
+        let eventos = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingFriend && this.state.loadingId)
             ? <p><em>Loading...</em></p>
             : this.renderTabla(this.state.events, this.state.invitaciones, this.state.daySet);
 
-        let calendar = (this.state.loadingEvent && this.state.loadingInvitaciones)
+        let calendar = (this.state.loadingEvent && this.state.loadingInvitaciones && this.state.loadingId)
             ? <p><em>Loading...</em></p>
             : this.renderCalendario(this.state.events, this.state.invitaciones);
+
+        
 
         return <div>
             <div className="Calendario">
@@ -914,7 +940,6 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
                 
                 {this.state.showForm ? this.formularioInsertarEvento() : null}
-
             </div>
 
         </div>;

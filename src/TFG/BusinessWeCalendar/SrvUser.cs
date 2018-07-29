@@ -22,5 +22,19 @@ namespace BusinessWeCalendar
         {
             return _dalUsers.GetAmigos(idUsuario);
         }
+
+        public string Login(string username, string password)
+        {
+            if (_dalUsers.Login(username, password))
+            {
+                return _dalUsers.SetToken(username);
+            }
+            else return null;
+        }
+
+        public int GetIDByToken(string token)
+        {
+            return _dalUsers.IDByToken(token);
+        }
     }
 }

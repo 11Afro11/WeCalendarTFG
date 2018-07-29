@@ -128,9 +128,19 @@ export class NavMenu extends React.Component<{}, Show> {
                                 <span className='glyphicon glyphicon-th-list'></span> Fetch data
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="#" activeClassName='active'>
+                                <button className='glyphicon glyphicon-log-out' onClick={() => { this.logout(); }}> Logout</button> 
+                            </NavLink>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>;
+    }
+
+    logout() {
+        sessionStorage.removeItem("token");
+        window.location.reload();
     }
 }

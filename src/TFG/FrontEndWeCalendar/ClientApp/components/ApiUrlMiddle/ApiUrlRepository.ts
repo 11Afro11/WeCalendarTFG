@@ -15,6 +15,8 @@ export module ApiUrlRepository {
     export var getFriends = "getFriends";
     export var eliminarInvitacion = "eliminarInvitacion";
     export var aceptarInvitacion = "aceptarInvitacion";
+    export var login = "login";
+    export var token = "token";
 
     /*Direciones de las notas*/
     export var getSpecificNotes = "getSpecificNotes";
@@ -47,6 +49,8 @@ export module ApiUrlRepository {
     urls[getSpecificNotes] = baseUrl + "/Notas";
     urls[deleteNota] = baseUrl + "/Notas/";
     urls[nuevaNota] = baseUrl + "/Notas";
+    urls[login] = baseUrl + "/Users/login";
+    urls[token] = baseUrl + "/Users/token";
 
     export function getApiUrl(arg : string) {
         return urls[arg];
