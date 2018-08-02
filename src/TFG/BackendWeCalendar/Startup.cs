@@ -35,7 +35,9 @@ namespace BackendWeCalendar
             services.AddTransient<IDalEventos, DalEventos>();
             services.AddTransient<ISrvNota, SrvNota>();
             services.AddTransient<IDalNota, DalNota>();
-            
+            services.AddTransient<ISrvChat, SrvChat>();
+            services.AddTransient<IDalChat, DalChat>();
+
             services.AddTransient<Notificaciones>();
             services.AddMvc();
             services.AddCors();

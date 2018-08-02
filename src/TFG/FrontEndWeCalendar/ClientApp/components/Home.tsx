@@ -41,7 +41,7 @@ interface DaySet {
 export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
 
-    mes = "Julio";
+    mes = "Agosto";
     anio = 2018;
     eventos = [1, 4, 12];
     usuario = 1;
@@ -134,6 +134,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 this.loadFriends();
                 this.loadInvitaciones();
                 this.loadUsers();
+                console.log("hola");
             }).catch(error => console.log(error));
     }
 
@@ -904,10 +905,6 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <li>Domingo</li>
                 </ul>
                 <ul className="days">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
                     <li></li>
                     <li></li>
                     {calendar}

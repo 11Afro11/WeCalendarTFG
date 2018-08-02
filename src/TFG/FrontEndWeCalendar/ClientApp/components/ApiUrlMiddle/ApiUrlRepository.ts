@@ -23,6 +23,9 @@ export module ApiUrlRepository {
     export var deleteNota = "deleteNota";
     export var nuevaNota = "nuevaNota";
 
+    /*Direccion de los mansajes*/
+    export var getMensajes = "getMensajes";
+
     var baseUrl = "http://localhost:11111/api";
     //var baseUrl = "http://wcbackend.azurewebsites.net/api";
     /*if (DEBUG) {
@@ -51,6 +54,7 @@ export module ApiUrlRepository {
     urls[nuevaNota] = baseUrl + "/Notas";
     urls[login] = baseUrl + "/Users/login";
     urls[token] = baseUrl + "/Users/token";
+    urls[getMensajes] = baseUrl + "/Chat";
 
     export function getApiUrl(arg : string) {
         return urls[arg];

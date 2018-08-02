@@ -212,7 +212,26 @@ th {
 }
 
 /*Chat style*/
+
+.msg {
+    width: 94%;
+}
+.input .msgsend {
+    width: 5%;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+}
+
+.chatBox {
+    width: 100%;
+    border: #333333;
+    border-radius: 5px;
+}
+
 .container {
+    width: 90%;
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -491,4 +510,5 @@ ul li {
     transform: translate(10px, 0);
     opacity: 0;
 }
+
 

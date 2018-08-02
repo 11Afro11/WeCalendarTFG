@@ -42,4 +42,13 @@ namespace BackendWeCalendar.Controllers.JsonRecivers
         public int usuarioId { get; set; }
 
     }
+
+    public class JSONMsg
+    {
+        public string texto { get; set; }
+        public int grupoId { get; set; }
+        public DateTime createDate {get; set; }
+        public int usuarioId { get; set; }
+        public int chatId { get; set; }
+    }
 }
