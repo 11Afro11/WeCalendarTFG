@@ -12,7 +12,11 @@ interface ChatState {
     loadMsg: boolean;
     chat: number;
     grupo : number;
-    texto : string;
+    texto: string;
+    notas: Nota[];
+    loadingNota: boolean;
+    titulo: string;
+    textoNota: string;
 }
 
 export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
@@ -23,9 +27,13 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             loadID: true,
             msg: [],
             loadMsg: true,
-            chat: 0,
-            grupo : 0,
-            texto : "",
+            chat: 1,
+            grupo : 1,
+            texto: "",
+            notas: [],
+            loadingNota: true,
+            titulo: "",
+            textoNota: "",
         };
 
         this.loadId();
@@ -77,6 +85,62 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         this.setState({ texto: event.target.value });
     }
 
+    handleSubmmit = (event: any) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        interface chatSubida {
+            texto : string;
+            grupoId : number;
+            createDate : Date;
+            usuarioId : number;
+            chatId : number;
+        }
+
+        var msgjson: chatSubida = {
+            texto: this.state.texto,
+            grupoId: this.state.grupo,
+            createDate: new Date,
+            usuarioId: this.state.id,
+            chatId : this.state.chat,
+    }
+
+        var auxiliar: ChatI = {
+            id: 0,
+            texto: this.state.texto,
+            groupId: 1,
+            createDate: new Date,
+            usuarioId: this.state.id,
+            chatId: 1,
+        }
+
+        var subida = JSON.stringify(msgjson);
+
+        //if (this.validarHoras) {
+
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.sendMsg);
+        axios.post(dir,
+            subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+
+        var Lista: ChatI[] = [];
+        this.state.msg.map(evento => {
+            Lista.push(evento);
+        });
+        Lista.push(auxiliar);
+        this.setState({ msg: Lista });
+        this.setState({texto : ""});
+        //this.state.events.push(eventoMuestra);
+
+        //console.log(JSON.stringify(eventojson));
+    }
+
 
     public render() {
 
@@ -85,15 +149,16 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             : this.printMsg();
 
         return <div>
+            <p>MENSAJES</p>
             <div className="chatBox">
-            <p>nuevo msg</p>
+            
                 {mensajes}
                 
             </div>
-            <div className="container darker">
-                <input className="msg" type="text" ref="un texto" />
+            <form className="container darker" onSubmit={this.handleSubmmit}>
+                <input className="msg" type="text" value={this.state.texto} ref="un texto" onChange={this.handletexto}/>
                 <input className="msgsub" type="submit" value="Send" />
-            </div>
+            </form>
         </div>;
 
     }
@@ -107,4 +172,13 @@ interface ChatI {
     createDate: Date;
     usuarioId: number;
     chatId: number;
+}
+
+interface Nota {
+    id: number,
+    titulo: string,
+    texto: string,
+    fechaTope: Date,
+    createDate: Date,
+    usuarioId: number,
 }

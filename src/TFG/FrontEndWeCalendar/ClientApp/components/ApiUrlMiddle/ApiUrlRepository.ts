@@ -25,6 +25,7 @@ export module ApiUrlRepository {
 
     /*Direccion de los mansajes*/
     export var getMensajes = "getMensajes";
+    export var sendMsg = "sendMsg";
 
     var baseUrl = "http://localhost:11111/api";
     //var baseUrl = "http://wcbackend.azurewebsites.net/api";
@@ -55,6 +56,7 @@ export module ApiUrlRepository {
     urls[login] = baseUrl + "/Users/login";
     urls[token] = baseUrl + "/Users/token";
     urls[getMensajes] = baseUrl + "/Chat";
+    urls[sendMsg] = baseUrl + "/Chat";
 
     export function getApiUrl(arg : string) {
         return urls[arg];

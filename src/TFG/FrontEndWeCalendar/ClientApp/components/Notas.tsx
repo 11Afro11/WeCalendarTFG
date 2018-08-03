@@ -169,8 +169,8 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             devolucion.push((
                 <form onSubmit={this.handleSubmmit}>
                 <li className="note yellow">
-                        <cite className="author"> <input id="name" type="text" ref="un texto" onChange={this.handletitle} /> </cite>
-                        <input id="name" type="text" ref="un texto" onChange={this.handletexto} />
+                        <cite className="author"> <input id="name" value={this.state.titulo} type="text" ref="un texto" onChange={this.handletitle} /> </cite>
+                        <input id="name" type="text" ref="un texto" value={this.state.texto} onChange={this.handletexto} />
                     <input type="submit" value="Send" />
 
 
