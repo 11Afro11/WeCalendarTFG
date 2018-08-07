@@ -19,5 +19,7 @@ namespace DalWeCalendar
         string SetToken(string username);
 
         int IDByToken(string token);
+
+        UsuarioSet[] GetAllUsers();
     }
 }

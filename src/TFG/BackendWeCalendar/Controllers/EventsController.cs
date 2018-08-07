@@ -63,6 +63,14 @@ namespace BackendWeCalendar.Controllers
             return result;
         }
 
+        [HttpGet("all", Name = "GetAllEv")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<EventoSet> GetAll(int id)
+        {
+            var result = _srvEventos.GetAllEvents();
+            return result;
+        }
+
         [HttpGet("pendientes/{id}", Name = "GetPendientes")]
         [EnableCors("AllowSpecificOrigin")]
         public IEnumerable<EventoSet> GetPendientes(int id)

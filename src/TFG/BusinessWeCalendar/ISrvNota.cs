@@ -7,7 +7,9 @@ namespace BusinessWeCalendar
     public interface ISrvNota
     {
         NotaSet[] GetNota(int id);
+        NotaSet[] GetNotaByGroup(int id);
         void NuevaNota(JSONNota note);
+        void NuevaNotaTablero(JSONNotaTablero note);
         void DeleteNota(int id);
     }
 }

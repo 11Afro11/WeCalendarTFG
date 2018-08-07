@@ -44,7 +44,7 @@ namespace BackendWeCalendar
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins(new string[] { "http://wecalendar.azurewebsites.net", "http://localhost:44444"}));
+                    builder => builder.WithOrigins(new string[] { "http://wecalendar.azurewebsites.net", "http://localhost:44444", "http://localhost:55555" }));
             });
 
         }

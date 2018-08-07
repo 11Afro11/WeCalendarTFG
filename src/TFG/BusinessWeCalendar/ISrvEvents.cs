@@ -28,5 +28,7 @@ namespace BusinessWeCalendar
         void CancelarEvento(int idUsuario, int idEvento);
 
         String[] ListaAsistentes(int idEvento);
+
+        EventoSet[] GetAllEvents();
     }
 }

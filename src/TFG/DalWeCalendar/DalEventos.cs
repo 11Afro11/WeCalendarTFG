@@ -157,5 +157,20 @@ namespace DalWeCalendar
                 return listaEventos;
             }
         }
+
+        public EventoSet[] GetAllEvents()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var eventos = from evento in db.EventoSet select evento;
+                List<EventoSet> listaEventos = new List<EventoSet>();
+                foreach (var ev in eventos)
+                {
+                    listaEventos.Add(ev);
+                }
+
+                return listaEventos.ToArray();
+            }
+        }
     }
 }

@@ -43,6 +43,16 @@ namespace BackendWeCalendar.Controllers.JsonRecivers
 
     }
 
+    public class JSONNotaTablero
+    {
+        public string titulo { get; set; }
+        public string texto { get; set; }
+        public DateTime fechaTope { get; set; }
+        public DateTime createDate { get; set; }
+        public int usuarioId { get; set; }
+        public int tableroId { get; set; }
+    }
+
     public class JSONMsg
     {
         public string texto { get; set; }

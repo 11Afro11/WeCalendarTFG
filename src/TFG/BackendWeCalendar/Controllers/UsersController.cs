@@ -48,6 +48,14 @@ namespace BackendWeCalendar.Controllers
             return resultado;
         }
 
+        [HttpGet("all", Name = "GetAll")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<UsuarioSet> All()
+        {
+            var resultado = _srvUsuarios.GetAllUsers();
+            return resultado;
+        }
+
         [HttpGet("correo", Name = "sendMail")]
         [EnableCors("AllowSpecificOrigin")]
         public void Correo()

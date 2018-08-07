@@ -414,6 +414,15 @@ ul li {
     transform: rotate(2deg);
 }
 
+.shared {
+    background: #B7E0F5;
+    -webkit-transform: rotate(2deg);
+    -moz-transform: rotate(2deg);
+    -o-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+}
+
 /*Login*/
 
 

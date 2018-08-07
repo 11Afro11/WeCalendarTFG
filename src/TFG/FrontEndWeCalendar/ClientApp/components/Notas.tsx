@@ -57,14 +57,23 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
     showNotas() {
         let devolucion = [];
         for (let i: number = 0; i < this.state.notas.length; i++) {
+            (this.state.notas[i].tableroId == null) ?
             devolucion.push((
-                <li className="note yellow">
+                 <li className="note yellow">
                     <cite className="author">{this.state.notas[i].titulo} <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(this.state.notas[i].id) }}></button> </cite>
                     
                     {this.state.notas[i].texto}
                     
 
-                </li>)as any);
+                    </li>) as any)
+            : devolucion.push((
+                <li className="note shared">
+                    <cite className="author">{this.state.notas[i].titulo} <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(this.state.notas[i].id) }}></button> </cite>
+
+                    {this.state.notas[i].texto}
+
+
+                </li>) as any);
         }
         return devolucion;
     }
@@ -133,6 +142,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             fechaTope: new Date,
             createDate: new Date,
             usuarioId: this.state.id,
+            tableroId: 0,
         }
 
         notajson.titulo = this.state.titulo;
@@ -198,4 +208,5 @@ interface Nota {
     fechaTope : Date,
     createDate: Date,
     usuarioId: number,
+    tableroId: number,
 }

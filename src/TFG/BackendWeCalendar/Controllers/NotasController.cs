@@ -34,12 +34,28 @@ namespace BackendWeCalendar.Controllers
             return _srvNota.GetNota(id);
         }
 
+        // GET: api/Notas/5
+        [HttpGet("grupo/{id}", Name = "GetNotasGrupo")]
+        [EnableCors("AllowSpecificOrigin")]
+        public NotaSet[] GetNotasGrupo(int id)
+        {
+            return _srvNota.GetNotaByGroup(id);
+        }
+
         // POST: api/Notas
         [HttpPost]
         [EnableCors("AllowSpecificOrigin")]
         public void Post([FromBody] JSONNota value)
         {
             _srvNota.NuevaNota(value);
+        }
+
+        // POST: api/Notas
+        [HttpPost("tablero", Name="InsertarNotaTablero")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void Insertar([FromBody] JSONNotaTablero value)
+        {
+            _srvNota.NuevaNotaTablero(value);
         }
 
         // PUT: api/Notas/5

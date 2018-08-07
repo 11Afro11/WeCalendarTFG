@@ -36,5 +36,10 @@ namespace BusinessWeCalendar
         {
             return _dalUsers.IDByToken(token);
         }
+
+        public UsuarioSet[] GetAllUsers()
+        {
+            return _dalUsers.GetAllUsers();
+        }
     }
 }

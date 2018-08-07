@@ -82,5 +82,10 @@ namespace BusinessWeCalendar
         {
             return _dalEvents.ListaInvitados(idEvento);
         }
+
+        public EventoSet[] GetAllEvents()
+        {
+            return _dalEvents.GetAllEvents();
+        }
     }
 }

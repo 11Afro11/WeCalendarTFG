@@ -27,6 +27,8 @@ namespace DalWeCalendar
 
         String[] ListaInvitados(int idEvento);
 
+        EventoSet[] GetAllEvents();
+
     }   
 
 }

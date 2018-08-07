@@ -89,5 +89,20 @@ namespace DalWeCalendar
                 return usuario;
             }
         }
+
+        public UsuarioSet[] GetAllUsers()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var users = from user in db.UsuarioSet select user;
+                List<UsuarioSet> listaUsuarios = new List<UsuarioSet>();
+                foreach (var usr in users)
+                {
+                    listaUsuarios.Add(usr);
+                }
+
+                return listaUsuarios.ToArray();
+            }
+        }
     }
 }

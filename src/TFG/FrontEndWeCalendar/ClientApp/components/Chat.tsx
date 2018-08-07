@@ -38,6 +38,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
 
         this.loadId();
         this.loadChat();
+        this.loadNota();
 
         //this.loadNota();
     }
@@ -70,15 +71,62 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             }).catch(error => console.log(error));
     }
 
+    loadNota() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getNotaChat);
+        fetch(dir + '/' + 1)
+            .then(response => response.json() as Promise<Nota[]>)
+            .then(data => {
+                this.setState({ notas: data, loadingNota: false });
+            }).catch(error => console.log(error));
+    }
+
     printMsg() {
         let dev = [];
         for(let i : number = 0; i < this.state.msg.length; i++){
-            dev.push(( <div className="container">
+            dev.push((<div className="container">
+                <p>nombre</p>
                 <p>{this.state.msg[i].texto}</p>
                 <span className="time-right">11:00</span>
             </div>) as any);
         }
         return dev;
+    }
+
+    showNotas() {
+        let devolucion = [];
+        for (let i: number = 0; i < this.state.notas.length; i++) {
+            devolucion.push((
+                <li className="note yellow">
+                    <cite className="author">{this.state.notas[i].titulo} <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(this.state.notas[i].id) }}></button> </cite>
+
+                    {this.state.notas[i].texto}
+
+
+                </li>) as any);
+        }
+        return devolucion;
+    }
+
+    eliminar(id: number) {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.deleteNota);
+        axios.delete(dir + id)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+        var Lista: Nota[] = [];
+        this.state.notas.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: Nota = this.state.notas[0];
+        Lista.map(evento => {
+            if (evento.id == id)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        Lista.splice(indice);
+        this.setState({ notas: Lista });
     }
 
     handletexto = (event: any) => {
@@ -142,11 +190,102 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
     }
 
 
+    handletitle = (event: any) => {
+        this.setState({ titulo: event.target.value });
+    }
+
+    handletextoNota = (event: any) => {
+        this.setState({ textoNota: event.target.value });
+    }
+
+    /*Control de la subida e insercion del evento*/
+    handleSubmmitNota = (event: any) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        interface notaJson {
+            titulo: string;
+            texto: string;
+            fechaTope: Date;
+            createDate: Date;
+            usuarioId: number;
+            tableroId: number;
+        };
+
+        var notajson: notaJson = {
+            titulo: "",
+            texto: "",
+            fechaTope: new Date,
+            createDate: new Date,
+            usuarioId: this.state.id,
+            tableroId: this.state.grupo,
+        }
+
+
+
+
+        var notaMuestra: Nota = {
+            id: 0,
+            titulo: this.state.titulo,
+            texto: this.state.textoNota,
+            fechaTope: new Date,
+            createDate: new Date,
+            usuarioId: this.state.id,
+            tableroId: this.state.grupo,
+        }
+
+        notajson.titulo = this.state.titulo;
+        notajson.texto = this.state.textoNota;
+
+        var subida = JSON.stringify(notajson);
+
+        //if (this.validarHoras) {
+
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.nuevaNotaTablero);
+        axios.post(dir,
+            subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+
+        var Lista: Nota[] = [];
+        this.state.notas.map(evento => {
+            Lista.push(evento);
+        });
+        Lista.push(notaMuestra);
+        this.setState({ notas: Lista });
+        this.setState({ titulo: "", textoNota: "" });
+        //this.state.events.push(eventoMuestra);
+
+        //console.log(JSON.stringify(eventojson));
+    }
+
+    FormNotas() {
+        let devolucion = [];
+        devolucion.push((
+            <form onSubmit={this.handleSubmmitNota}>
+                <li className="note yellow">
+                    <cite className="author"> <input id="name" value={this.state.titulo} type="text" ref="un texto" onChange={this.handletitle} /> </cite>
+                    <input id="name" type="text" ref="un texto" value={this.state.textoNota} onChange={this.handletextoNota} />
+                    <input type="submit" value="Send" />
+
+
+                </li> </form>) as any);
+        return devolucion;
+    }
+
     public render() {
 
         let mensajes = (this.state.loadID && this.state.loadMsg)
             ? <p>No se han cargado</p>
             : this.printMsg();
+        let notas = (this.state.loadingNota)
+            ? <p>No hay notas</p>
+            : this.showNotas();
 
         return <div>
             <p>MENSAJES</p>
@@ -159,6 +298,10 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                 <input className="msg" type="text" value={this.state.texto} ref="un texto" onChange={this.handletexto}/>
                 <input className="msgsub" type="submit" value="Send" />
             </form>
+                   <ul className="quote-container">
+                       {notas}
+                       {this.FormNotas()}
+                   </ul>
         </div>;
 
     }
@@ -181,4 +324,5 @@ interface Nota {
     fechaTope: Date,
     createDate: Date,
     usuarioId: number,
+    tableroId: number,
 }

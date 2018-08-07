@@ -18,6 +18,11 @@ namespace BusinessWeCalendar
             return _dalNota.GetNotaSet(id);
         }
 
+        public NotaSet[] GetNotaByGroup(int id)
+        {
+            return _dalNota.GetNotaByGroup(id);
+        }
+
         public void NuevaNota(JSONNota note)
         {
             NotaSet nota = new NotaSet();
@@ -26,6 +31,18 @@ namespace BusinessWeCalendar
             nota.UsuarioId = note.usuarioId;
             nota.FechaTope = note.fechaTope;
             nota.CreateDate = note.createDate;
+            _dalNota.NuevaNota(nota);
+        }
+
+        public void NuevaNotaTablero(JSONNotaTablero note)
+        {
+            NotaSet nota = new NotaSet();
+            nota.Titulo = note.titulo;
+            nota.Texto = note.texto;
+            nota.UsuarioId = note.usuarioId;
+            nota.FechaTope = note.fechaTope;
+            nota.CreateDate = note.createDate;
+            nota.TableroId = note.tableroId;
             _dalNota.NuevaNota(nota);
         }
 
