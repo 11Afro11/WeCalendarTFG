@@ -21,5 +21,9 @@ namespace DalWeCalendar
         int IDByToken(string token);
 
         UsuarioSet[] GetAllUsers();
+
+        void Banear(BaneoSet id);
+
+        int[] listaBaneados();
     }
 }

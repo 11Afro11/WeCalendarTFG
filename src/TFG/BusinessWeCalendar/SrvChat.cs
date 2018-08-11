@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BackendWeCalendar.Controllers.JsonRecivers;
 using DalModel;
 using DalWeCalendar;
@@ -28,6 +29,22 @@ namespace BusinessWeCalendar
             mens.UsuarioId = mensaje.usuarioId;
             mens.CreateDate = mensaje.createDate.ToString();
             _dalChat.InsertarMensaje(mens);
+        }
+
+        public JSONUserSecure[] UsuariosInGrup(int id)
+        {
+            UsuarioSet[] usuarios = _dalChat.GetParticipantes(id);
+            List<JSONUserSecure> listaUsuarios = new List<JSONUserSecure>();
+            
+            foreach (var user in usuarios)
+            {
+                JSONUserSecure usuario = new JSONUserSecure();
+                usuario.id = user.Id;
+                usuario.nombre = user.NombreUsuario;
+                listaUsuarios.Add(usuario);
+            }
+
+            return listaUsuarios.ToArray();
         }
     }
 }

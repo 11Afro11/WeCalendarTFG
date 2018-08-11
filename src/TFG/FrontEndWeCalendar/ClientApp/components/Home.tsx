@@ -518,9 +518,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
-                    {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="active" onClick={() => { this.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                    {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="active" onClick={() => { this.verEvento(eventoPorDia[i].id) }}>Ver</button></td> : null}
-                    {(eventoPorDia[i].usuarioId != this.state.id) ? <td> <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="glyphicon glyphicon-eye-open" onClick={() => { this.verEvento(eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventoPorDia[i].usuarioId != this.state.id) ? <td> <button className="glyphicon glyphicon-remove" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
                 </tr>) as any);
                 //devolucion.push((this.formularioEdicion()) as any)
             }
@@ -793,7 +793,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 </label>
                 <label>
                     Visibilidad
-                        <input id="visibilidad" type="checkbox" name="vehicle" value="Visible" onChange={this.handleVisibilidadChange} />
+                        <input id="visibilidad" type="checkbox" name="vehicle" value="true" onChange={this.handleVisibilidadChange} />
                 </label>
                 <input type="submit" disabled={!this.state.validFrom} value="Send" />
                 </form>

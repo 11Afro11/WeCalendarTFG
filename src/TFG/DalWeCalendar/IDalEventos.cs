@@ -11,6 +11,8 @@ namespace DalWeCalendar
 
         EventoSet[] GetEventosPendientes(int id);
 
+        EventoSet[] GetEventosPublicos(int id);
+
         void AddEvento(EventoSet evento);
 
         void RemoveEvento(int id);

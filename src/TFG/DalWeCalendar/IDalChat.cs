@@ -6,5 +6,6 @@ namespace DalWeCalendar
     {
         MensajeSet[] GetMensajes(int idUser);
         void InsertarMensaje(MensajeSet mensaje);
+        UsuarioSet[] GetParticipantes(int idGrupo);
     }
 }

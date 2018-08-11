@@ -125,17 +125,17 @@ export class NavMenu extends React.Component<{}, Show> {
                         </li>
                         <li>
                             <NavLink to={ '/chat' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-th-list'></span> Chat
+                                <span className='glyphicon glyphicon-comment'></span> Chat
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to={ '/fetchdata' } activeClassName='active'>
-                                <span className='glyphicon glyphicon-th-list'></span> Fetch data
+                            <NavLink to={'/evento'} activeClassName='active'>
+                                <span className='glyphicon glyphicon-th-list'></span> Eventos
                             </NavLink>
                         </li>
                         <li>
                             <NavLink to="#" activeClassName='active'>
-                                <button className='glyphicon glyphicon-log-out' onClick={() => { this.logout(); }}> Logout</button> 
+                                <button className='glyphicon glyphicon-log-out' onClick={() => { this.logout(); }}> Salir</button> 
                             </NavLink>
                         </li>
                     </ul>

@@ -35,6 +35,14 @@ namespace BackendWeCalendar.Controllers
             return _srvChat.GetMensajes(id);
         }
 
+        // GET: api/Chat/5
+        [HttpGet("participantes/{id}", Name = "Participantes")]
+        [EnableCors("AllowSpecificOrigin")]
+        public JSONUserSecure[] participentes(int id)
+        {
+            return _srvChat.UsuariosInGrup(id);
+        }
+
         // POST: api/Chat
         [HttpPost]
         [EnableCors("AllowSpecificOrigin")]

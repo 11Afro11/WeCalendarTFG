@@ -17,6 +17,8 @@ interface ChatState {
     loadingNota: boolean;
     titulo: string;
     textoNota: string;
+    asistentes: Usuario[];
+    loadingAsistentes: boolean;
 }
 
 export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
@@ -28,17 +30,20 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             msg: [],
             loadMsg: true,
             chat: 1,
-            grupo : 1,
+            grupo: 1,
             texto: "",
             notas: [],
             loadingNota: true,
             titulo: "",
             textoNota: "",
-        };
+            asistentes: [],
+            loadingAsistentes: true,
+    };
 
         this.loadId();
         this.loadChat();
         this.loadNota();
+        this.loadAsistentes();
 
         //this.loadNota();
     }
@@ -80,11 +85,33 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             }).catch(error => console.log(error));
     }
 
+    loadAsistentes() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getParticipantes);
+        fetch(dir + '/' + 1)
+            .then(response => response.json() as Promise<Usuario[]>)
+            .then(data => {
+                this.setState({ asistentes: data, loadingAsistentes: false });
+            }).catch(error => console.log(error));
+        console.log(this.state.asistentes);
+    }
+
+    getNombre(id: number) {
+        var dev = "";
+        console.log("Aqui mostramos lo demas");
+        this.state.asistentes.map(asist => {
+            if (asist.id == id)
+                dev = asist.nombre;
+            
+            console.log(asist.nombre);
+        });
+        return dev;
+    }
+
     printMsg() {
         let dev = [];
         for(let i : number = 0; i < this.state.msg.length; i++){
             dev.push((<div className="container">
-                <p>nombre</p>
+                <p>{this.getNombre(this.state.msg[i].usuarioId)}</p>
                 <p>{this.state.msg[i].texto}</p>
                 <span className="time-right">11:00</span>
             </div>) as any);
@@ -280,7 +307,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
 
     public render() {
 
-        let mensajes = (this.state.loadID && this.state.loadMsg)
+        let mensajes = (this.state.loadID && this.state.loadMsg && this.state.loadingAsistentes)
             ? <p>No se han cargado</p>
             : this.printMsg();
         let notas = (this.state.loadingNota)
@@ -325,4 +352,9 @@ interface Nota {
     createDate: Date,
     usuarioId: number,
     tableroId: number,
+}
+
+interface Usuario {
+    id: number;
+    nombre: string;
 }

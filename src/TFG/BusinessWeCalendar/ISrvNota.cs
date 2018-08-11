@@ -11,5 +11,6 @@ namespace BusinessWeCalendar
         void NuevaNota(JSONNota note);
         void NuevaNotaTablero(JSONNotaTablero note);
         void DeleteNota(int id);
+        
     }
 }

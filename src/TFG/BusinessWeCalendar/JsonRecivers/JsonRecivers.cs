@@ -61,4 +61,10 @@ namespace BackendWeCalendar.Controllers.JsonRecivers
         public int usuarioId { get; set; }
         public int chatId { get; set; }
     }
+
+    public class JSONUserSecure
+    {
+        public int id { get; set; }
+        public string nombre { get; set; }
+    }
 }

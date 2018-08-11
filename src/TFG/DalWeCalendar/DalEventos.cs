@@ -28,6 +28,22 @@ namespace DalWeCalendar
             }
         }
 
+        public EventoSet[] GetEventosPublicos(int id)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var eventos = from evento in db.EventoSet where (evento.UsuarioId != id && evento.Visibilidad == true) select evento;
+                List<EventoSet> termList = new List<EventoSet>();
+                foreach (EventoSet ev in eventos)
+                {
+                    termList.Add(ev);
+                }
+
+                EventoSet[] listaEventos = termList.ToArray();
+                return listaEventos;
+            }
+        }
+
         public void AddEvento(EventoSet evento)
         {
             EntityEntry<EventoSet> conseguido = Add(evento);
@@ -53,7 +69,8 @@ namespace DalWeCalendar
             using(var db = new TFGDatabaseContext())
             {
                 var delete = (from evento in db.PendientesSet where evento.EventoId == idEvento && evento.UsuarioId == idUsuario select evento).FirstOrDefault();
-                db.PendientesSet.Remove(delete);
+                if(delete != null)
+                    db.PendientesSet.Remove(delete);
                 db.SaveChanges();
             }
         }

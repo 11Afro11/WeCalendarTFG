@@ -9,5 +9,7 @@ namespace BusinessWeCalendar
         string Login(string username, string password);
         int GetIDByToken(string token);
         UsuarioSet[] GetAllUsers();
+        void Banear(int idUsuario, int idAdmin);
+        int[] ListaBaneados();
     }
 }

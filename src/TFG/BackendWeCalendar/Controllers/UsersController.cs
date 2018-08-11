@@ -56,6 +56,14 @@ namespace BackendWeCalendar.Controllers
             return resultado;
         }
 
+        [HttpGet("listaBaneos", Name = "GetBaneos")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<int> ListaBaneos()
+        {
+            var resultado = _srvUsuarios.ListaBaneados();
+            return resultado;
+        }
+
         [HttpGet("correo", Name = "sendMail")]
         [EnableCors("AllowSpecificOrigin")]
         public void Correo()
@@ -77,6 +85,14 @@ namespace BackendWeCalendar.Controllers
         public string Login(string username, [FromBody] string passwd)
         {
             return _srvUsuarios.Login(username, passwd);
+        }
+
+
+        [HttpPut("baneo/{idUsuario}/{idAdmin}", Name = "Baneado")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void Baneo(int idUsuario, int idAdmin)
+        {
+            _srvUsuarios.Banear(idUsuario, idAdmin);
         }
 
         // POST: api/Users

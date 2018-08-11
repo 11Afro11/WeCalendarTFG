@@ -8,5 +8,6 @@ namespace BusinessWeCalendar
     {
         MensajeSet[] GetMensajes(int idUser);
         void InsertarMensaje(JSONMsg mensaje);
+        JSONUserSecure[] UsuariosInGrup(int id);
     }
 }

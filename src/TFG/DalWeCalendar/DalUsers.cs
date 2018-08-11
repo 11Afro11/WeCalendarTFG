@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using DalModel;
+using Remotion.Linq.Clauses;
 
 namespace DalWeCalendar
 {
@@ -60,10 +62,24 @@ namespace DalWeCalendar
                 var passwd = (from usuarios in db.UsuarioSet
                         where usuarios.NombreUsuario == username
                         select usuarios.Password).FirstOrDefault();
+
+                byte[] hashBytes = Convert.FromBase64String(passwd);
+                /* Get the salt */
+                byte[] salt = new byte[16];
+                Array.Copy(hashBytes, 0, salt, 0, 16);
+                /* Compute the hash on the password the user entered */
+                var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+                byte[] hash = pbkdf2.GetBytes(20);
+                /* Compare the results */
+                
+
                 if (passwd == null) return false;
                 else
                 {
-                    return (passwd == password);
+                    for (int i = 0; i < 20; i++)
+                        if (hashBytes[i + 16] != hash[i])
+                            return false;
+                    return true;
                 }
             }
         }
@@ -74,7 +90,7 @@ namespace DalWeCalendar
             {
                 var usuario = (from usuarios in db.UsuarioSet where usuarios.NombreUsuario == username select usuarios)
                     .FirstOrDefault();
-                usuario.Token = "NewToken"+1;
+                usuario.Token = Guid.NewGuid().ToString();
                 db.SaveChanges();
                 return usuario.Token;
             }
@@ -102,6 +118,30 @@ namespace DalWeCalendar
                 }
 
                 return listaUsuarios.ToArray();
+            }
+        }
+
+        public void Banear(BaneoSet id)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                db.BaneoSet.Add(id);
+                db.SaveChanges();
+            }
+        }
+
+        public int[] listaBaneados()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var ids = from id in db.BaneoSet select id.Id;
+                List<int> listaID = new List<int>();
+                foreach (var i in ids)
+                {
+                    listaID.Add(i);
+                }
+
+                return listaID.ToArray();
             }
         }
     }

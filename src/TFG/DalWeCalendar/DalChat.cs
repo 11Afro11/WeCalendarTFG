@@ -33,5 +33,30 @@ namespace DalWeCalendar
                 db.SaveChanges();
             }
         }
+
+        public UsuarioSet[] GetParticipantes(int idGrupo)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var usuariosID = from grups in db.GrupoSet where grups.Id == idGrupo select grups.UsuarioId;
+                var asistentes = from list in db.ListaGrupoSet where list.GrupoId == idGrupo select list.UsuarioId;
+                var ur = usuariosID.Concat(asistentes);
+                var users = from usuarios in db.UsuarioSet where ur.Contains(usuarios.Id) select usuarios;
+                //var asist = from usuarios in db.UsuarioSet where asistentes.Contains(usuarios.Id) select usuarios;
+                List < UsuarioSet > listaUasuarios = new List<UsuarioSet>();
+                //List < UsuarioSet > listaAsistentes = new List<UsuarioSet>();
+                foreach (UsuarioSet u in users)
+                {
+                    listaUasuarios.Add(u);
+                }
+                /*foreach (UsuarioSet u in asist)
+                {
+                    listaAsistentes.Add(u);
+                }*/
+
+                //var lista = listaUasuarios.Concat(listaAsistentes);
+                return listaUasuarios.ToArray();
+            }
+        }
     }
 }

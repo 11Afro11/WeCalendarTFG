@@ -97,7 +97,12 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
         });
         var indice = Lista.indexOf(borrar);
         Lista.splice(indice);
-        this.setState({ notas: Lista });
+        this.setState({
+            notas: this.state.notas.filter(function (person) {
+                return person.id !== borrar.id;
+            })
+        });
+        //this.setState({ notas: Lista });
     }
 
 

@@ -29,6 +29,11 @@ namespace BusinessWeCalendar
             return _dalEvents.GetEventosPendientes(id);
         }
 
+        public EventoSet[] GetEventosPublicos(int id)
+        {
+            return _dalEvents.GetEventosPublicos(id);
+        }
+
         public void AddEvento(JSONEvento evento)
         {
             EventoSet nuevoEvento = new EventoSet();

@@ -13,6 +13,8 @@ namespace BusinessWeCalendar
 
         EventoSet[] GetListaPendientes(int id);
 
+        EventoSet[] GetEventosPublicos(int id);
+
         void AddEvento(JSONEvento evento);
 
         void RemoveEvento(int id);
