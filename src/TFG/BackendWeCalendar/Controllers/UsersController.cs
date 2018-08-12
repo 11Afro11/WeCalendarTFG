@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BackendWeCalendar.Controllers.JsonRecivers;
 using BusinessWeCalendar;
 using DalModel;
 using Microsoft.AspNetCore.Cors;
@@ -97,8 +98,9 @@ namespace BackendWeCalendar.Controllers
 
         // POST: api/Users
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] JSONRegister value)
         {
+            _srvUsuarios.Register(value);
         }
 
         

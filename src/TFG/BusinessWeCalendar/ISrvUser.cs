@@ -1,4 +1,5 @@
-﻿using DalModel;
+﻿using BackendWeCalendar.Controllers.JsonRecivers;
+using DalModel;
 
 namespace BusinessWeCalendar
 {
@@ -11,5 +12,6 @@ namespace BusinessWeCalendar
         UsuarioSet[] GetAllUsers();
         void Banear(int idUsuario, int idAdmin);
         int[] ListaBaneados();
+        string Register(JSONRegister datos);
     }
 }

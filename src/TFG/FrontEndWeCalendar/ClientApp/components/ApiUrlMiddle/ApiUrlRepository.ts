@@ -18,6 +18,7 @@ export module ApiUrlRepository {
     export var login = "login";
     export var token = "token";
     export var publicos = "publicos";
+    export var registrar = "registrar";
 
     /*Direciones de las notas*/
     export var getSpecificNotes = "getSpecificNotes";
@@ -65,6 +66,7 @@ export module ApiUrlRepository {
     urls[nuevaNotaTablero] = baseUrl + "/Notas/tablero";
     urls[publicos] = baseUrl + "/events/publicos";
     urls[getParticipantes] = baseUrl + "/Chat/participantes";
+    urls[registrar] = baseUrl + "/Users";
 
     export function getApiUrl(arg : string) {
         return urls[arg];

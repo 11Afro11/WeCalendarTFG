@@ -10,6 +10,8 @@ export interface LayoutProps {
 interface formu {
     username: String;
     password: String;
+    mail : String;
+    registered: boolean;
 }
 
 export class Layout extends React.Component<LayoutProps, formu> {
@@ -18,11 +20,17 @@ export class Layout extends React.Component<LayoutProps, formu> {
         this.state = {
             username: "",
             password: "",
-        };
+            mail: "",
+            registered: true,
+    };
     }
 
     handleUsernameChange = (event: any) => {
         this.setState({ username: event.target.value });
+    }
+
+    handleMailChange = (event: any) => {
+        this.setState({mail : event.target.value});
     }
 
     handlePasswdChange = (event: any) => {
@@ -61,27 +69,118 @@ export class Layout extends React.Component<LayoutProps, formu> {
 
     }
 
+    handleRegister = (event: any) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.registrar);
+        interface reg {
+            username: String;
+            correo: String;
+            passwd: String;
+        }
+
+        var regist: reg = {
+            username:"",
+            correo: "",
+            passwd: "",
+        }
+
+        regist.username = this.state.username;
+        regist.correo = this.state.mail;
+        regist.passwd = this.state.password;
+
+
+        var token = "";
+        var subida = JSON.stringify(regist);
+        axios.post(dir, subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+            token = String(res.data);
+
+            if (token != null)
+                //sessionStorage.setItem("token", token);
+            console.log(sessionStorage.getItem("token"));
+            window.location.reload();
+            //console.log(res);
+            //console.log(res.data);
+        });
+        /*
+        console.log(token);
+        if(token != null)
+            sessionStorage.setItem("token", token);
+        console.log(this.state.username);
+        console.log(this.state.password);
+        //window.location.reload();*/
+        this.setState({registered: true});
+
+
+    }
+
+    logReg() {
+        if (this.state.registered) 
+            this.setState({ registered: false });
+        else
+            this.setState({registered:true});
+    }
+
     loadSesion() {
         //sessionStorage.setItem("token", "weeeeee");
         //sessionStorage.removeItem("token");
         let dev = [];
-        (sessionStorage.getItem("token") == null) ? dev.push((<div className="contenedor"><div className='login'>
-                                                                <form onSubmit={this.handleSubmmit}>
-                                                                  <h2>Log In</h2>
-                                                                  <input name='username' placeholder='Username' type='text' onChange={this.handleUsernameChange} />
-                                                                  <input id='pw' name='password' placeholder='Password' type='password' onChange={this.handlePasswdChange} />
-                                                                  <input type='submit' value='Sign in' />
-                                                                </form>
-                                                              </div></div>) as any) : dev.push((<div className='container-fluid'>
-            <div className='row'>
-                                            <div className='col-sm-3'>
-                                                <NavMenu />
-                                            </div>
-                                            <div className='col-sm-9'>
-                                                {this.props.children}
-                                            </div>
-                                        </div>
-            </div>) as any);
+        if (this.state.registered) {
+            (sessionStorage.getItem("token") == null)
+                ? dev.push((<div className="contenedor">
+                                <div className='login'>
+                                    <form onSubmit={this.handleSubmmit}>
+                                        <h2>Log In</h2>
+                                        <input name='username' placeholder='Username' type='text' onChange={this.handleUsernameChange}/>
+                                        <input id='pw' name='password' placeholder='Password' type='password' onChange={this
+                                .handlePasswdChange} />
+                                        <button className="active" onClick={() => { this.logReg() }}>Sing up</button>
+                                        <input type='submit' value='Sign in'/>
+                                    </form>
+                                </div></div>) as any)
+                : dev.push((<div className='container-fluid'>
+
+                                <div className='row'>
+                                    <div className='col-sm-3'>
+                                        <NavMenu/>
+                                    </div>
+                                    <div className='col-sm-9'>
+                                        {this.props.children}
+                                    </div>
+                                </div>
+                            </div>) as any);
+        } else {
+            (sessionStorage.getItem("token") == null)
+                ? dev.push((<div className="contenedor">
+                                <div className='login'>
+                                    <form onSubmit={this.handleRegister}>
+                                        <h2>Register</h2>
+                            <input name='username' placeholder='Username' type='text' onChange={this.handleUsernameChange} />
+                                        <input name='mail' placeholder='Mail' type='text' onChange={this.handleMailChange} />
+                            <input id='pw' name='password' placeholder='Password' type='password' onChange={this.handlePasswdChange} />
+                                        <button className="active" onClick={() => { this.logReg() }}>Sign in</button>
+                                        <input type='submit' value='Sign up' />
+                                    </form>
+                                </div></div>) as any)
+                : dev.push((<div className='container-fluid'>
+
+                                <div className='row'>
+                                    <div className='col-sm-3'>
+                                        <NavMenu />
+                                    </div>
+                                    <div className='col-sm-9'>
+                                        {this.props.children}
+                                    </div>
+                                </div>
+                            </div>) as any);
+        }
+        
+
+
         return dev;
     }
 

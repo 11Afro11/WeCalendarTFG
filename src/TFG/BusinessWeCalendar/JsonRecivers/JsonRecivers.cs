@@ -67,4 +67,11 @@ namespace BackendWeCalendar.Controllers.JsonRecivers
         public int id { get; set; }
         public string nombre { get; set; }
     }
+
+    public class JSONRegister
+    {
+        public string username { get; set; }
+        public string correo { get; set; }
+        public string passwd { get; set; }
+    }
 }
