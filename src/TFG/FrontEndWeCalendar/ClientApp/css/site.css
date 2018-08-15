@@ -523,3 +523,32 @@ ul li {
 }
 
 
+/*User*/
+
+.contenedorUsuario {
+    margin-top: 10%;
+}
+
+.card {
+    margin-top: 40%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+}
+
+.title {
+    color: grey;
+    font-size: 18px;
+}
+
+img {
+    width: 100%;
+    height: 20%;
+}
+
+.ind {
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
+}

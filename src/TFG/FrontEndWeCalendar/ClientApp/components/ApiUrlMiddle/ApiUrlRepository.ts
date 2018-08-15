@@ -19,6 +19,9 @@ export module ApiUrlRepository {
     export var token = "token";
     export var publicos = "publicos";
     export var registrar = "registrar";
+    export var user = "user";
+    export var setNotif = "setNotif";
+    export var AddFriend = "AddFriend";
 
     /*Direciones de las notas*/
     export var getSpecificNotes = "getSpecificNotes";
@@ -67,6 +70,9 @@ export module ApiUrlRepository {
     urls[publicos] = baseUrl + "/events/publicos";
     urls[getParticipantes] = baseUrl + "/Chat/participantes";
     urls[registrar] = baseUrl + "/Users";
+    urls[user] = baseUrl + "/Users/get";
+    urls[setNotif] = baseUrl + "/Users/notification";
+    urls[AddFriend] = baseUrl + "/Users/addFriend";
 
     export function getApiUrl(arg : string) {
         return urls[arg];

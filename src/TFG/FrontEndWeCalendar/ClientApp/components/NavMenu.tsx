@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
+//import ApiUrlRepository1 = ApiUrlRepository.ApiUrlRepository;
+import axios from 'axios';
+
 interface Show {
     pendientes: Evento[],
     loadingPendientes: boolean,
     usuario: User[],
     loadingUser : boolean,
-
+    id: number;
+    loadId: boolean;
 }
 
 interface Evento {
@@ -43,19 +48,47 @@ export class NavMenu extends React.Component<{}, Show> {
             pendientes: [],
             loadingPendientes: true,
             usuario: [],
-            loadingUser : true,
+            loadingUser: true,
+            id: 0,
+            loadId: true,
         };
+
         fetch('http://localhost:11111/api/events/pendientes/1')
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ pendientes: data, loadingPendientes: false });
             });
-        fetch('http://localhost:11111/api/Users/Afro')
-            .then(response => response.json() as Promise<User[]>)
+        this.loadId();
+
+
+
+        //sessionStorage.setItem("contadorPendiente" , this.state.pendientes.length.toString());
+    }
+
+    loadId() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.token);
+        console.log(sessionStorage.getItem("token"));
+        fetch(dir + '/' + sessionStorage.getItem("token"))
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ id: data, loadId: false });
+                console.log("El valor es :");
+                console.log(data);
+                console.log(this.state.id);
+                this.loadUser();
+                console.log("hola");
+            }).catch(error => console.log(error));
+    }
+
+    loadUser() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.user);
+        fetch(dir + '/' + this.state.id)
+            .then(response => response.json())
             .then(data => {
                 this.setState({ usuario: data, loadingUser: false });
-            });
-        //sessionStorage.setItem("contadorPendiente" , this.state.pendientes.length.toString());
+                console.log("hola");
+                console.log(this.state.usuario[0].nombreUsuario);
+            }).catch(error => console.log(error));
     }
 
     enlaceAPendientes() {
@@ -79,7 +112,7 @@ export class NavMenu extends React.Component<{}, Show> {
         let user = [];
         user.push((
             <li>
-                <NavLink to={'#'} activeClassName='active'>
+                <NavLink to={'/user'} activeClassName='active'>
                     <span className='glyphicon glyphicon-user'></span> {this.state.usuario[0].nombreUsuario}
                 </NavLink>
             </li>) as any);

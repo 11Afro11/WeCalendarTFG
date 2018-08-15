@@ -17,6 +17,14 @@ namespace DalWeCalendar
             }
         }
 
+        public UsuarioSet GetUsuarioById(int id)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                return db.UsuarioSet.First(x => x.Id == id);
+            }
+        }
+
         public UsuarioSet[] GetAmigos(int idUsuario)
         {
             using (var db = new TFGDatabaseContext())
@@ -36,9 +44,36 @@ namespace DalWeCalendar
             }
         }
 
+        public void ChangeNotification(int idUsuario)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var usuario = (from usr in db.UsuarioSet where usr.Id == idUsuario select usr).FirstOrDefault();
+                if (usuario.Notificacion == "YES")
+                    usuario.Notificacion = "NO";
+                else
+                    usuario.Notificacion = "YES";
+
+                db.SaveChanges();
+            }
+        }
+
         public void AddUser(UsuarioSet user)
         {
             Add(user);
+        }
+
+        public void AddFriend(int idUsuario, int idAmigo)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                UsuarioAmigoSet relacion = new UsuarioAmigoSet();
+                relacion.UsuarioId = idUsuario;
+                relacion.UsuarioId1 = idAmigo;
+                relacion.CreateDate = DateTime.Today;
+                db.UsuarioAmigoSet.Add(relacion);
+                db.SaveChanges();
+            }
         }
 
         public string[] correos()

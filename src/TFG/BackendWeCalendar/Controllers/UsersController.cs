@@ -41,6 +41,26 @@ namespace BackendWeCalendar.Controllers
             };
         }
 
+        // GET: api/Users/5
+        [HttpGet("get/{id}", Name = "Getid")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<UsuarioSet> GetID(int id)
+        {
+            var result = _srvUsuarios.GetUser(id);
+            return new[]
+            {
+                result
+            };
+        }
+
+        // GET: api/Users/5
+        [HttpGet("notification/{id}", Name = "Notification")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void Notification(int id)
+        {
+            _srvUsuarios.SetNotificacion(id);
+        }
+
         [HttpGet("amigos/{id}", Name = "GetAmigos")]
         [EnableCors("AllowSpecificOrigin")]
         public IEnumerable<UsuarioSet> Get(int id)
@@ -86,6 +106,13 @@ namespace BackendWeCalendar.Controllers
         public string Login(string username, [FromBody] string passwd)
         {
             return _srvUsuarios.Login(username, passwd);
+        }
+
+        [HttpPut("addFriend/{idUsuario}", Name = "AddFriend")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void AddFriend(int idUsuario, [FromBody] string nombreAmigo)
+        {
+            _srvUsuarios.AddFriend(idUsuario, nombreAmigo);
         }
 
 

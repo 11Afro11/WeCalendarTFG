@@ -8,9 +8,15 @@ namespace DalWeCalendar
     {
         UsuarioSet GetUsuario(string username);
 
+        UsuarioSet GetUsuarioById(int id);
+
         UsuarioSet[] GetAmigos(int idUsuario);
 
+        void ChangeNotification(int idUsuario);
+
         void AddUser(UsuarioSet user);
+
+        void AddFriend(int idUsuario, int idAmigo);
 
         string[] correos();
 

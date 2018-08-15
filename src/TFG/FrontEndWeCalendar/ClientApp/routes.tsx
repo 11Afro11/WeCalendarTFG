@@ -8,6 +8,7 @@ import { Pendientes } from './components/Pendientes';
 import { Notas } from './components/Notas';
 import { Chat } from './components/Chat';
 import { Eventos } from './components/Eventos';
+import { User } from './components/User';
 
 export const routes = <Layout>
     <Route exact path='/' component={ Home } />
@@ -17,5 +18,5 @@ export const routes = <Layout>
     <Route path='/notas' component={Notas} />
     <Route path='/chat' component={Chat} />
     <Route path='/evento' component={Eventos} />
-
+    <Route path='/user' component={User} />
 </Layout>;

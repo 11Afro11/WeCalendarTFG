@@ -20,9 +20,25 @@ namespace BusinessWeCalendar
             return _dalUsers.GetUsuario(usuario);
         }
 
+        public UsuarioSet GetUser(int id)
+        {
+            return _dalUsers.GetUsuarioById(id);
+        }
+
         public UsuarioSet[] GetAmigos(int idUsuario)
         {
             return _dalUsers.GetAmigos(idUsuario);
+        }
+
+        public void AddFriend(int idUsuario, string amigo)
+        {
+            int idAmigo = GetUser(amigo).Id;
+            _dalUsers.AddFriend(idUsuario, idAmigo);
+        }
+
+        public void SetNotificacion(int idUsuario)
+        {
+            _dalUsers.ChangeNotification(idUsuario);
         }
 
         public string Login(string username, string password)
