@@ -58,5 +58,86 @@ namespace DalWeCalendar
                 return listaUasuarios.ToArray();
             }
         }
+
+        public TableroSet[] ListaTableros()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var grupsId = from grups in db.GrupoSet select grups.Id;
+                var tableros = from tab in db.TableroSet where grupsId.Contains(tab.GrupoId) select tab;
+                return tableros.ToArray();
+            }
+        }
+
+        public int[] ListaChat(int idUsuario)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var grupsId = from grups in db.GrupoSet where grups.UsuarioId == idUsuario select grups.ChatId;
+                return grupsId.ToArray();
+            }
+        }
+
+        public GrupoSet[] ListaGrupos(int idUsuario)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var grupos = from grupo in db.GrupoSet where grupo.UsuarioId == idUsuario select grupo;
+                return grupos.ToArray();
+            }
+        }
+
+        public void CrearGrupo(GrupoSet grupo)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                db.GrupoSet.Add(grupo);
+                db.SaveChanges();
+            }
+        }
+
+        public int GetChatID()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var invoice = db.ChatSet.OrderByDescending(s => s.Id)
+                    .FirstOrDefault();
+                return invoice.Id;
+            }
+            
+        }
+
+        public int GetLastGrupID()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var invoice = db.GrupoSet.OrderByDescending(s => s.Id)
+                    .FirstOrDefault();
+                return invoice.Id;
+            }
+        }
+
+        public void CreateChat()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                ChatSet chat = new ChatSet();
+                chat.CreateDate = DateTime.Today;
+                db.ChatSet.Add(chat);
+                db.SaveChanges();
+            }
+        }
+
+        public void crearTablero(int idGrupo)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                TableroSet tab = new TableroSet();
+                tab.GrupoId = idGrupo;
+                tab.CreateDate = DateTime.Today;
+                db.TableroSet.Add(tab);
+                db.SaveChanges();
+            }
+        }
     }
 }

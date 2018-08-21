@@ -1,4 +1,5 @@
-﻿using DalModel;
+﻿using System;
+using DalModel;
 
 namespace DalWeCalendar
 {
@@ -7,5 +8,13 @@ namespace DalWeCalendar
         MensajeSet[] GetMensajes(int idUser);
         void InsertarMensaje(MensajeSet mensaje);
         UsuarioSet[] GetParticipantes(int idGrupo);
+        TableroSet[] ListaTableros();
+        int[] ListaChat(int idUsuario);
+        GrupoSet[] ListaGrupos(int idUsuario);
+        void CrearGrupo(GrupoSet grupo);
+        int GetChatID();
+        int GetLastGrupID();
+        void CreateChat();
+        void crearTablero(int idGrupo);
     }
 }

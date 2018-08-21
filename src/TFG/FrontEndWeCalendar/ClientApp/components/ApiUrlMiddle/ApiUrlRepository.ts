@@ -22,6 +22,7 @@ export module ApiUrlRepository {
     export var user = "user";
     export var setNotif = "setNotif";
     export var AddFriend = "AddFriend";
+    export var listaGrupos = "listaGrupos";
 
     /*Direciones de las notas*/
     export var getSpecificNotes = "getSpecificNotes";
@@ -34,6 +35,7 @@ export module ApiUrlRepository {
     export var sendMsg = "sendMsg";
     export var getNotaChat = "getMsgChat";
     export var getParticipantes = "getParticipantes";
+    export var getTablero = "getTablero";
 
     var baseUrl = "http://localhost:11111/api";
     //var baseUrl = "http://wcbackend.azurewebsites.net/api";
@@ -73,6 +75,8 @@ export module ApiUrlRepository {
     urls[user] = baseUrl + "/Users/get";
     urls[setNotif] = baseUrl + "/Users/notification";
     urls[AddFriend] = baseUrl + "/Users/addFriend";
+    urls[listaGrupos] = baseUrl + "/Chat/grupos";
+    urls[getTablero] = baseUrl + "/Chat/tableros";
 
     export function getApiUrl(arg : string) {
         return urls[arg];

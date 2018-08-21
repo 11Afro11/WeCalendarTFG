@@ -36,11 +36,44 @@ namespace BackendWeCalendar.Controllers
         }
 
         // GET: api/Chat/5
+        [HttpGet("tableros", Name = "Tableros")]
+        [EnableCors("AllowSpecificOrigin")]
+        public TableroSet[] Tableros()
+        {
+            return _srvChat.listaTableros();
+        }
+
+        // GET: api/Chat/5
+        [HttpGet("grupos/{id}", Name = "grupos")]
+        [EnableCors("AllowSpecificOrigin")]
+        public GrupoSet[] grupos(int id)
+        {
+            return _srvChat.listaGrupos(id);
+        }
+
+        // GET: api/Chat/5
+        [HttpGet("chat/{id}", Name = "chat")]
+        [EnableCors("AllowSpecificOrigin")]
+        public TableroSet[] chat(int id)
+        {
+            return _srvChat.listaTableros();
+        }
+
+        // GET: api/Chat/5
         [HttpGet("participantes/{id}", Name = "Participantes")]
         [EnableCors("AllowSpecificOrigin")]
         public JSONUserSecure[] participentes(int id)
         {
             return _srvChat.UsuariosInGrup(id);
+        }
+
+        // POST: api/Chat
+        [HttpPost("newGrup", Name = "NewGrup")]
+        [EnableCors("AllowSpecificOrigin")]
+        public bool NewGrup([FromBody] JSONGrup value)
+        {
+            _srvChat.CrearGrupo(value.nombre, value.descripcion, value.id);
+            return true;
         }
 
         // POST: api/Chat

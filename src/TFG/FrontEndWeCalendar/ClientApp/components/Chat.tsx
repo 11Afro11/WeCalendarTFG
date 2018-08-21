@@ -10,6 +10,7 @@ interface ChatState {
     loadID: boolean;
     msg: ChatI[];
     loadMsg: boolean;
+    msgMostrados: ChatI[];
     chat: number;
     grupo : number;
     texto: string;
@@ -19,6 +20,13 @@ interface ChatState {
     textoNota: string;
     asistentes: Usuario[];
     loadingAsistentes: boolean;
+    nombreGrupo: string;
+    descGrupo: string;
+    activeGrup: number;
+    grupos: grupoId[];
+    loadingGrupos: boolean;
+    tableros: Tablero[];
+    loadTableros: boolean;
 }
 
 export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
@@ -28,6 +36,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             id: 0,
             loadID: true,
             msg: [],
+            msgMostrados: [],
             loadMsg: true,
             chat: 1,
             grupo: 1,
@@ -38,6 +47,13 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             textoNota: "",
             asistentes: [],
             loadingAsistentes: true,
+            nombreGrupo: "",
+            descGrupo: "",
+            activeGrup: 1,
+            grupos: [],
+            loadingGrupos: true,
+            tableros: [],
+            loadTableros: true,
     };
 
         this.loadId();
@@ -61,6 +77,8 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                 console.log("El valor es :");
                 console.log(data);
                 this.loadChat();
+                this.loadGrupos();
+                this.loadTableros();
             }).catch(error => console.log(error));
     }
 
@@ -70,7 +88,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         fetch(dir + '/' + 1)
             .then(response => response.json() as Promise<ChatI[]>)
             .then(data => {
-                this.setState({ msg: data, loadMsg: false });
+                this.setState({ msg: data,  loadMsg: false });
                 console.log("El valor es :");
                 console.log(data);
             }).catch(error => console.log(error));
@@ -94,6 +112,25 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             }).catch(error => console.log(error));
         console.log(this.state.asistentes);
     }
+    loadGrupos() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.listaGrupos);
+        fetch(dir + '/' + this.state.id)
+            .then(response => response.json() as Promise<grupoId[]>)
+            .then(data => {
+                this.setState({ grupos: data, loadingGrupos: false });
+            }).catch(error => console.log(error));
+        console.log(this.state.asistentes);
+    }
+
+    loadTableros() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getTablero);
+        fetch(dir)
+            .then(response => response.json() as Promise<Tablero[]>)
+            .then(data => {
+                this.setState({ tableros: data, loadTableros: false});
+            }).catch(error => console.log(error));
+        console.log(this.state.asistentes);
+    }
 
     getNombre(id: number) {
         var dev = "";
@@ -108,19 +145,55 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
     }
 
     printMsg() {
-        let dev = [];
-        for(let i : number = 0; i < this.state.msg.length; i++){
-            dev.push((<div className="container">
-                <p>{this.getNombre(this.state.msg[i].usuarioId)}</p>
-                <p>{this.state.msg[i].texto}</p>
-                <span className="time-right">11:00</span>
-            </div>) as any);
+        let dev: any = [];
+        var mens: ChatI[] = [];
+        console.log("El grupo es");
+        console.log(this.state.activeGrup);
+        //mens.push(this.state.msg[0]);
+        for (let i: number = 0; i < this.state.msg.length; i++) {
+            if (this.state.msg[i].chatId == this.state.activeGrup) {
+                mens.push(this.state.msg[i]);
+                
+            }
+            console.log("l id es");
+            console.log(this.state.msg[i].groupId); 
         }
+        
+        mens.map(mensaje => {
+            dev.push((<div className="container">
+                          <p>{this.getNombre(mensaje.usuarioId)}</p>
+                          <p>{mensaje.texto}</p>
+                          <span className="time-right">11:00</span>
+                      </div>) as any);
+        });
         return dev;
     }
 
     showNotas() {
-        let devolucion = [];
+        let devolucion : any= [];
+        var idTablero: number = 0;
+        this.state.tableros.map(tab => {
+            if (tab.grupoId == this.state.activeGrup)
+                idTablero = tab.id;
+        });
+
+        let listataNotas: Nota[] = [];
+        this.state.notas.map(nota => {
+            if (nota.tableroId == idTablero)
+                listataNotas.push(nota);
+        });
+
+        listataNotas.map(nota => {
+            devolucion.push((
+                <li className="note yellow">
+                    <cite className="author">{nota.titulo} <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(nota.id) }}></button> </cite>
+
+                    {nota.texto}
+
+
+                </li>) as any);
+        });
+        /*
         for (let i: number = 0; i < this.state.notas.length; i++) {
             devolucion.push((
                 <li className="note yellow">
@@ -130,7 +203,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
 
 
                 </li>) as any);
-        }
+        }*/
         return devolucion;
     }
 
@@ -291,6 +364,19 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         //console.log(JSON.stringify(eventojson));
     }
 
+
+    formGrupo() {
+        let devolucion = [];
+        devolucion.push((<form>
+            <input id="name" type="text" ref="un texto" value={this.state.nombreGrupo} onChange={this.handletextoNota} />
+                             <input id="name" type="text" ref="un texto" value={this.state.descGrupo} onChange={this.handletextoNota} />
+                                 <input type="submit" value="Send" />
+
+        </form>) as any);
+        return devolucion;
+    }
+
+
     FormNotas() {
         let devolucion = [];
         devolucion.push((
@@ -305,6 +391,34 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         return devolucion;
     }
 
+    setActiveGrup(id: number) {
+        this.setState({ activeGrup : id});
+    }
+
+    listaGrupos() {
+        let devoluciones = [];
+
+        for (let i: number = 0; i < this.state.grupos.length; i++) {
+            devoluciones.push((
+                <button onClick={() => { this.setActiveGrup(this.state.grupos[i].id); }}><div className="chip">
+                    <img src={require('./IMG/group.png')} width="96" height="96" />
+                    {this.state.grupos[i].nombre}
+                </div></button>
+                ) as any);
+        }
+        return devoluciones;
+    }
+    
+
+    nombreGrupo(id: number) {
+        var dev: string = "Grupo";
+        this.state.grupos.map(gr => {
+            if (gr.id == id)
+                dev = gr.nombre;
+        });
+        return dev;
+    }
+
     public render() {
 
         let mensajes = (this.state.loadID && this.state.loadMsg && this.state.loadingAsistentes)
@@ -315,12 +429,31 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             : this.showNotas();
 
         return <div>
-            <p>MENSAJES</p>
-            <div className="chatBox">
+                   <table className='table'>
+                   <thead>
+                   <tr>
+                        <th width="80%">{(this.state.loadingGrupos) ? "nombre de grupo" : this.nombreGrupo(this.state.activeGrup)}</th>
+                        <th width="20%">Contactos</th>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div className="chatBox">
+
+                            {mensajes}
+                            </div>
+                        </td>
+                        <td>
+                            <div className="grupos">
+                                {this.listaGrupos()}
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                </thead>
+                </table>
             
-                {mensajes}
-                
-            </div>
             <form className="container darker" onSubmit={this.handleSubmmit}>
                 <input className="msg" type="text" value={this.state.texto} ref="un texto" onChange={this.handletexto}/>
                 <input className="msgsub" type="submit" value="Send" />
@@ -344,6 +477,16 @@ interface ChatI {
     chatId: number;
 }
 
+interface grupoId {
+    id: number,
+    nombre: string,
+    descripcion: string,
+    imagen: string,
+    createDate: string,
+    usuarioId: number,
+    chatId: number,
+}
+
 interface Nota {
     id: number,
     titulo: string,
@@ -352,6 +495,12 @@ interface Nota {
     createDate: Date,
     usuarioId: number,
     tableroId: number,
+}
+
+interface Tablero {
+    id: number,
+    createDate: Date,
+    grupoId: number,
 }
 
 interface Usuario {
