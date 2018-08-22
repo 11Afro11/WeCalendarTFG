@@ -884,6 +884,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             : this.renderCalendario(this.state.events, this.state.invitaciones);
 
         
+        let cerca = (this.state.loadingEvent)
+            ? null
+            : this.muestraCercania(this.state.events);
+        
 
         return <div>
             <div className="Calendario">
@@ -937,9 +941,69 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
                 
                 {this.state.showForm ? this.formularioInsertarEvento() : null}
+
+
+                <table className="table">
+                    <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Eventos cercanos</th>
+                    </tr>
+                    </thead>
+                </table>
+
+                {cerca}
+                
+
             </div>
 
         </div>;
+    }
+
+
+    muestraCercania( eventos : Evento[]) {
+        var event: Evento = eventos[0];
+        var dia: number = 0;
+        let devolucion = [];
+        this.state.events.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            if (day > this.state.daySet) {
+                event = evento;
+                dia = day;
+            }
+        });
+
+        if (dia > this.state.daySet) {
+            console.log("la lista de eventos es:");
+            console.log(event.nombre);
+            
+            var horaInicio = new Date(event.horaInicio.toString()).getHours();
+            var minutosInicio = new Date(event.horaInicio.toString()).getMinutes();
+            var horafin = new Date(event.horaFin.toString()).getHours();
+            var minutosfin = new Date(event.horaFin.toString()).getMinutes();
+            var hora = "";
+            if (horaInicio < 10)
+                hora += 0;
+            hora += horaInicio + ":";
+            if (minutosInicio < 10)
+                hora += 0;
+            hora += minutosInicio + "-";
+            if (horafin < 10)
+                hora += 0;
+            hora += horafin + ":";
+            if (minutosfin < 10)
+                hora += 0;
+            hora += minutosfin;
+            devolucion.push((<tr>
+                                 <th scope="row">{dia}</th>
+                                 <td>{hora}</td>
+                                 <td>{event.nombre}</td>
+                                 <td>{event.descripcion}</td>
+                                 <td>{event.direccion}</td>
+                             </tr>) as any);
+        } 
+
+       
+        return devolucion;
     }
 
     muestraUOcultaForm() {

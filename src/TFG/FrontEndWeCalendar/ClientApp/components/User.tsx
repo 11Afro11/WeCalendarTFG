@@ -13,7 +13,7 @@ interface userState {
     loadingId: boolean;
     loadingUser: boolean;
     nombreAmigo: string;
-    displayFriends: boolean
+    displayFriends: boolean;
 }
 
 export class User extends React.Component<RouteComponentProps<{}>, userState> {
@@ -27,7 +27,7 @@ export class User extends React.Component<RouteComponentProps<{}>, userState> {
             loadingId: true,
             loadingUser: true,
             nombreAmigo: "",
-            displayFriends: true,
+            displayFriends: false,
     };
         this.loadId();
     }
@@ -112,18 +112,18 @@ export class User extends React.Component<RouteComponentProps<{}>, userState> {
 
     user() {
         let dev = [];
-        let friends = (this.state.loadingFriend) ? null : this.amigos();
+        let friends = (this.state.loadingFriend && !this.state.displayFriends) ? null : this.amigos();
         dev.push((<div className="card">
                           <img src={require('./IMG/user.png')} alt="John"/>
             <h1>{this.state.usuario[0].nombreUsuario}</h1>
             <p className="title">{this.state.usuario[0].correo}</p>
             <p>Notificaciones: <button onClick={() => { this.OnOFNotif(); }}>{this.state.usuario[0].notificacion}</button> </p>
-            <h3>Amigos</h3>
-            <form onSubmit={this.handleSubmmit}>
+            <h3><button onClick={() => { this.hideFriends(); }}>Amigos</button></h3>
+            {(this.state.displayFriends) ? <form onSubmit={this.handleSubmmit}>
                 <input type="text" value={this.state.nombreAmigo} ref="un texto" onChange={this.handleNombreChange} />
                 <input className="msgsub" type="submit" value="Send" />
-            </form>
-            {friends}
+            </form> : null}
+            {(this.state.displayFriends) ? this.amigos() : null}
         </div>) as any);
 
 
@@ -166,6 +166,13 @@ export class User extends React.Component<RouteComponentProps<{}>, userState> {
         Lista.push(user);
         this.setState({ friends: Lista , nombreAmigo : ""});
 
+    }
+
+    hideFriends() {
+        if (this.state.displayFriends)
+            this.setState({ displayFriends: false });
+        else
+            this.setState({ displayFriends: true });
     }
 
     public render() {
