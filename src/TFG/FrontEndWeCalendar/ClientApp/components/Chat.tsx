@@ -27,6 +27,7 @@ interface ChatState {
     loadingGrupos: boolean;
     tableros: Tablero[];
     loadTableros: boolean;
+    displayFormGrupos : boolean;
 }
 
 export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
@@ -54,6 +55,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             loadingGrupos: true,
             tableros: [],
             loadTableros: true,
+            displayFormGrupos: false,
     };
 
         this.loadId();
@@ -419,6 +421,14 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         return dev;
     }
 
+    hideGrup() {
+        if (this.state.displayFormGrupos) {
+            this.setState({ displayFormGrupos: false });
+        } else {
+            this.setState({ displayFormGrupos: true });
+        }
+    }
+
     public render() {
 
         let mensajes = (this.state.loadID && this.state.loadMsg && this.state.loadingAsistentes)
@@ -445,6 +455,8 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                         <td>
                             <div className="grupos">
                                 {this.listaGrupos()}
+                                <h3><button onClick={() => { this.hideGrup(); }}>ListaGrupos</button></h3>
+                                {(this.state.displayFormGrupos) ? this.formGrupo() :null}
                             </div>
                         </td>
 
