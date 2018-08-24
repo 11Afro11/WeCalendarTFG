@@ -75,5 +75,10 @@ namespace BusinessWeCalendar
         {
             return _dalChat.ListaGrupos(idUsuario);
         }
+
+        public void AniadirUaurioAgrupo(int idUsuario, int idGrupo)
+        {
+            _dalChat.AniadirAlGrupo(idUsuario, idGrupo);
+        }
     }
 }

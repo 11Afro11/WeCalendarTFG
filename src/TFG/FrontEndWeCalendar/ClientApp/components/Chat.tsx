@@ -27,7 +27,7 @@ interface ChatState {
     loadingGrupos: boolean;
     tableros: Tablero[];
     loadTableros: boolean;
-    displayFormGrupos : boolean;
+    displayFormGrupos: boolean;
 }
 
 export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
@@ -367,11 +367,61 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
     }
 
 
+    handleNombreGrupo = (event: any) => {
+        this.setState({nombreGrupo : event.target.value});
+    }
+
+    handleGrupoSubmit = (event: any) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        interface grupoJson {
+            nombre: string;
+            descripcion: string;
+            id: number;
+        }
+
+        var grupo: grupoJson = {
+            nombre : this.state.nombreGrupo,
+            descripcion : "",
+            id : this.state.id,
+        }
+
+        var subida = JSON.stringify(grupo);
+
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.newGrup);
+        axios.post(dir,
+            subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+            console.log(res);
+            console.log(res.data);
+            });
+
+        var ListaGrupos: grupoId[] = [];
+
+        var added: grupoId = {
+            id: 0,
+            nombre: this.state.nombreGrupo,
+            descripcion: "",
+            imagen: "",
+            createDate: Date(),
+            usuarioId: this.state.id,
+            chatId: 0,
+        }
+
+        this.state.grupos.map(grup => {
+            ListaGrupos.push(grup);
+        });
+        ListaGrupos.push(added);
+        this.setState({ grupos: ListaGrupos });
+    }
+
     formGrupo() {
         let devolucion = [];
-        devolucion.push((<form>
-            <input id="name" type="text" ref="un texto" value={this.state.nombreGrupo} onChange={this.handletextoNota} />
-                             <input id="name" type="text" ref="un texto" value={this.state.descGrupo} onChange={this.handletextoNota} />
+        devolucion.push((<form onSubmit={this.handleGrupoSubmit}>
+            <input id="name" type="text" ref="un texto" value={this.state.nombreGrupo} onChange={this.handleNombreGrupo} />
                                  <input type="submit" value="Send" />
 
         </form>) as any);

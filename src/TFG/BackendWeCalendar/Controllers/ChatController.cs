@@ -86,9 +86,11 @@ namespace BackendWeCalendar.Controllers
         }
 
         // PUT: api/Chat/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("newUserGrup/{idUsuario}/{idGrupo}", Name="NuevoUsuarioGrupo")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void Put(int idUsuario, int idGrupo)
         {
+            _srvChat.AniadirUaurioAgrupo(idUsuario, idGrupo);
         }
 
         // DELETE: api/ApiWithActions/5

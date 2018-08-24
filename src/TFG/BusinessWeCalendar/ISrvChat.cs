@@ -13,5 +13,6 @@ namespace BusinessWeCalendar
         TableroSet[] listaTableros();
         int[] listaChat(int idUsuario);
         GrupoSet[] listaGrupos(int idUsuario);
+        void AniadirUaurioAgrupo(int idUsuario, int idGrupo);
     }
 }

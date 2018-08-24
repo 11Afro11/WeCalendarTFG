@@ -139,5 +139,18 @@ namespace DalWeCalendar
                 db.SaveChanges();
             }
         }
+
+        public void AniadirAlGrupo(int idUsuario, int idGrupo)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                ListaGrupoSet lista = new ListaGrupoSet();
+                lista.GrupoId = idGrupo;
+                lista.UsuarioId = idUsuario;
+                lista.CreateDate = new DateTime();
+                db.ListaGrupoSet.Add(lista);
+                db.SaveChanges();
+            }
+        }
     }
 }
