@@ -505,7 +505,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                         <td>
                             <div className="grupos">
                                 {this.listaGrupos()}
-                                <h3><button onClick={() => { this.hideGrup(); }}>ListaGrupos</button></h3>
+                                <h4><button onClick={() => { this.hideGrup(); }}>Nuevo Grupo</button></h4>
                                 {(this.state.displayFormGrupos) ? this.formGrupo() :null}
                             </div>
                         </td>
