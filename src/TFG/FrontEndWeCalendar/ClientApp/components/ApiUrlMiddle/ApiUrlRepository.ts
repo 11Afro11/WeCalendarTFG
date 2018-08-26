@@ -30,6 +30,7 @@ export module ApiUrlRepository {
     export var deleteNota = "deleteNota";
     export var nuevaNota = "nuevaNota";
     export var nuevaNotaTablero = "nuevaNotaTablero";
+    export var allNotas = "allNotas";
 
     /*Direccion de los mansajes*/
     export var getMensajes = "getMensajes";
@@ -79,6 +80,7 @@ export module ApiUrlRepository {
     urls[listaGrupos] = baseUrl + "/Chat/grupos";
     urls[getTablero] = baseUrl + "/Chat/tableros";
     urls[newGrup] = baseUrl + "/Chat/newGrup";
+    urls[allNotas] = baseUrl + "/Notas/all";
 
     export function getApiUrl(arg : string) {
         return urls[arg];

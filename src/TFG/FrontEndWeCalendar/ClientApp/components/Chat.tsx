@@ -97,8 +97,8 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
     }
 
     loadNota() {
-        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getNotaChat);
-        fetch(dir + '/' + 1)
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.allNotas);
+        fetch(dir)
             .then(response => response.json() as Promise<Nota[]>)
             .then(data => {
                 this.setState({ notas: data, loadingNota: false });
@@ -227,8 +227,11 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                 borrar = evento;
         });
         var indice = Lista.indexOf(borrar);
-        Lista.splice(indice);
-        this.setState({ notas: Lista });
+        this.setState({
+            notas: this.state.notas.filter(function (person) {
+                return person.id !== borrar.id;
+            })
+        });
     }
 
     handletexto = (event: any) => {
@@ -250,19 +253,19 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
 
         var msgjson: chatSubida = {
             texto: this.state.texto,
-            grupoId: this.state.grupo,
+            grupoId: this.state.activeGrup,
             createDate: new Date,
             usuarioId: this.state.id,
-            chatId : this.state.chat,
+            chatId : this.state.activeGrup,
     }
 
         var auxiliar: ChatI = {
             id: 0,
             texto: this.state.texto,
-            groupId: 1,
+            groupId: this.state.activeGrup,
             createDate: new Date,
             usuarioId: this.state.id,
-            chatId: 1,
+            chatId: this.state.activeGrup,
         }
 
         var subida = JSON.stringify(msgjson);
@@ -300,6 +303,15 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         this.setState({ textoNota: event.target.value });
     }
 
+    getTablero() {
+        var tab: number = 0;
+        this.state.tableros.map(tabl => {
+            if (tabl.grupoId == this.state.activeGrup)
+                tab = tabl.id;
+        });
+        return tab;
+    }
+
     /*Control de la subida e insercion del evento*/
     handleSubmmitNota = (event: any) => {
 
@@ -321,7 +333,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             fechaTope: new Date,
             createDate: new Date,
             usuarioId: this.state.id,
-            tableroId: this.state.grupo,
+            tableroId: this.getTablero(),
         }
 
 
@@ -334,7 +346,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             fechaTope: new Date,
             createDate: new Date,
             usuarioId: this.state.id,
-            tableroId: this.state.grupo,
+            tableroId: this.state.activeGrup,
         }
 
         notajson.titulo = this.state.titulo;

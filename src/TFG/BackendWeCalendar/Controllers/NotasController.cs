@@ -34,6 +34,13 @@ namespace BackendWeCalendar.Controllers
             return _srvNota.GetNota(id);
         }
 
+        [HttpGet("all", Name = "GetNotasAll")]
+        [EnableCors("AllowSpecificOrigin")]
+        public NotaSet[] GetNotasAll()
+        {
+            return _srvNota.GetNotas();
+        }
+
         // GET: api/Notas/5
         [HttpGet("grupo/{id}", Name = "GetNotasGrupo")]
         [EnableCors("AllowSpecificOrigin")]

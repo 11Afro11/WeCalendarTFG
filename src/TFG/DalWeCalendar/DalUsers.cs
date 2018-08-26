@@ -32,7 +32,10 @@ namespace DalWeCalendar
                 var listaAmigosID = from amigo in db.UsuarioAmigoSet
                     where amigo.UsuarioId == idUsuario
                     select amigo.UsuarioId1;
-                var listaAmigos = from amigo in db.UsuarioSet where listaAmigosID.Contains(amigo.Id) select amigo;
+                var listaAmigos2 = from amigo in db.UsuarioAmigoSet
+                    where amigo.UsuarioId1 == idUsuario
+                    select amigo.UsuarioId;
+                var listaAmigos = from amigo in db.UsuarioSet where listaAmigosID.Contains(amigo.Id) || listaAmigos2.Contains(amigo.Id) select amigo;
                 List<UsuarioSet> amigos = new List<UsuarioSet>();
                 foreach (UsuarioSet ev in listaAmigos)
                 {

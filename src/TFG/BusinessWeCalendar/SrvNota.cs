@@ -23,6 +23,11 @@ namespace BusinessWeCalendar
             return _dalNota.GetNotaByGroup(id);
         }
 
+        public NotaSet[] GetNotas()
+        {
+            return _dalNota.GetNotas();
+        }
+
         public void NuevaNota(JSONNota note)
         {
             NotaSet nota = new NotaSet();

@@ -42,6 +42,15 @@ namespace DalWeCalendar
             }
         }
 
+        public NotaSet[] GetNotas()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var notas = from nota in db.NotaSet select nota;
+                return notas.ToArray();
+            }
+        }
+
         public void NuevaNota(NotaSet note)
         {
             using (var db = new TFGDatabaseContext())

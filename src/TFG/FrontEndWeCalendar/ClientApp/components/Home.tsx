@@ -80,7 +80,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             showEdicion: false,
             showEvent: false,
             showInvitacion: false,
-            amigo: 2,
+            amigo: 1,
             listaInvitados: [],
         };
 
@@ -348,7 +348,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         var fecha = new Date(this.state.fecha.toString());
         var year = fecha.getFullYear();
         //console.log(year);
-        var mes = fecha.getMonth();
+        var mes = 8;
         //console.log(mes);
         var day = fecha.getDate();
         var datedevolucion = "";
@@ -400,7 +400,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         return <form onSubmit={this.handleEdit}>
             <label>
                 Fecha
-                    <input id="date" type="date" /*value={datedevolucion}*/ onChange={this.handleDateChange} />
+                    <input id="date" type="date" value={datedevolucion} onChange={this.handleDateChange} />
             </label>
             <label>
                 Hora de inicio
@@ -557,6 +557,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         console.log(this.state.friends.length);
         for (let i: number = 0; i < this.state.friends.length; i++) {
             devolucion.push((<option value={this.state.friends[i].id}>{this.state.friends[i].nombreUsuario}</option>) as any);
+            console.log(this.state.friends[i].id);
         }
         return devolucion;
 
