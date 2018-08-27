@@ -28,6 +28,11 @@ interface ChatState {
     tableros: Tablero[];
     loadTableros: boolean;
     displayFormGrupos: boolean;
+    friends: User[];
+    loadFriends: boolean;
+    amigo: number;
+    relacion: Relacion[];
+    loadRelacion : boolean;
 }
 
 export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
@@ -56,6 +61,11 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             tableros: [],
             loadTableros: true,
             displayFormGrupos: false,
+            friends: [],
+            loadFriends: true,
+            amigo: 0,
+            relacion: [],
+            loadRelacion: true,
     };
 
         this.loadId();
@@ -81,7 +91,18 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                 this.loadChat();
                 this.loadGrupos();
                 this.loadTableros();
+                this.loadFriends();
             }).catch(error => console.log(error));
+    }
+
+    loadFriends() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getFriends);
+        fetch(dir + '/' + this.state.id.toString())
+            .then(response => response.json() as Promise<User[]>)
+            .then(data => {
+                this.setState({ friends: data, loadFriends: false });
+            }).catch(error => console.log(error));
+
     }
 
     loadChat() {
@@ -130,6 +151,15 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             .then(response => response.json() as Promise<Tablero[]>)
             .then(data => {
                 this.setState({ tableros: data, loadTableros: false});
+            }).catch(error => console.log(error));
+        console.log(this.state.asistentes);
+    }
+    loadRelacion() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.relacionGrupo);
+        fetch(dir)
+            .then(response => response.json() as Promise<Relacion[]>)
+            .then(data => {
+                this.setState({ relacion: data, loadRelacion: false });
             }).catch(error => console.log(error));
         console.log(this.state.asistentes);
     }
@@ -440,6 +470,31 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         return devolucion;
     }
 
+    eliminarGrupo(id: number) {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.deleteGrupo);
+        axios.delete(dir + "/"+ id)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+        var Lista: grupoId[] = [];
+        this.state.grupos.map(evento => {
+            Lista.push(evento);
+        });
+
+        var borrar: grupoId = this.state.grupos[0];
+        Lista.map(evento => {
+            if (evento.id == id)
+                borrar = evento;
+        });
+        var indice = Lista.indexOf(borrar);
+        this.setState({
+            grupos: this.state.grupos.filter(function (person) {
+                return person.id !== borrar.id;
+            })
+        });
+    }
+
 
     FormNotas() {
         let devolucion = [];
@@ -466,7 +521,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             devoluciones.push((
                 <button onClick={() => { this.setActiveGrup(this.state.grupos[i].id); }}><div className="chip">
                     <img src={require('./IMG/group.png')} width="96" height="96" />
-                    {this.state.grupos[i].nombre}
+                    {this.state.grupos[i].nombre}<button className="glyphicon glyphicon-trash" onClick={() => { this.eliminarGrupo(this.state.grupos[i].id) }}></button>
                 </div></button>
                 ) as any);
         }
@@ -491,6 +546,38 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         }
     }
 
+    formularioInvitacion() {
+        return <form>
+                   <select onChange={this.handleFriendChange}>
+                       {this.invitacion()}
+                   </select>
+                   <button type="submit">invitar</button>
+               </form>;
+    }
+
+    invitacion() {
+        let devolucion = [];
+        console.log(this.state.friends.length);
+        for (let i: number = 0; i < this.state.friends.length; i++) {
+            devolucion.push((<option value={this.state.friends[i].id}>{this.state.friends[i].nombreUsuario}</option>) as any);
+            console.log(this.state.friends[i].id);
+        }
+        return devolucion;
+
+    }
+
+    handleFriendChange = (event: any) => {
+        this.setState({ amigo: event.target.value });
+    }
+
+    listaAsistentes() {
+        let devolucion: any = [];
+        this.state.asistentes.map(persona => {
+            devolucion.push((<p>{persona.nombre}</p>)as any);
+        });
+        return devolucion;
+    }
+
     public render() {
 
         let mensajes = (this.state.loadID && this.state.loadMsg && this.state.loadingAsistentes)
@@ -504,7 +591,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                    <table className='table'>
                    <thead>
                    <tr>
-                        <th width="80%">{(this.state.loadingGrupos) ? "nombre de grupo" : this.nombreGrupo(this.state.activeGrup)}</th>
+                        <th width="80%">{(this.state.loadingGrupos) ? "nombre de grupo" : this.nombreGrupo(this.state.activeGrup)} </th>
                         <th width="20%">Contactos</th>
                     </tr>
                     <tr>
@@ -517,7 +604,9 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                         <td>
                             <div className="grupos">
                                 {this.listaGrupos()}
-                                <h4><button onClick={() => { this.hideGrup(); }}>Nuevo Grupo</button></h4>
+                                {(this.state.loadFriends) ? null : this.formularioInvitacion()}
+                                {this.listaAsistentes()}
+                                <h4>Nuevo Grupo<button className="glyphicon glyphicon-plus" onClick={() => { this.hideGrup(); }}></button></h4>
                                 {(this.state.displayFormGrupos) ? this.formGrupo() :null}
                             </div>
                         </td>
@@ -580,4 +669,23 @@ interface Tablero {
 interface Usuario {
     id: number;
     nombre: string;
+}
+
+interface User {
+    id: number;
+    nombreUsuario: string;
+    correo: string;
+    password: string;
+    notificacion: string;
+    foto: string;
+    createDate: Date;
+    token: string;
+
+}
+
+interface Relacion {
+    id: number;
+    createDate : Date;
+    usuarioId : number;
+    grupoId : number;
 }

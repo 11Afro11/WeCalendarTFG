@@ -20,6 +20,7 @@ namespace DalWeCalendar
                 {
                     listaPendientes.Add(ev);
                 }
+
                 MensajeSet[] listaEventos = listaPendientes.ToArray();
                 return listaEventos;
             }
@@ -43,7 +44,7 @@ namespace DalWeCalendar
                 var ur = usuariosID.Concat(asistentes);
                 var users = from usuarios in db.UsuarioSet where ur.Contains(usuarios.Id) select usuarios;
                 //var asist = from usuarios in db.UsuarioSet where asistentes.Contains(usuarios.Id) select usuarios;
-                List < UsuarioSet > listaUasuarios = new List<UsuarioSet>();
+                List<UsuarioSet> listaUasuarios = new List<UsuarioSet>();
                 //List < UsuarioSet > listaAsistentes = new List<UsuarioSet>();
                 foreach (UsuarioSet u in users)
                 {
@@ -104,7 +105,6 @@ namespace DalWeCalendar
                     .FirstOrDefault();
                 return invoice.Id;
             }
-            
         }
 
         public int GetLastGrupID()
@@ -158,8 +158,19 @@ namespace DalWeCalendar
             using (var db = new TFGDatabaseContext())
             {
                 var grupo = (from grup in db.GrupoSet where grup.Id == idGrupo select grup).FirstOrDefault();
+                var tablero = (from tab in db.TableroSet where tab.GrupoId == idGrupo select tab).FirstOrDefault();
+                db.TableroSet.Remove(tablero);
                 db.GrupoSet.Remove(grupo);
                 db.SaveChanges();
+            }
+        }
+
+        public ListaGrupoSet[] listaDeGrupos()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var lista = from lis in db.ListaGrupoSet select lis;
+                return lista.ToArray();
             }
         }
     }

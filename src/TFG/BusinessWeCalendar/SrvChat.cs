@@ -85,5 +85,10 @@ namespace BusinessWeCalendar
         {
             _dalChat.deleteGrupo(idGrupo);
         }
+
+        public ListaGrupoSet[] ListaGruppos()
+        {
+            return _dalChat.listaDeGrupos();
+        }
     }
 }

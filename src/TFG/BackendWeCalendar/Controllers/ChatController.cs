@@ -67,6 +67,13 @@ namespace BackendWeCalendar.Controllers
             return _srvChat.UsuariosInGrup(id);
         }
 
+        [HttpGet("listaGrupos", Name = "listaGrupos")]
+        [EnableCors("AllowSpecificOrigin")]
+        public ListaGrupoSet[] listaGrupos()
+        {
+            return _srvChat.ListaGruppos();
+        }
+
         // POST: api/Chat
         [HttpPost("newGrup", Name = "NewGrup")]
         [EnableCors("AllowSpecificOrigin")]

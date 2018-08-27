@@ -138,8 +138,9 @@ export class Layout extends React.Component<LayoutProps, formu> {
                                         <input name='username' placeholder='Username' type='text' onChange={this.handleUsernameChange}/>
                                         <input id='pw' name='password' placeholder='Password' type='password' onChange={this
                                 .handlePasswdChange} />
+                                        
+                            <input type='submit' value='Sign in' />
                                         <button className="active" onClick={() => { this.logReg() }}>Sing up</button>
-                                        <input type='submit' value='Sign in'/>
                                     </form>
                                 </div></div>) as any)
                 : dev.push((<div className='container-fluid'>

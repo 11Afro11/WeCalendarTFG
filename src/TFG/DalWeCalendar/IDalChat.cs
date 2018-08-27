@@ -18,6 +18,7 @@ namespace DalWeCalendar
         void crearTablero(int idGrupo);
         void AniadirAlGrupo(int idUsuario, int idGrupo);
         void deleteGrupo(int idGrupo);
+        ListaGrupoSet[] listaDeGrupos();
 
     }
 }

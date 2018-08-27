@@ -15,5 +15,6 @@ namespace BusinessWeCalendar
         GrupoSet[] listaGrupos(int idUsuario);
         void AniadirUaurioAgrupo(int idUsuario, int idGrupo);
         void deleteGrupo(int idGrupo);
+        ListaGrupoSet[] ListaGruppos();
     }
 }
