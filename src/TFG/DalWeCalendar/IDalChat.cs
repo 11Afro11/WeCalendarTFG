@@ -17,6 +17,7 @@ namespace DalWeCalendar
         void CreateChat();
         void crearTablero(int idGrupo);
         void AniadirAlGrupo(int idUsuario, int idGrupo);
+        void deleteGrupo(int idGrupo);
 
     }
 }

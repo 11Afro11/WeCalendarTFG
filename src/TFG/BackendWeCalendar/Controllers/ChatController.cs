@@ -95,8 +95,10 @@ namespace BackendWeCalendar.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
+        [EnableCors("AllowSpecificOrigin")]
         public void Delete(int id)
         {
+            _srvChat.deleteGrupo(id);
         }
     }
 }

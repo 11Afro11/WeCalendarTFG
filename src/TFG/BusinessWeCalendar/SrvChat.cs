@@ -80,5 +80,10 @@ namespace BusinessWeCalendar
         {
             _dalChat.AniadirAlGrupo(idUsuario, idGrupo);
         }
+
+        public void deleteGrupo(int idGrupo)
+        {
+            _dalChat.deleteGrupo(idGrupo);
+        }
     }
 }

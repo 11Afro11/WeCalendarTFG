@@ -152,5 +152,15 @@ namespace DalWeCalendar
                 db.SaveChanges();
             }
         }
+
+        public void deleteGrupo(int idGrupo)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var grupo = (from grup in db.GrupoSet where grup.Id == idGrupo select grup).FirstOrDefault();
+                db.GrupoSet.Remove(grupo);
+                db.SaveChanges();
+            }
+        }
     }
 }
