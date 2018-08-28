@@ -520,7 +520,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <td>{eventoPorDia[i].direccion}</td>
                     {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(eventoPorDia[i].id) }}></button></td> : null}
                     {(eventoPorDia[i].usuarioId == this.state.id) ? <td> <button className="glyphicon glyphicon-eye-open" onClick={() => { this.verEvento(eventoPorDia[i].id) }}></button></td> : null}
-                    {(eventoPorDia[i].usuarioId != this.state.id) ? <td> <button className="glyphicon glyphicon-remove" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId != this.state.id) ? <td> <button className="glyphicon glyphicon-remove" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}></button></td> : null}
                 </tr>) as any);
                 //devolucion.push((this.formularioEdicion()) as any)
             }

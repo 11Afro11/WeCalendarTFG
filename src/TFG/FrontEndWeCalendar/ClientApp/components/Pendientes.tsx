@@ -32,7 +32,7 @@ interface DaySet {
 export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet> {
 
 
-    mes = "Julio";
+    mes = "Agosto";
     anio = 2018;
     eventos = [1, 4, 12];
     usuario = 1;
@@ -65,7 +65,6 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
             eventoEditandose: 0,
             showEdicion: false,
         };
-        sessionStorage.setItem("token", "weeeeee");
 
         this.loadUsers();
 
@@ -476,12 +475,12 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                     <td>{eventoPorDia[i].nombre}</td>
                     <td>{eventoPorDia[i].descripcion}</td>
                     <td>{eventoPorDia[i].direccion}</td>
-                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.eliminar(eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="active" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}>Editar</button></td> : null}
-                    {(this.state.invitaciones.indexOf(eventoPorDia[i]) != -1) ? <td> <button className="active" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}>Borrar</button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.aceptarInvitacion(1, eventoPorDia[i].id) }}>Aceptar</button></td> : null}
-                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="active" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}>Ignorar</button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="glyphicon glyphicon-eye-open" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}></button></td> : null}
+                    {(this.state.invitaciones.indexOf(eventoPorDia[i]) != -1) ? <td> <button className="glyphicon glyphicon-remove" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-ok" onClick={() => { this.aceptarInvitacion(1, eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}></button></td> : null}
 
                 </tr>) as any)
                 //devolucion.push((this.formularioEdicion()) as any)
@@ -801,10 +800,6 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                 <ul className="days">
                     <li></li>
                     <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
                     {calendar}
 
 
@@ -822,6 +817,9 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                             <th scope="col">Titulo</th>
                             <th scope="col">Descripcion</th>
                             <th scope="col">Lugar</th>
+                            <th></th>
+                            <th></th>
+
                         </tr>
                     </thead>
                     {eventos}
