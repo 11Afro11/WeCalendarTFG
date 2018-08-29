@@ -40,6 +40,7 @@ export module ApiUrlRepository {
     export var getTablero = "getTablero";
     export var deleteGrupo = "deleteGrupo";
     export var relacionGrupo = "relacionGrupo";
+    export var aniadirUsuarioGrupo = "aniadirUsuarioGrupo";
 
     var baseUrl = "http://localhost:11111/api";
     //var baseUrl = "http://wcbackend.azurewebsites.net/api";
@@ -85,6 +86,7 @@ export module ApiUrlRepository {
     urls[allNotas] = baseUrl + "/Notas/all";
     urls[deleteGrupo] = baseUrl + "/Chat";
     urls[relacionGrupo] = baseUrl + "/Chat/listaGrupos";
+    urls[aniadirUsuarioGrupo] = baseUrl + "/Chat/newUserGrup";
 
     export function getApiUrl(arg : string) {
         return urls[arg];

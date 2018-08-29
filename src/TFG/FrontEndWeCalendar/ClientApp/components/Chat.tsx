@@ -72,6 +72,8 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         this.loadChat();
         this.loadNota();
         this.loadAsistentes();
+        this.listaRelaciones();
+        
 
         //this.loadNota();
     }
@@ -88,10 +90,13 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                 console.log("el id es: "+this.state.id);
                 console.log("El valor es :");
                 console.log(data);
+                //this.loadRelacion();
                 this.loadChat();
                 this.loadGrupos();
                 this.loadTableros();
                 this.loadFriends();
+                
+                
             }).catch(error => console.log(error));
     }
 
@@ -161,7 +166,21 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             .then(data => {
                 this.setState({ relacion: data, loadRelacion: false });
             }).catch(error => console.log(error));
-        console.log(this.state.asistentes);
+        console.log("la relacion");
+        console.log(this.state.relacion);
+    }
+
+    listaRelaciones() {
+        var listarelaciones: Relacion[] = [];
+        var rel: Relacion = {
+            id: 0,
+            createDate: new Date,
+            usuarioId: 2,
+            grupoId: 1,
+
+        }
+        listarelaciones.push(rel);
+        this.setState({relacion : listarelaciones, loadRelacion : false});
     }
 
     getNombre(id: number) {
@@ -547,12 +566,29 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
     }
 
     formularioInvitacion() {
-        return <form>
+        return <form onSubmit={this.handlenewUserGrup}>
                    <select onChange={this.handleFriendChange}>
                        {this.invitacion()}
                    </select>
                    <button type="submit">invitar</button>
                </form>;
+    }
+
+
+    handlenewUserGrup = (event: any) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        
+
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.aniadirUsuarioGrupo);
+        axios.put(dir+"/"+this.state.amigo + "/"+this.state.activeGrup,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+            console.log(res);
+            console.log(res.data);
+        });
     }
 
     invitacion() {
@@ -572,8 +608,18 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
 
     listaAsistentes() {
         let devolucion: any = [];
+
+        var ListaGrupos: number[] = [];
+        console.log("los usuarios que estan en el gupo activo")
+        this.state.relacion.map(rel => {
+            if (rel.grupoId == this.state.activeGrup) {
+                ListaGrupos.push(rel.usuarioId);
+                console.log(rel.usuarioId);
+            }
+        });
         this.state.asistentes.map(persona => {
-            devolucion.push((<p>{persona.nombre}</p>)as any);
+            if(ListaGrupos.indexOf(persona.id)!= -1)
+                devolucion.push((<p>{persona.nombre}</p>) as any);
         });
         return devolucion;
     }

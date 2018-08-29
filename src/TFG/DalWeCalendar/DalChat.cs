@@ -147,7 +147,7 @@ namespace DalWeCalendar
                 ListaGrupoSet lista = new ListaGrupoSet();
                 lista.GrupoId = idGrupo;
                 lista.UsuarioId = idUsuario;
-                lista.CreateDate = new DateTime();
+                lista.CreateDate = DateTime.Today;
                 db.ListaGrupoSet.Add(lista);
                 db.SaveChanges();
             }
