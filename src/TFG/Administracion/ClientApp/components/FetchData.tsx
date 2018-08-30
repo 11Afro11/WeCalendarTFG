@@ -6,20 +6,22 @@ import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
 
 interface FetchDataExampleState {
     forecasts: User[];
+    Busqueda : User[];
     listaBaneados: number[];
     loadingBan : boolean;
     loading: boolean;
+    texto : string;
 }
 
 export class FetchData extends React.Component<RouteComponentProps<{}>, FetchDataExampleState> {
     constructor() {
         super();
-        this.state = { forecasts: [],listaBaneados: [], loadingBan: true, loading: true };
+        this.state = { forecasts: [], Busqueda:[], listaBaneados: [], loadingBan: true, loading: true, texto : "" };
 
         fetch('http://localhost:11111/api/Users/all')
             .then(response => response.json() as Promise<User[]>)
             .then(data => {
-                this.setState({ forecasts: data, loading: false });
+                this.setState({ forecasts: data, Busqueda : data,  loading: false });
             });
 
         fetch('http://localhost:11111/api/Users/listaBaneos')
@@ -31,7 +33,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, FetchDat
 
     banear(id: number) {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.eliminarEvento);
-        axios.delete("http://localhost:11111/api/Users/baneo/" + id+"/1")
+        axios.put("http://localhost:11111/api/Users/baneo/" + id+"/1")
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -45,16 +47,48 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, FetchDat
         this.setState({ listaBaneados: Lista });
     }
 
+    retirarBaneo(id: number) {
+        axios.delete("http://localhost:11111/api/Users/retirarBaneo/" + id)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            });
+        var Lista: number[] = [];
+        this.state.listaBaneados.map(evento => {
+            if(evento != id)
+                Lista.push(evento);
+        });
+        
+        this.setState({ listaBaneados: Lista });
+    }
+
     public render() {
         let contents = (this.state.loading && this.state.listaBaneados)
             ? <p><em>Loading...</em></p>
-            : this.renderForecastsTable(this.state.forecasts);
+            : this.renderForecastsTable(this.state.Busqueda);
 
         return <div>
-            <h1>Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
+            <h1>Lista de usuarios</h1>
+            <p>Lista de usuarios registrados en el sistema</p>
+                   <form className="container darker">
+                       <input className="msg" type="text" value={this.state.texto} ref="un texto" onChange={this.handletexto} />
+                   </form>
             { contents }
         </div>;
+    }
+
+    handletexto = (event: any) => {
+        this.setState({ texto: event.target.value });
+        if (this.state.texto != "") {
+            var Lista: User[] = [];
+            this.state.forecasts.map(evento => {
+                if (evento.nombreUsuario.indexOf(event.target.value) != -1) {
+                    Lista.push(evento);
+                }
+            });
+            this.setState({ Busqueda: Lista });
+        }
+
     }
 
     public renderForecastsTable(forecasts: User[]) {
@@ -69,7 +103,7 @@ export class FetchData extends React.Component<RouteComponentProps<{}>, FetchDat
                    {forecasts.map(forecast =>
                     <tr key={forecast.nombreUsuario}>
                         <td>{forecast.nombreUsuario}</td>
-                        {(this.state.listaBaneados.indexOf(forecast.id) != -1) ? <td><button className="active" onClick={() => { this.banear(forecast.id) }}>Banear</button></td> : null}
+                        {(this.state.listaBaneados.indexOf(forecast.id) != -1) ? <td><button className="btn btn-success" onClick={() => { this.retirarBaneo(forecast.id) }}>Retirar Baneo</button></td> : <td><button className="btn btn-danger" onClick={() => { this.banear(forecast.id) }}>Banear</button></td> }
                 </tr>
             )}
                    </tbody>

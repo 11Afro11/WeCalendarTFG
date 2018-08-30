@@ -92,5 +92,10 @@ namespace BusinessWeCalendar
         {
             return _dalEvents.GetAllEvents();
         }
+
+        public UsuarioEvento1[] listaAsistentes()
+        {
+            return _dalEvents.GetAsistentes();
+        }
     }
 }

@@ -18,6 +18,7 @@ export module ApiUrlRepository {
     export var login = "login";
     export var token = "token";
 
+
     /*Direciones de las notas*/
     export var getSpecificNotes = "getSpecificNotes";
     export var deleteNota = "deleteNota";

@@ -32,5 +32,7 @@ namespace BusinessWeCalendar
         String[] ListaAsistentes(int idEvento);
 
         EventoSet[] GetAllEvents();
+
+        UsuarioEvento1[] listaAsistentes();
     }
 }

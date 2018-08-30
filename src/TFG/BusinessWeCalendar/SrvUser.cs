@@ -107,5 +107,10 @@ namespace BusinessWeCalendar
             _dalUsers.AddUser(user);
             return Login(user.NombreUsuario, datos.passwd);
         }
+
+        public void RetirarBaneo(int id)
+        {
+            _dalUsers.RetirarBaneo(id);
+        }
     }
 }

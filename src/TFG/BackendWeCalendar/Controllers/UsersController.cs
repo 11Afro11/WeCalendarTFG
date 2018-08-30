@@ -116,6 +116,13 @@ namespace BackendWeCalendar.Controllers
         }
 
 
+        [HttpDelete("retirarBaneo/{idUsuario}", Name = "RetirarBaneado")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void RetirarBaneo(int idUsuario)
+        {
+            _srvUsuarios.RetirarBaneo(idUsuario);
+        }
+
         [HttpPut("baneo/{idUsuario}/{idAdmin}", Name = "Baneado")]
         [EnableCors("AllowSpecificOrigin")]
         public void Baneo(int idUsuario, int idAdmin)

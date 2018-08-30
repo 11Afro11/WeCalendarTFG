@@ -90,7 +90,7 @@ export class Counter extends React.Component<RouteComponentProps<{}>, FetchDataE
                         <td>{forecast.nombre}</td>
                         <td>{forecast.descripcion}</td>
                         <td>{forecast.direccion}</td>
-                        <td> <button className="active" onClick={() => { this.eliminar(forecast.id) }}>Borrar</button></td>
+                        <td> <button className="btn btn-danger" onClick={() => { this.eliminar(forecast.id) }}>Cancelar</button></td>
                     </tr>
                 )}
             </tbody>

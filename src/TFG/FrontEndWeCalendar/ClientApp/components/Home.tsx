@@ -34,7 +34,10 @@ interface DaySet {
     showEvent: boolean;
     showInvitacion: boolean;
     amigo: number;
-    listaInvitados : String[];
+    listaInvitados: String[];
+    asistencia: Asistencia[];
+    loadAsistencia: boolean;
+    showAsistentes : boolean;
 }
 
 
@@ -82,6 +85,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             showInvitacion: false,
             amigo: 1,
             listaInvitados: [],
+            asistencia: [],
+            loadAsistencia: true,
+            showAsistentes : false,
         };
 
         this.loadId();
@@ -134,6 +140,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 this.loadFriends();
                 this.loadInvitaciones();
                 this.loadUsers();
+                this.loadAsistentes();
+                
                 console.log("hola");
             }).catch(error => console.log(error));
     }
@@ -172,6 +180,16 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ invitaciones: data, loadingInvitaciones: false });
+            });
+    }
+
+    loadAsistentes() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.asistentes);
+        fetch(dir)
+            .then(response => response.json() as Promise<Asistencia[]>)
+            .then(data => {
+                this.setState({ asistencia: data, loadAsistencia: false });
+                console.log(this.state.asistencia);
             });
     }
 
@@ -801,6 +819,25 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             </div>;
     }
 
+    listaAsistentes(id : number) {
+        let devolucion : any = [];
+        var listaid: number[] = [];
+        this.state.asistencia.map(asist => {
+            if (asist.evento1Id == id) {
+                listaid.push(asist.usuario1Id);
+            }
+        });
+        var listaUsuarios: string[] = [];
+        this.state.friends.map(amig => {
+            if (listaid.indexOf(amig.id) != -1)
+                listaUsuarios.push(amig.nombreUsuario);
+        });
+        listaUsuarios.map(usr => {
+            devolucion.push((<p>{usr}</p>) as any);
+        });
+        return devolucion;
+    }
+
 
     viewPorEvento(idEvento: number) {
 
@@ -816,6 +853,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                     <td><button className="active" onClick={() => { this.mostrarInvitacion(); }}>Invitar</button></td>
                     <td><button className="active" onClick={() => { this.mostrarEdicion(event.id, event.fecha, event.horaInicio, event.horaFin) }}>Editar</button></td>
                     <td><button className="active" onClick={() => { this.verEvento(0) }}>Ocultar</button></td>
+                    <td><button className="active" onClick={() => { this.mostrarAsistentes() }}>Asistentes</button></td>
                 </th>
             </table>
 
@@ -833,6 +871,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             </table> : null}
             {(this.state.showEdicion && !this.state.showInvitacion) ? this.formularioEdicion() : null}
             {(this.state.showInvitacion && !this.state.showEdicion) ? this.formularioInvitacion() : null}
+            {(this.state.showAsistentes && !this.state.showEdicion && !this.state.showInvitacion) ? this.listaAsistentes(event.id) : null}
             </div>;
     }
 
@@ -841,6 +880,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             this.setState({ showEvent: false });
             this.setState({ showEdicion: false });
             this.setState({ showInvitacion: false });
+            this.setState({ showAsistentes: false });
         }
         else {
             this.setState({ showEvent: true });
@@ -854,7 +894,8 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         }
         else {
             this.setState({ showInvitacion: true });
-            this.setState({showEdicion : false});
+            this.setState({ showEdicion: false });
+            this.setState({showAsistentes : false});
         }
     }
 
@@ -868,6 +909,19 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             this.setState({ horaFin: _horaFin });
             this.setState({ eventoEditandose: id });
             this.setState({ showEdicion: true });
+            this.setState({ showInvitacion: false });
+            this.setState({ showAsistentes: false });
+        }
+    }
+
+    mostrarAsistentes() {
+        if (this.state.showAsistentes) {
+            this.setState({ showAsistentes: false });
+        }
+        else {
+            this.setState({ showEvent: false });
+            this.setState({ showAsistentes: true });
+            this.setState({ showEdicion: false });
             this.setState({ showInvitacion: false });
         }
     }
@@ -1049,5 +1103,10 @@ interface Evento {
     visibilidad: boolean;
     createDate: Date;
     usuarioId: number;
+}
+
+interface Asistencia {
+    usuario1Id: number;
+    evento1Id: number;
 }
 

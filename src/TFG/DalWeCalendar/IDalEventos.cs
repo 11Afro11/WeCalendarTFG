@@ -31,6 +31,8 @@ namespace DalWeCalendar
 
         EventoSet[] GetAllEvents();
 
+        UsuarioEvento1[] GetAsistentes();
+
     }   
 
 }

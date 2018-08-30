@@ -189,5 +189,14 @@ namespace DalWeCalendar
                 return listaEventos.ToArray();
             }
         }
+
+        public UsuarioEvento1[] GetAsistentes()
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var lista = from list in db.UsuarioEvento1 select list;
+                return lista.ToArray();
+            }
+        }
     }
 }

@@ -24,6 +24,7 @@ export module ApiUrlRepository {
     export var AddFriend = "AddFriend";
     export var listaGrupos = "listaGrupos";
     export var newGrup = "newGrup";
+    export var asistentes = "asistentes";
 
     /*Direciones de las notas*/
     export var getSpecificNotes = "getSpecificNotes";
@@ -87,6 +88,8 @@ export module ApiUrlRepository {
     urls[deleteGrupo] = baseUrl + "/Chat";
     urls[relacionGrupo] = baseUrl + "/Chat/listaGrupos";
     urls[aniadirUsuarioGrupo] = baseUrl + "/Chat/newUserGrup";
+    urls[asistentes] = baseUrl + "/events/asistentes";
+
 
     export function getApiUrl(arg : string) {
         return urls[arg];

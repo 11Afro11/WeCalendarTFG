@@ -79,6 +79,13 @@ namespace BackendWeCalendar.Controllers
             return retult;
         }
 
+        [HttpGet("asistentes", Name = "asistentes")]
+        [EnableCors("AllowSpecificOrigin")]
+        public IEnumerable<UsuarioEvento1> Asistentes()
+        {
+            return _srvEventos.listaAsistentes();
+        }
+
         [HttpGet("publicos/{id}", Name = "GetPublicos")]
         [EnableCors("AllowSpecificOrigin")]
         public IEnumerable<EventoSet> GetPublicos(int id)

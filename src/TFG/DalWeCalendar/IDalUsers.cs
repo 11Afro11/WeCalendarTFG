@@ -31,5 +31,7 @@ namespace DalWeCalendar
         void Banear(BaneoSet id);
 
         int[] listaBaneados();
+
+        void RetirarBaneo(int id);
     }
 }

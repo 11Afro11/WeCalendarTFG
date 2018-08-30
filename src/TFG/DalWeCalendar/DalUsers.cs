@@ -172,7 +172,7 @@ namespace DalWeCalendar
         {
             using (var db = new TFGDatabaseContext())
             {
-                var ids = from id in db.BaneoSet select id.Id;
+                var ids = from id in db.BaneoSet select id.UsuarioId;
                 List<int> listaID = new List<int>();
                 foreach (var i in ids)
                 {
@@ -180,6 +180,16 @@ namespace DalWeCalendar
                 }
 
                 return listaID.ToArray();
+            }
+        }
+
+        public void RetirarBaneo(int id)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var ban = (from bn in db.BaneoSet where bn.UsuarioId == id select bn).FirstOrDefault();
+                db.BaneoSet.Remove(ban);
+                db.SaveChanges();
             }
         }
     }

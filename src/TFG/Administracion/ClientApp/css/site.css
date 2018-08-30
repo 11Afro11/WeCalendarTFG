@@ -86,3 +86,7 @@
     font-size: 22px;
     color: black;
 }
+
+button .danger {
+    color: red;
+}
