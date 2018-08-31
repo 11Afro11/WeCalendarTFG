@@ -839,6 +839,19 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
 
 
+    getUserCreador(id: number) {
+        if (this.state.id == id) {
+            return "Afro";
+        } else {
+            this.state.friends.map(amig => {
+                if (amig.id == id) {
+                    return amig.nombreUsuario;
+                }
+            });
+        }
+        return "";
+    }
+
     viewPorEvento(idEvento: number) {
 
         var event: Evento = this.state.events[0];
@@ -868,6 +881,10 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 <tr>
                     <td>{event.direccion}</td>
                 </tr>
+                <tr>
+                    <td>{this.getUserCreador(event.usuarioId)}</td>
+                </tr>
+
             </table> : null}
             {(this.state.showEdicion && !this.state.showInvitacion) ? this.formularioEdicion() : null}
             {(this.state.showInvitacion && !this.state.showEdicion) ? this.formularioInvitacion() : null}
