@@ -211,10 +211,18 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         }
         
         mens.map(mensaje => {
+
+            var hora : Date = new Date();
+            //var hora = new Date(mensaje.createDate.getHours.toString());
+            console.log(hora.getHours());
+            if (hora.getHours().toString() == "NaN") {
+                hora.setHours(11);
+                hora.setMinutes(0);
+            }
             dev.push((<div className="container">
                           <p>{this.getNombre(mensaje.usuarioId)}</p>
                           <p>{mensaje.texto}</p>
-                          <span className="time-right">11:00</span>
+                <span className="time-right">{hora.getHours().toString() + ":"+hora.getMinutes().toString()}</span>
                       </div>) as any);
         });
         return dev;
@@ -354,7 +362,9 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
 
     getTablero() {
         var tab: number = 0;
+        console.log("Prueba de grupos");
         this.state.tableros.map(tabl => {
+            console.log(tabl.grupoId);
             if (tabl.grupoId == this.state.activeGrup)
                 tab = tabl.id;
         });
@@ -652,7 +662,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                                 {this.listaGrupos()}
                                 {(this.state.loadFriends) ? null : this.formularioInvitacion()}
                                 {this.listaAsistentes()}
-                                <h4>Nuevo Grupo<button className="glyphicon glyphicon-plus" onClick={() => { this.hideGrup(); }}></button></h4>
+                                <div className="chip"><h4>Nuevo Grupo<button className="glyphicon glyphicon-plus" onClick={() => { this.hideGrup(); }}></button></h4></div>
                                 {(this.state.displayFormGrupos) ? this.formGrupo() :null}
                             </div>
                         </td>

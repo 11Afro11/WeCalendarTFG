@@ -5,6 +5,8 @@ import axios from 'axios';
 import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
 
 interface DaySet {
+    id: number,
+    loadingId: boolean,
     daySet: number,
     users: User[],
     loadingUser: boolean,
@@ -43,6 +45,8 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     constructor() {
         super();
         this.state = {
+            id: 0,
+            loadingId: true,
             daySet: new Date().getDate(),
             users: [],
             loadingUser: true,
@@ -68,11 +72,13 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
         this.loadUsers();
 
+        this.loadId();
+        /*
         this.loadEvents();
         
         this.loadInvitaciones();
 
-        this.loadPendientes();
+        this.loadPendientes();*/
 
         /*(this.state.loadingEvent && this.state.loadingInvitaciones)
             ? <p><em>Loading...</em></p>
@@ -95,6 +101,25 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         });
     }
 
+    loadId() {
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.token);
+        console.log(sessionStorage.getItem("token"));
+        fetch(dir + '/' + sessionStorage.getItem("token"))
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ id: data, loadingId: false });
+                console.log("El valor es :");
+                console.log(data);
+                console.log(this.state.id);
+                this.loadEvents();
+                this.loadInvitaciones();
+                this.loadUsers();
+                this.loadPendientes();
+
+                console.log("hola");
+            }).catch(error => console.log(error));
+    }
+
 
     loadUsers() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getSpecificUser);
@@ -107,7 +132,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
     loadEvents() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getSpecificEvent);
-        fetch(dir + '/1')
+        fetch(dir + '/' + this.state.id.toString())
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ events: data, loadingEvent: false });
@@ -115,7 +140,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
     }
     loadInvitaciones() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getEventoInvitado);
-        fetch(dir + '/1')
+        fetch(dir + '/' + this.state.id.toString())
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ invitaciones: data, loadingInvitaciones: false });
@@ -124,7 +149,7 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
 
     loadPendientes() {
         var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.getEventosPendientes);
-        fetch(dir + '/1')
+        fetch(dir + '/' + this.state.id.toString())
             .then(response => response.json() as Promise<Evento[]>)
             .then(data => {
                 this.setState({ pendientes: data, loadingPendientes: false });
@@ -477,10 +502,10 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                     <td>{eventoPorDia[i].direccion}</td>
                     {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(eventoPorDia[i].id) }}></button></td> : null}
                     {(eventoPorDia[i].usuarioId == 1) ? <td> <button className="glyphicon glyphicon-eye-open" onClick={() => { this.mostrarEdicion(eventoPorDia[i].id, eventoPorDia[i].fecha, eventoPorDia[i].horaInicio, eventoPorDia[i].horaFin) }}></button></td> : null}
-                    {(this.state.invitaciones.indexOf(eventoPorDia[i]) != -1) ? <td> <button className="glyphicon glyphicon-remove" onClick={() => { this.cancelarAsistencia(1, eventoPorDia[i].id) }}></button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}></button></td> : null}
-                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-ok" onClick={() => { this.aceptarInvitacion(1, eventoPorDia[i].id) }}></button></td> : null}
-                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminarInvitacion(1, eventoPorDia[i].id) }}></button></td> : null}
+                    {(this.state.invitaciones.indexOf(eventoPorDia[i]) != -1) ? <td> <button className="glyphicon glyphicon-remove" onClick={() => { this.cancelarAsistencia(this.state.id, eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminarInvitacion(this.state.id, eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventosValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-ok" onClick={() => { this.aceptarInvitacion(this.state.id, eventoPorDia[i].id) }}></button></td> : null}
+                    {(eventosNoValidos.indexOf(eventoPorDia[i].id) != -1) ? <td> <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminarInvitacion(this.state.id, eventoPorDia[i].id) }}></button></td> : null}
 
                 </tr>) as any)
                 //devolucion.push((this.formularioEdicion()) as any)

@@ -159,7 +159,14 @@ namespace DalWeCalendar
             {
                 var grupo = (from grup in db.GrupoSet where grup.Id == idGrupo select grup).FirstOrDefault();
                 var tablero = (from tab in db.TableroSet where tab.GrupoId == idGrupo select tab).FirstOrDefault();
-                db.TableroSet.Remove(tablero);
+                var listag = from g in db.ListaGrupoSet where g.GrupoId == idGrupo select g;
+                var lista = listag.ToArray();
+                for (int i = 0; i < lista.Length; i++)
+                {
+                    db.ListaGrupoSet.Remove(lista[i]);
+                }
+                if(tablero != null)
+                    db.TableroSet.Remove(tablero);
                 db.GrupoSet.Remove(grupo);
                 db.SaveChanges();
             }

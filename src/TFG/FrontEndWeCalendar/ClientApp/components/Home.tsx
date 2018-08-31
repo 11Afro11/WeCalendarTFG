@@ -936,7 +936,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
             this.setState({ showAsistentes: false });
         }
         else {
-            this.setState({ showEvent: false });
+            //this.setState({ showEvent: false });
             this.setState({ showAsistentes: true });
             this.setState({ showEdicion: false });
             this.setState({ showInvitacion: false });
@@ -1010,11 +1010,12 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 
                 
 
-                <button className="active" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
+                <button className="btn btn-primary" onClick={() => { this.muestraUOcultaForm(); }}>Agregar Evento</button>
                 
                 {this.state.showForm ? this.formularioInsertarEvento() : null}
 
-
+                <br />
+                <br />
                 <table className="table">
                     <thead className="thead-light">
                     <tr>

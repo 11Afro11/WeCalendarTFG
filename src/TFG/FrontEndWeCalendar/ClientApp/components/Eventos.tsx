@@ -101,7 +101,6 @@ export class Eventos extends React.Component<RouteComponentProps<{}>, FetchDataE
             <p>Eventos creados por los usuarios</p>
             <form className="container darker">
                 <input className="msg" type="text" value={this.state.texto} ref="un texto" onChange={this.handletexto} />
-                <input className="msgsub" type="submit" value="Send" />
             </form>
             {contents}
         </div>;

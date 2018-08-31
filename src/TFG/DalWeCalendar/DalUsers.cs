@@ -83,7 +83,12 @@ namespace DalWeCalendar
         {
             using (var db = new TFGDatabaseContext())
             {
-                var correos = from usuario in db.UsuarioSet select usuario.Correo;
+                var fecha = DateTime.Today.Day;
+                var usuarios = from usuario in db.UsuarioSet where usuario.Notificacion == "YES" select usuario.Id;
+                var ids = from evento in db.EventoSet
+                    where evento.Prioridad == 1 && usuarios.Contains(evento.UsuarioId)
+                    select evento.UsuarioId;
+                var correos = from usuario in db.UsuarioSet where ids.Contains(usuario.Id) select usuario.Correo;
                 List<string> listaCorreos = new List<string>();
                 foreach (string corr in correos)
                 {
