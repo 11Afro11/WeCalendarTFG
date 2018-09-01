@@ -44,7 +44,8 @@ interface DaySet {
 export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
 
-    mes = "Agosto";
+    mes = "Septiembre";
+    month = 9;
     anio = 2018;
     eventos = [1, 4, 12];
     usuario = 1;
@@ -228,15 +229,19 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     renderCalendario(usuarios: Evento[], invitation : Evento[]) {
         var listaDias = Array<number>();
         usuarios.map(dias => {
-            listaDias.push(new Date(dias.fecha.toString()).getDate());
+            var mes = new Date(dias.fecha.toString()).getMonth();
+            if(mes == this.month)
+                listaDias.push(new Date(dias.fecha.toString()).getDate());
         });
         invitation.map(dias => {
-            listaDias.push(new Date(dias.fecha.toString()).getDate());
+            var mes = new Date(dias.fecha.toString()).getMonth();
+            if (mes == this.month)
+                listaDias.push(new Date(dias.fecha.toString()).getDate());
         });
         let day = [];
         var today = new Date();
         var DayToday = today.getDate();
-        for (let i: number = 1; i <= 31; i++) {
+        for (let i: number = 1; i <= 30; i++) {
             if (i == DayToday) {
                 if (i < 10)
                     day.push((<li><button className="active" onClick={() => { this.setDay(i) }}>0{i}</button></li>) as any);
@@ -366,7 +371,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         var fecha = new Date(this.state.fecha.toString());
         var year = fecha.getFullYear();
         //console.log(year);
-        var mes = 8;
+        var mes = this.month;
         //console.log(mes);
         var day = fecha.getDate();
         var datedevolucion = "";
@@ -486,14 +491,16 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         var eventoPorDia = new Array<Evento>();
         usuarios.map(evento => {
             var day = new Date(evento.fecha.toString()).getDate();
-            if (dia == day) {
+            var mes = new Date(evento.fecha.toString()).getMonth();
+            if (dia == day && mes == this.month) {
                 eventoPorDia.push(evento);
             }
         });
 
         invitacion.map(evento => {
             var day = new Date(evento.fecha.toString()).getDate();
-            if (dia == day) {
+            var mes = new Date(evento.fecha.toString()).getMonth();
+            if (dia == day && mes == this.month) {
                 eventoPorDia.push(evento);
             }
         });/*
@@ -709,7 +716,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         var fecha = new Date();
         fecha.setDate(this.state.daySet);
-        fecha.setMonth(7);
+        fecha.setMonth(this.month);
         fecha.setFullYear(2018);
         var hora = parseInt(this.state.horaInicio.toString().substring(0, 2));
         var minutos = parseInt(this.state.horaInicio.toString().substring(3, 5));
@@ -983,6 +990,9 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
                 <ul className="days">
                     <li></li>
                     <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
                     {calendar}
 
 
@@ -1037,9 +1047,17 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         var event: Evento = eventos[0];
         var dia: number = 0;
         let devolucion = [];
+
+        var listaEventos: Evento[] = [];
+        this.state.events.map(evento => {
+            listaEventos.push(evento);
+        });
+        listaEventos.sort();
+
         this.state.events.map(evento => {
             var day = new Date(evento.fecha.toString()).getDate();
-            if (day > this.state.daySet) {
+            var mes = new Date(evento.fecha.toString()).getMonth();
+            if (day > this.state.daySet && mes == this.month) {
                 event = evento;
                 dia = day;
             }

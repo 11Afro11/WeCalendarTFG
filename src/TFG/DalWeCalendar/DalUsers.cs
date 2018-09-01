@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using DalModel;
+using Microsoft.EntityFrameworkCore.Internal;
 using Remotion.Linq.Clauses;
 
 namespace DalWeCalendar
@@ -195,6 +196,18 @@ namespace DalWeCalendar
                 var ban = (from bn in db.BaneoSet where bn.UsuarioId == id select bn).FirstOrDefault();
                 db.BaneoSet.Remove(ban);
                 db.SaveChanges();
+            }
+        }
+
+        public bool EstaBaneado(string name)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var id = (from user in db.UsuarioSet where user.NombreUsuario == name select user.Id).FirstOrDefault();
+                var listaBaneados = from ban in db.BaneoSet select ban.UsuarioId;
+                if (listaBaneados.IndexOf(id) != -1)
+                    return true;
+                else return false;
             }
         }
     }

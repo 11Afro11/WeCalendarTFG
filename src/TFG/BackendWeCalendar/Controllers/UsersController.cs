@@ -130,6 +130,13 @@ namespace BackendWeCalendar.Controllers
             _srvUsuarios.Banear(idUsuario, idAdmin);
         }
 
+        [HttpPut("estaBaneado/{nombre}", Name = "EstaBaneado")]
+        [EnableCors("AllowSpecificOrigin")]
+        public bool EstaBaneo(string nombre)
+        {
+            return _srvUsuarios.EstaBaneado(nombre);
+        }
+
         // POST: api/Users
         [HttpPost]
         public void Post([FromBody] JSONRegister value)

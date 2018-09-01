@@ -72,7 +72,8 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         this.loadChat();
         this.loadNota();
         this.loadAsistentes();
-        this.listaRelaciones();
+        //this.listaRelaciones();
+        this.loadRelacion();
         
 
         //this.loadNota();

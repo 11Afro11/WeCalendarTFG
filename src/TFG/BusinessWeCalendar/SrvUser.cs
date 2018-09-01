@@ -101,7 +101,7 @@ namespace BusinessWeCalendar
             user.Password = savedPasswordHash;
             user.Correo = datos.correo;
             user.Foto = "foto";
-            user.Notificacion = "SI";
+            user.Notificacion = "YES";
             user.CreateDate = DateTime.Today;
             user.Token = Guid.NewGuid().ToString();
             _dalUsers.AddUser(user);
@@ -111,6 +111,11 @@ namespace BusinessWeCalendar
         public void RetirarBaneo(int id)
         {
             _dalUsers.RetirarBaneo(id);
+        }
+
+        public bool EstaBaneado(string nombre)
+        {
+            return _dalUsers.EstaBaneado(nombre);
         }
     }
 }

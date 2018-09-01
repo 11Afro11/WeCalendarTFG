@@ -17,5 +17,6 @@ namespace BusinessWeCalendar
         int[] ListaBaneados();
         string Register(JSONRegister datos);
         void RetirarBaneo(int id);
+        bool EstaBaneado(string nombre);
     }
 }
