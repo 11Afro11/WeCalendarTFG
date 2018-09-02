@@ -216,6 +216,12 @@ th {
 .msg {
     width: 100%;
 }
+
+.grupos {
+    
+    overflow-y: scroll;
+}
+
 .input .msgsend {
     width: 5%;
     background-color: #4CAF50; /* Green */
@@ -236,6 +242,7 @@ th {
 .container {
     float: left;
     width: 80%;
+
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -576,4 +583,8 @@ img {
     text-decoration: none;
     font-size: 22px;
     color: black;
+}
+
+.form-style-6 .error {
+    background-color: red;
 }

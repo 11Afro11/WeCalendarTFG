@@ -32,7 +32,8 @@ interface ChatState {
     loadFriends: boolean;
     amigo: number;
     relacion: Relacion[];
-    loadRelacion : boolean;
+    loadRelacion: boolean;
+    showMiembros : boolean;
 }
 
 export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
@@ -66,6 +67,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             amigo: 0,
             relacion: [],
             loadRelacion: true,
+            showMiembros : false,
     };
 
         this.loadId();
@@ -212,18 +214,14 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         }
         
         mens.map(mensaje => {
-
-            var hora : Date = new Date();
+            
+            var hora = parseInt(mensaje.createDate.toString().substring(11, 13));
+            var minutos = parseInt(mensaje.createDate.toString().substring(15, 17));
             //var hora = new Date(mensaje.createDate.getHours.toString());
-            console.log(hora.getHours());
-            if (hora.getHours().toString() == "NaN") {
-                hora.setHours(11);
-                hora.setMinutes(0);
-            }
             dev.push((<div className="container">
                           <p>{this.getNombre(mensaje.usuarioId)}</p>
                           <p>{mensaje.texto}</p>
-                <span className="time-right">{hora.getHours().toString() + ":"+hora.getMinutes().toString()}</span>
+                <span className="time-right">{hora + ":"+minutos}</span>
                       </div>) as any);
         });
         return dev;
@@ -635,6 +633,14 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         return devolucion;
     }
 
+    muestraAsistentes() {
+        if (this.state.showMiembros) {
+            this.setState({ showMiembros: false });
+        } else {
+            this.setState({showMiembros : true});
+        }
+    }
+
     public render() {
 
         let mensajes = (this.state.loadID && this.state.loadMsg && this.state.loadingAsistentes)
@@ -661,9 +667,10 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
                         <td>
                             <div className="grupos">
                                 {this.listaGrupos()}
-                                {(this.state.loadFriends) ? null : this.formularioInvitacion()}
-                                {this.listaAsistentes()}
-                                <div className="chip"><h4>Nuevo Grupo<button className="glyphicon glyphicon-plus" onClick={() => { this.hideGrup(); }}></button></h4></div>
+                                <div className="chip"><h4>Asistentes<button className="glyphicon glyphicon-plus" onClick={() => { this.muestraAsistentes(); }}></button></h4></div>
+                                {(!this.state.loadFriends && this.state.showMiembros) ? this.formularioInvitacion() : null}
+                                {(this.state.showMiembros)  ? this.listaAsistentes()  : null}
+                                <div className="chip"><h4>Grupo<button className="glyphicon glyphicon-plus" onClick={() => { this.hideGrup(); }}></button></h4></div>
                                 {(this.state.displayFormGrupos) ? this.formGrupo() :null}
                             </div>
                         </td>

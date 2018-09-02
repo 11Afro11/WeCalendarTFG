@@ -2,6 +2,7 @@
 import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
 import axios from 'axios';
+//import TimeInput from 'react-time-input';
 import { ApiUrlRepository } from './ApiUrlMiddle/ApiUrlRepository';
 
 interface DaySet {
@@ -630,15 +631,73 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     }
     handleInicioChange = (event: any) => {
         this.setState({ horaInicio: event.target.value });
-        /*
-        if (this.validarHoraInicio())
-            this.setState({ validHoraInicio: false });
-        else {
-            this.setState({ validHoraInicio: true });
-        }*/
+        console.log("la hora es: ");
+        this.setState({ validFrom : true});
+        var hora = parseInt(event.target.value.toString().substring(0, 2));
+        var eventoPorDia = new Array<Evento>();
+        this.state.events.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            var mes = new Date(evento.fecha.toString()).getMonth();
+            if (this.state.daySet == day && mes == this.month) {
+                eventoPorDia.push(evento);
+            }
+        });
+
+        this.state.invitaciones.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            var mes = new Date(evento.fecha.toString()).getMonth();
+            if (this.state.daySet == day && mes == this.month) {
+                eventoPorDia.push(evento);
+            }
+        });
+
+        eventoPorDia.map(evento => {
+            console.log("Mirando Evento");
+            var horaInicioCom = new Date(evento.horaInicio.toString()).getHours();
+            console.log(horaInicioCom);
+            var horaFinCom = new Date(evento.horaFin.toString()).getHours();
+            console.log(horaFinCom);
+            console.log(hora);
+            console.log(evento.horaInicio);
+            if (hora >= horaInicioCom && hora <= horaFinCom) {
+                console.log("la hora es mayor");
+                this.setState({ validFrom: false });
+            }
+            
+        });
+
     }
     handleFinChange = (event: any) => {
         this.setState({ horaFin: event.target.value });
+        this.setState({ validFrom: true });
+        var hora = parseInt(event.target.value.toString().substring(0, 2));
+        var eventoPorDia = new Array<Evento>();
+        this.state.events.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            var mes = new Date(evento.fecha.toString()).getMonth();
+            if (this.state.daySet == day && mes == this.month) {
+                eventoPorDia.push(evento);
+            }
+        });
+
+        this.state.invitaciones.map(evento => {
+            var day = new Date(evento.fecha.toString()).getDate();
+            var mes = new Date(evento.fecha.toString()).getMonth();
+            if (this.state.daySet == day && mes == this.month) {
+                eventoPorDia.push(evento);
+            }
+        });
+
+        eventoPorDia.map(evento => {
+            console.log("Mirando Evento");
+            var horaInicioCom = new Date(evento.horaInicio.toString()).getHours();
+            var horaFinCom = new Date(evento.horaFin.toString()).getHours();
+            if (hora >= horaInicioCom && hora <= horaFinCom) {
+                console.log("la hora es mayor");
+                this.setState({ validFrom: false });
+            }
+
+        });
     }
     handlePrioridadChange = (event: any) => {
         this.setState({ prioridad: event.target.value });
@@ -790,6 +849,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
     formularioInsertarEvento() {
         return <div className="form-style-6">
             <h1>Nuevo Evento</h1>
+            {(this.state.validFrom) ? null : <h1 className="error">Hora incompatible</h1>}
             <form onSubmit={this.handleSubmmit}>
                 <label>
                     Nombre del Evento
