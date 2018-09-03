@@ -141,7 +141,7 @@ export class User extends React.Component<RouteComponentProps<{}>, userState> {
         dev.push((<div className="card">
                           <img src={require('./IMG/user.png')} alt="John"/>
             <h1>{this.state.usuario[0].nombreUsuario}</h1>
-            <p className="title"><form onSubmit={this.editarCorreo}><input value={this.state.correo} onChange={this.handleCorreoChange} /></form></p>
+            <p className="title"><form className="title" onSubmit={this.editarCorreo}><input value={this.state.correo} onChange={this.handleCorreoChange} /></form></p>
             <p>Notificaciones: <button onClick={() => { this.OnOFNotif(); }}>{this.state.usuario[0].notificacion}</button> </p>
             <h3><button onClick={() => { this.hideFriends(); }}>Amigos</button></h3>
             {(this.state.displayFriends) ? <form onSubmit={this.handleSubmmit}>

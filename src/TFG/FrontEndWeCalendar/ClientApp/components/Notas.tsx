@@ -12,7 +12,8 @@ interface NotasState {
     notas: Nota[];
     loadingNota: boolean;
     titulo: string;
-    texto : string;
+    texto: string;
+    fecha : Date;
 }
 
 export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> {
@@ -25,8 +26,9 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             notas: [],
             loadingNota: true,
             titulo: "",
-            texto : "",
-        };
+            texto: "",
+            fecha: new Date,
+    };
         this.loadId();
         //this.loadNota();
     }
@@ -132,7 +134,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
         var notajson: notaJson = {
             titulo: "",
             texto: "",
-            fechaTope: new Date,
+            fechaTope: this.state.fecha,
             createDate: new Date,
             usuarioId: this.state.id,
         }
@@ -179,6 +181,10 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
         //console.log(JSON.stringify(eventojson));
     }
 
+    fechaChange = (event: any) => {
+        this.setState({fecha : event.target.value});
+    }
+
     FormNotas() {
         let devolucion = [];
             devolucion.push((
@@ -186,6 +192,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
                 <li className="note yellow">
                         <cite className="author"> <input id="name" value={this.state.titulo} type="text" ref="un texto" onChange={this.handletitle} /> </cite>
                         <input id="name" type="text" ref="un texto" value={this.state.texto} onChange={this.handletexto} />
+                        <input id="date" type="date" value={this.state.fecha.toString()} onChange={this.fechaChange} />
                     <input type="submit" value="Send" />
 
 
@@ -193,11 +200,28 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
         return devolucion;
     }
 
+    sort() {
+        var lista: Nota[] = [];
+        this.state.notas.map(nota => {
+            lista.push(nota);
+        });
+        lista.sort((a, b) => b.fechaTope.getDate() - a.fechaTope.getDate());
+        this.setState({notas : lista});
+    }
+
     public render() {
         let notas = (this.state.loadingNota && this.state.loadingId)
             ? <p><em>Loading...</em></p>
             : this.showNotas()
         return <ul className="quote-container">
+            <table className='table'>
+                <thead>
+                    <th>Tablero</th>
+                    <th><button onClick={() => { this.sort(); }}>Ordenar</button></th>
+                    </thead>
+                </table>
+            
+            <br />
             {notas}
             {this.FormNotas()}
                </ul>;

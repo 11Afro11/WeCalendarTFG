@@ -35,7 +35,7 @@ namespace BusinessWeCalendar
                         From = new EmailAddress("javier.fuentes78@gmail.com", "We Calendar"),
                         Subject = "Hoy Tienes Eventos",
                         PlainTextContent = "prueba de envío de correos automatico",
-                        HtmlContent = "<form action=\"http://wecalendar.azurewebsites.net\"> < input type = \"submit\" /></ form > "
+                        HtmlContent = "Hoy tienes eventos <button class=\"btn btn-default\">Wecalendar</button>"
                     };
                     msg.AddTo(new EmailAddress(correo, "Javier Fuentes"));
                     client.SendEmailAsync(msg);

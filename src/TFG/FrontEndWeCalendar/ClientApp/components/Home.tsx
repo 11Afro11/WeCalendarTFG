@@ -1114,7 +1114,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
         });
         listaEventos.sort();
 
-        this.state.events.map(evento => {
+        listaEventos.map(evento => {
             var day = new Date(evento.fecha.toString()).getDate();
             var mes = new Date(evento.fecha.toString()).getMonth();
             if (day > this.state.daySet && mes == this.month) {

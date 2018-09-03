@@ -183,10 +183,11 @@ export class Layout extends React.Component<LayoutProps, formu> {
                                 <input name='username' placeholder='Username' type='text' onChange={this.handleUsernameChange} />
                                 <input id='pw' name='password' placeholder='Password' type='password' onChange={this
                                     .handlePasswdChange} />
-
+                                
                                 <input type='submit' value='Sign in' />
-                                <button className="active" onClick={() => { this.logReg() }}>Sing up</button>
+                                
                             </form>
+                            <button className="active" onClick={() => { this.logReg() }}>Sign up</button>
                         </div></div>) as any)
                     : dev.push((<div className='container-fluid'>
 
@@ -202,15 +203,16 @@ export class Layout extends React.Component<LayoutProps, formu> {
             } else {
                 (sessionStorage.getItem("token") == null)
                     ? dev.push((<div className="contenedor">
-                        <div className='login'>
+                        <div className='register'>
                             <form onSubmit={this.handleRegister}>
                                 <h2>Register</h2>
                                 <input name='username' placeholder='Username' type='text' onChange={this.handleUsernameChange} />
                                 <input name='mail' placeholder='Mail' type='text' onChange={this.handleMailChange} />
                                 <input id='pw' name='password' placeholder='Password' type='password' onChange={this.handlePasswdChange} />
-                                <button className="active" onClick={() => { this.logReg() }}>Sign in</button>
+                                
                                 <input type='submit' value='Sign up' />
                             </form>
+                            <button className="active" onClick={() => { this.logReg() }}>Sign in</button>
                         </div></div>) as any)
                     : dev.push((<div className='container-fluid'>
 

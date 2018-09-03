@@ -56,7 +56,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             loadingAsistentes: true,
             nombreGrupo: "",
             descGrupo: "",
-            activeGrup: 1,
+            activeGrup: -1,
             grupos: [],
             loadingGrupos: true,
             tableros: [],
@@ -204,7 +204,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
         console.log("El grupo es");
         console.log(this.state.activeGrup);
         //mens.push(this.state.msg[0]);
-        for (let i: number = 0; i < this.state.msg.length; i++) {
+        for (let i: number = 0; i < this.state.msg.length && this.state.grupos.length > 0; i++) {
             if (this.state.msg[i].chatId == this.state.activeGrup) {
                 mens.push(this.state.msg[i]);
                 
