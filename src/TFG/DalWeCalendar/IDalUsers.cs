@@ -35,5 +35,7 @@ namespace DalWeCalendar
         void RetirarBaneo(int id);
 
         bool EstaBaneado(string name);
+
+        void EditarCorreo(int id, string correo);
     }
 }

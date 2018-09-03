@@ -117,5 +117,10 @@ namespace BusinessWeCalendar
         {
             return _dalUsers.EstaBaneado(nombre);
         }
+
+        public void EditarCorreo(int id, string correo)
+        {
+            _dalUsers.EditarCorreo(id, correo);
+        }
     }
 }

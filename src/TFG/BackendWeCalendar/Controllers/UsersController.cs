@@ -137,6 +137,13 @@ namespace BackendWeCalendar.Controllers
             return _srvUsuarios.EstaBaneado(nombre);
         }
 
+        [HttpPut("editarCorreo/{id}", Name = "EditarCorreo")]
+        [EnableCors("AllowSpecificOrigin")]
+        public void EditarCorreo(int id, [FromBody] string correo)
+        {
+            _srvUsuarios.EditarCorreo(id, correo);
+        }
+
         // POST: api/Users
         [HttpPost]
         public void Post([FromBody] JSONRegister value)

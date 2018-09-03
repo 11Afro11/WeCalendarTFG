@@ -18,5 +18,6 @@ namespace BusinessWeCalendar
         string Register(JSONRegister datos);
         void RetirarBaneo(int id);
         bool EstaBaneado(string nombre);
+        void EditarCorreo(int id, string correo);
     }
 }

@@ -14,6 +14,7 @@ interface userState {
     loadingUser: boolean;
     nombreAmigo: string;
     displayFriends: boolean;
+    correo : string;
 }
 
 export class User extends React.Component<RouteComponentProps<{}>, userState> {
@@ -28,6 +29,7 @@ export class User extends React.Component<RouteComponentProps<{}>, userState> {
             loadingUser: true,
             nombreAmigo: "",
             displayFriends: false,
+            correo: "",
     };
         this.loadId();
     }
@@ -54,6 +56,8 @@ export class User extends React.Component<RouteComponentProps<{}>, userState> {
             .then(response => response.json())
             .then(data => {
                 this.setState({ usuario: data, loadingUser: false });
+                var cadena = this.state.usuario[0].correo;
+                this.setState({correo : cadena});
                 console.log("hola");
                 console.log(this.state.usuario[0].nombreUsuario);
             }).catch(error => console.log(error));
@@ -110,13 +114,34 @@ export class User extends React.Component<RouteComponentProps<{}>, userState> {
     }
 
 
+    editarCorreo = (event: any) => {
+        event.preventDefault();
+        event.stopPropagation();
+        var subida = JSON.stringify(this.state.correo);
+        var dir = ApiUrlRepository.getApiUrl(ApiUrlRepository.editarCorreo);
+        axios.put(dir + "/" + this.state.id,
+            subida,
+            {
+                headers: { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*" }
+            }).then(res => {
+            console.log(res);
+            console.log(res.data);
+        });
+
+    }
+
+    handleCorreoChange = (event: any) => {
+        this.setState({correo: event.target.value});
+    }
+
+
     user() {
         let dev = [];
         let friends = (this.state.loadingFriend && !this.state.displayFriends) ? null : this.amigos();
         dev.push((<div className="card">
                           <img src={require('./IMG/user.png')} alt="John"/>
             <h1>{this.state.usuario[0].nombreUsuario}</h1>
-            <p className="title">{this.state.usuario[0].correo}</p>
+            <p className="title"><form onSubmit={this.editarCorreo}><input value={this.state.correo} onChange={this.handleCorreoChange} /></form></p>
             <p>Notificaciones: <button onClick={() => { this.OnOFNotif(); }}>{this.state.usuario[0].notificacion}</button> </p>
             <h3><button onClick={() => { this.hideFriends(); }}>Amigos</button></h3>
             {(this.state.displayFriends) ? <form onSubmit={this.handleSubmmit}>

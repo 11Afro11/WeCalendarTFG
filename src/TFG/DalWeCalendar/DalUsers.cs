@@ -210,5 +210,15 @@ namespace DalWeCalendar
                 else return false;
             }
         }
+
+        public void EditarCorreo(int id, string correo)
+        {
+            using (var db = new TFGDatabaseContext())
+            {
+                var usuario = (from user in db.UsuarioSet where user.Id == id select user).FirstOrDefault();
+                usuario.Correo = correo;
+                db.SaveChanges();
+            }
+        }
     }
 }
