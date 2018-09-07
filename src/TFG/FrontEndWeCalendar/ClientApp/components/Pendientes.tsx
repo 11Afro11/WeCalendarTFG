@@ -34,8 +34,9 @@ interface DaySet {
 export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet> {
 
 
-    mes = "Agosto";
+    mes = "Septiembre";
     anio = 2018;
+    month = 9;
     eventos = [1, 4, 12];
     usuario = 1;
 
@@ -333,9 +334,9 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         var fecha = new Date(this.state.fecha.toString());
         var year = fecha.getFullYear();
         //console.log(year);
-        var mes = fecha.getUTCMonth();
+        var mes = this.month;
         //console.log(mes);
-        var day = fecha.getUTCDate();
+        var day = fecha.getDate();
         var datedevolucion = "";
         datedevolucion = datedevolucion + year + "-";
         if (mes < 10)
@@ -366,7 +367,17 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         if (minutos < 10)
             horafindevolucion += 0;
         horafindevolucion += minutos;
-
+        /*
+        var nuevafecha = new Date(datedevolucion);
+        var nuevahorainicio = new Date(horafindevolucion);
+        var nuevahorafin = new Date(horafindevolucion);
+        this.setState({ fecha: nuevafecha });
+        this.setState({ horaInicio: nuevahorainicio });
+        this.setState({ horaFin: nuevahorafin });
+        console.log(this.state.fecha);
+        console.log(this.state.horaInicio);
+        console.log(this.state.horaFin);
+        */
         console.log(datedevolucion);
         console.log(this.state.horaInicio.toString());
         //console.log(day);
@@ -375,18 +386,20 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
         return <form onSubmit={this.handleEdit}>
             <label>
                 Fecha
-                    <input id="date" type="date" /*value={datedevolucion}*/ onChange={this.handleDateChange} />
+                    <input id="date" type="date" value={datedevolucion} onChange={this.handleDateChange} />
             </label>
             <label>
                 Hora de inicio
-                    <input id="horaInicio" /*value={horainiciodevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" onChange={this.handleInicioChange} />
+                    <input id="horaInicio" /*value={horainiciodevolucion}*/ type="time" name="hora" max="23:59" min="00:00" onChange={this.handleInicioChange} />
             </label>
             <label>
                 Hora de fin
-                    <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59:00" min="00:00:00" onChange={this.handleFinChange} />
+                    <input id="horaInicio" /*value={horafindevolucion}*/ type="time" name="hora" max="23:59" min="00:00" onChange={this.handleFinChange} />
             </label>
+
             <button type="submit">Editar</button>
         </form>;
+
     }
 
     comprobarEvento(evento: Evento, eventosPropios: Array<Evento>) {
@@ -823,6 +836,9 @@ export class Pendientes extends React.Component<RouteComponentProps<{}>, DaySet>
                     <li>Domingo</li>
                 </ul>
                 <ul className="days">
+                    <li></li>
+                    <li></li>
+                    <li></li>
                     <li></li>
                     <li></li>
                     {calendar}

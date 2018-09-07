@@ -404,7 +404,7 @@ export class Chat extends React.Component<RouteComponentProps<{}>, ChatState> {
             fechaTope: new Date,
             createDate: new Date,
             usuarioId: this.state.id,
-            tableroId: this.state.activeGrup,
+            tableroId: this.getTablero(),
         }
 
         notajson.titulo = this.state.titulo;

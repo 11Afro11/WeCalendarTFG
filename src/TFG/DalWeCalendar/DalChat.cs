@@ -83,7 +83,8 @@ namespace DalWeCalendar
         {
             using (var db = new TFGDatabaseContext())
             {
-                var grupos = from grupo in db.GrupoSet where grupo.UsuarioId == idUsuario select grupo;
+                var lista = from lis in db.ListaGrupoSet where lis.UsuarioId == idUsuario select lis.GrupoId;
+                var grupos = from grupo in db.GrupoSet where grupo.UsuarioId == idUsuario || lista.Contains(grupo.Id) select grupo;
                 return grupos.ToArray();
             }
         }

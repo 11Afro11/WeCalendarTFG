@@ -59,7 +59,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
     showNotas() {
         let devolucion = [];
         for (let i: number = 0; i < this.state.notas.length; i++) {
-            (this.state.notas[i].tableroId == null) ?
+            (this.state.notas[i].tableroId == null || this.state.notas[i].tableroId == -1) ?
             devolucion.push((
                  <li className="note yellow">
                     <cite className="author">{this.state.notas[i].titulo} <button className="glyphicon glyphicon-trash" onClick={() => { this.eliminar(this.state.notas[i].id) }}></button> </cite>
@@ -149,7 +149,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             fechaTope: new Date,
             createDate: new Date,
             usuarioId: this.state.id,
-            tableroId: 0,
+            tableroId: -1,
         }
 
         notajson.titulo = this.state.titulo;
@@ -192,7 +192,6 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
                 <li className="note yellow">
                         <cite className="author"> <input id="name" value={this.state.titulo} type="text" ref="un texto" onChange={this.handletitle} /> </cite>
                         <input id="name" type="text" ref="un texto" value={this.state.texto} onChange={this.handletexto} />
-                        <input id="date" type="date" value={this.state.fecha.toString()} onChange={this.fechaChange} />
                     <input type="submit" value="Send" />
 
 
@@ -214,12 +213,7 @@ export class Notas extends React.Component<RouteComponentProps<{}>, NotasState> 
             ? <p><em>Loading...</em></p>
             : this.showNotas()
         return <ul className="quote-container">
-            <table className='table'>
-                <thead>
-                    <th>Tablero</th>
-                    <th><button onClick={() => { this.sort(); }}>Ordenar</button></th>
-                    </thead>
-                </table>
+            
             
             <br />
             {notas}
