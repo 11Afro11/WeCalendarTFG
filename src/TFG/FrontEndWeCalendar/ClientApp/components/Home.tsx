@@ -337,7 +337,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, DaySet> {
 
         var fecha = new Date();
         fecha.setDate(this.state.daySet);
-        fecha.setMonth(7);
+        fecha.setMonth(this.month);
         fecha.setFullYear(2018);
         var hora = parseInt(this.state.horaInicio.toString().substring(0, 2));
         var minutos = parseInt(this.state.horaInicio.toString().substring(3, 5));
